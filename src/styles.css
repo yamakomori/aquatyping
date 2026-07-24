@@ -2373,15 +2373,28 @@ body:has(.region-backdrop-shallows) {
 /* UI foundation refresh: typography, navigation, surfaces, and shared controls. */
 ruby {
   ruby-align: center;
+  line-height: 1;
 }
 
 rt {
   color: inherit;
-  font-size: 1em;
+  font-size: .36em;
   font-weight: 700;
   letter-spacing: .02em;
   line-height: 1;
-  zoom: .36;
+}
+
+/*
+ * Safari/WebKit places the ruby annotation higher above the base than Chromium,
+ * leaving a noticeably larger gap. WebKit ignores line-height/margin on <rt> for
+ * annotation positioning but does honor transforms on it (Chromium ignores the
+ * transform), so nudge the reading down by an em-relative amount to match
+ * Chromium's spacing. The @supports test is true only in WebKit.
+ */
+@supports (background: -webkit-named-image(i)) {
+  rt {
+    transform: translateY(.5em);
+  }
 }
 
 .stage-medals {
@@ -2635,7 +2648,7 @@ button:focus-visible {
 .map-hero-copy {
   position: relative;
   z-index: 2;
-  width: 44%;
+  width: 47%;
   max-width: 410px;
 }
 
