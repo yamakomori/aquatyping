@@ -325,9 +325,12 @@ function renderString(text, keyPrefix) {
   return result;
 }
 
-export function UiText({ children }) {
+// `plain` を渡すと、ふりがなを付けずにそのまま表示する。ナビ・ボタン・バッジ
+// などの機能的なUI部品で、ルビによる情報過多を避けるために使う。
+export function UiText({ children, plain = false }) {
   return Children.map(children, (child, index) => {
     if (typeof child === "string" || typeof child === "number") {
+      if (plain) return <Fragment key={index}>{String(child)}</Fragment>;
       return <Fragment key={index}>{renderString(String(child), index)}</Fragment>;
     }
     return child;
