@@ -658,7 +658,7 @@ function AquariumScreen({ state, dispatch }) {
       <AquariumPreview fish={tankFish} emptyMessage="まだ魚はいないよ。最初の海へ出かけよう。" seedSalt={tankSaltRef.current.salt} />
       <button className="aquarium-depart-button primary-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><strong><UiText plain>海へ出かける</UiText></strong><UiIcon name="play" /></button>
     </div>
-    <div className="collection-heading fish-book-heading"><div><p className="eyebrow"><UiText>海のずかん</UiText></p><h2><UiText>出会った魚</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
+    <div className="collection-heading fish-book-heading"><div><h2><UiText>出会った魚</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
     <div className="fish-collection">{species.map((item) => {
       const count = counts[item.id] ?? 0;
       const discovered = state.save.discoveredFishSpeciesIds.includes(item.id);
