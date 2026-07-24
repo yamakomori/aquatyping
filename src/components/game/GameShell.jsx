@@ -563,9 +563,11 @@ function problemDisplayWidth(text) {
 }
 
 function TypingScreen({ state, dispatch }) {
-  const { stage, index, problems, attempt, feedback } = state.session;
+  const { stage, index, problems, attempt, feedback, lastKey, lastKeyOk, inputSeq } = state.session;
   const display = attempt.matcher.display();
   const finger = getFingerGuide(display.next);
+  // 直接入力もかな入力も progress() は「お題の何文字目まで進んだか」を返すので、そこで打ち終わりを切る。
+  const typedCount = attempt.matcher.progress();
   const companionText = attempt.completed ? "みつけた！ 魚影が近づいているよ。" : feedback || (finger.label ? `${finger.label}で ${display.next === " " ? "Space" : display.next.toUpperCase()} を おそう。` : "つぎのキーを、ゆっくりさがそう。");
   const fishProgress = (index + (attempt.completed ? 1 : 0)) / problems.length;
   // 海図のステージカードと同じ、海域内の通し番号。
@@ -581,7 +583,7 @@ function TypingScreen({ state, dispatch }) {
       <p className="problem-title"><UiText>{attempt.problem.title}</UiText></p>
       {/* お題の見た目の幅をCSSへ渡す。長い文ほど自動で小さくなり、固定高の箱で折り返さない。
           潮だまりの直接入力は半角なので、全角の半分として数える。 */}
-      <p className="problem-text" aria-label="入力する文字" style={{ "--problem-length": problemDisplayWidth(attempt.problem.text) }}>{attempt.problem.text}</p>
+      <p className="problem-text" aria-label="入力する文字" style={{ "--problem-length": problemDisplayWidth(attempt.problem.text) }}><span className="problem-text-typed">{attempt.problem.text.slice(0, typedCount)}</span><span className="problem-text-rest">{attempt.problem.text.slice(typedCount)}</span></p>
       {/* ガイドも推奨ローマ字の長さで縮める。打っている途中で綴りが変わっても長さは動かさない。 */}
       <p className="input-guide" aria-label="ローマ字入力" style={{ "--guide-length": attempt.problem.estimatedKeystrokes }}><span className="input-guide-typed">{display.typed}</span><span className="input-guide-next">{display.next}</span><span className="input-guide-rest">{display.rest}</span></p>
     </div>
@@ -593,7 +595,7 @@ function TypingScreen({ state, dispatch }) {
         <span className="typing-count"><UiText plain>つり</UiText> <strong>{index + 1}</strong> / {problems.length}</span>
         <span className="section-rule" />
       </div>
-      {state.save.settings.keyboardGuide && <KeyboardGuide expected={display.next} finger={finger} save={state.save} companionText={companionText} />}
+      {state.save.settings.keyboardGuide && <KeyboardGuide expected={display.next} finger={finger} save={state.save} companionText={companionText} lastKey={lastKey} lastKeyOk={lastKeyOk} inputSeq={inputSeq} />}
     </div>
   </section>;
 }
@@ -604,8 +606,11 @@ function FishingProgress({ progress, stageId }) {
   return <div className="fishing-progress" style={positions} aria-label={`魚が ${Math.round(progress * 100)} パーセント近づいています`}><span className="fishing-line" /><FishVisual caughtFish={fish} muted={progress < 1} /></div>;
 }
 
-function KeyboardGuide({ expected, finger, save, companionText }) {
-  return <div className="keyboard-area"><aside className="guide-companion" aria-live="polite"><Avatar save={save} /><p className="speech-bubble"><UiText>{companionText}</UiText></p></aside><div className="keyboard-guide" aria-label="キーボードガイド">{KEY_ROWS.map((row) => <div className="key-row" key={row.join("")}>{row.map((key) => <span key={key} className={`keycap ${expected === key ? "expected" : ""}`}>{key.toUpperCase()}</span>)}</div>)}<div className="key-row"><span className={`keycap space ${expected === " " ? "expected" : ""}`}>SPACE</span></div><div className="finger-guide" aria-label="使う指のガイド"><Hand side="left" active={finger} /><Hand side="right" active={finger} /></div></div></div>;
+function KeyboardGuide({ expected, finger, save, companionText, lastKey, lastKeyOk, inputSeq }) {
+  const keycapClass = (key) => `keycap ${expected === key ? "expected" : ""} ${key === lastKey ? (lastKeyOk ? "pressed" : "wrong") : ""}`;
+  // 押されたキーだけ React key に inputSeq を混ぜて付け替え、同じキーの連打でも演出を再生し直す。
+  const keycapKey = (key) => key === lastKey ? `${key}-${inputSeq}` : key;
+  return <div className="keyboard-area"><aside className="guide-companion" aria-live="polite"><Avatar save={save} /><p className="speech-bubble"><UiText>{companionText}</UiText></p></aside><div className="keyboard-guide" aria-label="キーボードガイド">{KEY_ROWS.map((row) => <div className="key-row" key={row.join("")}>{row.map((key) => <span key={keycapKey(key)} className={keycapClass(key)}>{key.toUpperCase()}</span>)}</div>)}<div className="key-row"><span key={keycapKey(" ")} className={`${keycapClass(" ")} space`}>SPACE</span></div><div className="finger-guide" aria-label="使う指のガイド"><Hand side="left" active={finger} /><Hand side="right" active={finger} /></div></div></div>;
 }
 
 function Hand({ side, active }) {

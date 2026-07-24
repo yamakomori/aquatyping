@@ -143,6 +143,7 @@ export class DirectMatcher {
     if (accepted) this.pos += 1;
     return { accepted, completed: this.pos === this.text.length, progress: this.pos };
   }
+  progress() { return this.pos; }
   display() { return { typed: this.text.slice(0, this.pos), next: this.text[this.pos] ?? "", rest: this.text.slice(this.pos + 1) }; }
 }
 

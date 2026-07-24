@@ -45,13 +45,15 @@ function startStage(state, stageId, allowLocked = false) {
       earned: { coins: 0, xp: 0 },
       completedAttempts: [],
       feedback: "",
+      lastKey: null,
+      inputSeq: 0,
       reviewKeys,
       reviewConcepts,
     },
   };
 }
 
-function completeProblem(state, nextAttempt, durationMs) {
+function completeProblem(state, nextAttempt, durationMs, lastPress = {}) {
   const finished = completedAttempt(nextAttempt, durationMs);
   const reward = rewardForProblem();
   const save = {
@@ -69,6 +71,7 @@ function completeProblem(state, nextAttempt, durationMs) {
     session: {
       ...state.session,
       attempt: nextAttempt,
+      ...lastPress,
       completedAttempts: [...state.session.completedAttempts, finished],
       earned: {
         coins: state.session.earned.coins + reward.coins,
@@ -170,12 +173,15 @@ export function gameReducer(state, action) {
     case "TYPE_KEY": {
       if (state.screen !== "typing" || !state.session || state.session.attempt.completed) return state;
       const { attempt, result } = submitKey(state.session.attempt, action.key, action.now);
-      if (result.completed) return completeProblem(state, attempt, result.durationMs);
+      // 打鍵ごとに増える inputSeq で、同じキーを連打してもキーボードの演出を再生し直せる。
+      const lastPress = { lastKey: action.key, lastKeyOk: result.accepted, inputSeq: (state.session.inputSeq ?? 0) + 1 };
+      if (result.completed) return completeProblem(state, attempt, result.durationMs, lastPress);
       return {
         ...state,
         session: {
           ...state.session,
           attempt,
+          ...lastPress,
           feedback: result.accepted ? "" : "だいじょうぶ。吹き出しの指を、ゆっくり見よう。",
         },
       };
@@ -191,6 +197,7 @@ export function gameReducer(state, action) {
           index,
           attempt: startAttempt(state.session.problems[index]),
           feedback: "",
+          lastKey: null,
         },
       };
     }

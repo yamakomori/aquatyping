@@ -2004,6 +2004,16 @@ body {
   min-height: 100vh;
 }
 
+/* ヘッダーを隠すタイピング画面だけ、内容をビューポートの縦中央に置く。
+   キーボードガイドを消してもお題が上に寄らない。safe center により、
+   ガイド表示で内容が画面より高くなったときは上端そろえに退避して切れない。 */
+.app-shell:has(.typing-screen) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+}
+
 body:has(.region-backdrop-shallows) {
   background: radial-gradient(circle at 50% 45%, #0d6374 0%, #0a4158 48rem, #05283b 76rem);
 }
@@ -2362,10 +2372,57 @@ body:has(.region-backdrop-shallows) {
   }
 }
 
+/* 打鍵フィードバック。正しいキーは跳ね、間違ったキーは赤く揺れる。
+   .region-* .keycap より後ろに置き、キーボードガイド配下に限定して海域テーマより確実に勝たせる。 */
+@keyframes keycap-pop {
+  0% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(3px) scale(.92); }
+  60% { transform: translateY(-5px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes keycap-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.keyboard-guide .keycap.pressed {
+  animation: keycap-pop .2s ease-out;
+  border-color: #7fd4c6;
+  background: #12586f;
+  color: #eafffb;
+}
+
+.keyboard-guide .keycap.wrong {
+  animation: keycap-shake .32s ease-in-out;
+  border-color: #e2604f;
+  background: #7a2723;
+  color: #ffdcd5;
+}
+
+/* 動きを抑える設定では、跳ね・揺れは止めつつ色の合図は残す。 */
+.reduce-motion .keyboard-guide .keycap.pressed,
+.reduce-motion .keyboard-guide .keycap.wrong {
+  animation: none;
+}
+
+/* お題のうち終わった部分。ローマ字ガイドの typed と同じく、済んだ文字を落ち着いた色にする。 */
+.problem-text-typed {
+  color: #7f9d99;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .fish-visual,
   .fish-sprite {
+    animation: none !important;
+  }
+
+  .keyboard-guide .keycap.pressed,
+  .keyboard-guide .keycap.wrong {
     animation: none !important;
   }
 }
