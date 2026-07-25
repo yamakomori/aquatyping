@@ -112,8 +112,9 @@ export const REGION_CONTENT_RULES = {
     },
     // 入力長は句読点も1文字として数える。文が長くなる後半ほど、stages.js で問題数を減らす。
     stages: {
-      DS01: { problemCount: 30, inputLength: [10, 16], mainTag: "deep-comma" },
-      DS02: { problemCount: 30, inputLength: [10, 15], mainTag: "deep-period" },
+      // 句読点は「。」を先に導入する。DS01ではまだ読点「、」を出さない。
+      DS01: { problemCount: 30, inputLength: [10, 15], mainTag: "deep-period", forbiddenPattern: { pattern: /、/, message: "DS01ではまだ読点「、」を使わない" } },
+      DS02: { problemCount: 30, inputLength: [10, 16], mainTag: "deep-comma", requiredPattern: { pattern: /、/, message: "DS02の読点「、」が不足" } },
       DS03: { problemCount: 30, inputLength: [12, 18], mainTag: "deep-two-sentences" },
       DS04: { problemCount: 30, inputLength: [19, 25], mainTag: "deep-long-sentence" },
       DS05: { problemCount: 30, inputLength: [13, 20], mainTag: "deep-however" },

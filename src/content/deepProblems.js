@@ -4,7 +4,8 @@ import { kanaStageProblems } from "./problemBuilders.js";
 // ひらがなと長音に加えて読点・句点だけを使う。かぎかっこや記号は使わない。
 // 洞窟で深海送りにした逆接「〜けれど」もここで扱う。
 
-const DS01 = kanaStageProblems("DS01", "deep-comma", "sentence", [
+// DS02（読点）。句点「。」はDS01で導入済みなので、読点「、」を足した文を扱う。
+const DS02 = kanaStageProblems("DS02", "deep-comma", "sentence", [
   ["海の そこは、しずかだ。", "うみのそこは、しずかだ。"],
   ["ふかい 海は、くらい。", "ふかいうみは、くらい。"],
   ["そこの 水は、つめたい。", "そこのみずは、つめたい。"],
@@ -37,7 +38,8 @@ const DS01 = kanaStageProblems("DS01", "deep-comma", "sentence", [
   ["あかりを つけて、そこを みる。", "あかりをつけて、そこをみる。"],
 ]);
 
-const DS02 = kanaStageProblems("DS02", "deep-period", "sentence", [
+// DS01（句点）。句読点の入り口として、まだ読点「、」は使わず、句点「。」だけの短い文にする。
+const DS01 = kanaStageProblems("DS01", "deep-period", "sentence", [
   ["深い 海の 底に すむ。", "ふかいうみのそこにすむ。"],
   ["くらい 水を およいでいく。", "くらいみずをおよいでいく。"],
   ["つめたい 流れが ながれる。", "つめたいながれがながれる。"],

@@ -116,8 +116,8 @@ export const STAGE_CONTENT = [
   caveStage({ id: "CA05", problemCount: 4, name: "洞窟のわけ", description: "「〜から」で、わけを つたえよう。", focusTags: ["sentence-reason"], minCompletedPlays: 4, minAccuracy: 0.91, speedMaxMsPerKey: 1700 }, 30),
   caveStage({ id: "CA06", problemCount: 4, name: "海の洞窟チャレンジ", description: "洞窟でおぼえた文を、4つ続けてたどろう。", focusTags: ["cave-challenge"], minCompletedPlays: 5, minAccuracy: 0.91, speedMaxMsPerKey: 1750 }, 31),
 
-  deepStage({ id: "DS01", problemCount: 6, name: "深海の読点", description: "「、」で、文にひと呼吸おこう。", focusTags: ["deep-comma"], minCompletedPlays: 4 }, 32),
-  deepStage({ id: "DS02", problemCount: 5, name: "深海の句点", description: "「。」で、文をしめくくろう。", focusTags: ["deep-period"], minCompletedPlays: 4 }, 33),
+  deepStage({ id: "DS01", problemCount: 6, name: "深海の句点", description: "「。」で、文をしめくくろう。", focusTags: ["deep-period"], minCompletedPlays: 4 }, 32),
+  deepStage({ id: "DS02", problemCount: 5, name: "深海の読点", description: "「、」で、文にひと呼吸おこう。", focusTags: ["deep-comma"], minCompletedPlays: 4 }, 33),
   deepStage({ id: "DS03", problemCount: 4, name: "深海のふたつの文", description: "「。」で、ふたつの文をつづけよう。", focusTags: ["deep-two-sentences"], minCompletedPlays: 4 }, 34),
   deepStage({ id: "DS04", problemCount: 3, name: "深海のながい文", description: "読点をふくむ長い文を、ゆっくりたどろう。", focusTags: ["deep-long-sentence"], minCompletedPlays: 4, speedMaxMsPerKey: 1800 }, 35),
   deepStage({ id: "DS05", problemCount: 4, name: "深海のけれど", description: "「〜けれど」で、ぎゃくのことをつなごう。", focusTags: ["deep-however"], minCompletedPlays: 4 }, 36),
