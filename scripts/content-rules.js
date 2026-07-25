@@ -98,6 +98,28 @@ export const REGION_CONTENT_RULES = {
       CA06: { problemCount: 30, inputLength: [12, 16], mainTag: "cave-challenge" },
     },
   },
+
+  "deep-sea": {
+    problemRules: {
+      requireLessonRole: true,
+      exerciseKinds: ["sentence"],
+      // 深海だけが句読点「、。」を許す。かぎかっこや他の記号は使わない。
+      inputPattern: { pattern: /^[ぁ-んー、。]+$/, message: "入力にはひらがな・長音・句読点だけを使用する" },
+    },
+    stageDefaults: {
+      roleMinimums: { intro: 4, practice: 12, mixed: 6, treasure: 4 },
+      uniqueInputAcrossAllStages: true,
+    },
+    // 入力長は句読点も1文字として数える。文が長くなる後半ほど、stages.js で問題数を減らす。
+    stages: {
+      DS01: { problemCount: 30, inputLength: [10, 16], mainTag: "deep-comma" },
+      DS02: { problemCount: 30, inputLength: [10, 15], mainTag: "deep-period" },
+      DS03: { problemCount: 30, inputLength: [12, 18], mainTag: "deep-two-sentences" },
+      DS04: { problemCount: 30, inputLength: [19, 25], mainTag: "deep-long-sentence" },
+      DS05: { problemCount: 30, inputLength: [13, 20], mainTag: "deep-however" },
+      DS06: { problemCount: 30, inputLength: [18, 24], mainTag: "deep-challenge" },
+    },
+  },
 };
 
 // 全海域に共通する規約。

@@ -1,5 +1,6 @@
 import { CAVE_PROBLEM_CONTENT } from "./caveProblems.js";
 import { CORAL_PROBLEM_CONTENT } from "./coralProblems.js";
+import { DEEP_PROBLEM_CONTENT } from "./deepProblems.js";
 import { SHALLOW_PROBLEM_CONTENT } from "./shallowProblems.js";
 
 function direct(stageId, entries) {
@@ -81,4 +82,5 @@ export const PROBLEM_CONTENT = [
   ]),
   ...CORAL_PROBLEM_CONTENT,
   ...CAVE_PROBLEM_CONTENT,
+  ...DEEP_PROBLEM_CONTENT,
 ];

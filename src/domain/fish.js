@@ -74,6 +74,22 @@ export const FISH_SPECIES = [
   // ── 海の洞窟（レア2種）──
   { id: "cave-escape-eel", name: "エスケープウナギ", habitat: "海の洞窟", regionId: "sea-cave", stages: ["CA06"], color: "#4f6f8a", accent: "#ffe08a", shape: "long", rarity: "rare", depth: "bottom", scale: 1.4 },
   { id: "cave-alt-nautilus", name: "オルトオウムガイ", habitat: "海の洞窟", regionId: "sea-cave", stages: ["CA06"], color: "#e8ddc4", accent: "#b0503f", shape: "round", rarity: "rare", movement: "drift", scale: 1.4 },
+
+  // ── 深海（通常10種）──
+  // 光の届かない海。発光する種や、ゆっくり漂う種が多い。色は暗い青・紫・赤褐色を軸にする。
+  { id: "deep-dumbo", name: "メンダコ", habitat: "深海", regionId: "deep-sea", stages: ["DS01", "DS02"], color: "#8a5a7a", accent: "#f0d0e0", shape: "round", movement: "drift", depth: "mid" },
+  { id: "deep-oarfish", name: "リュウグウノツカイ", habitat: "深海", regionId: "deep-sea", stages: ["DS01", "DS03"], color: "#c0c8d4", accent: "#e86f75", shape: "tall", movement: "drift", depth: "top", scale: 1.8 },
+  { id: "deep-anglerfish", name: "チョウチンアンコウ", habitat: "深海", regionId: "deep-sea", stages: ["DS02", "DS04"], color: "#2f3542", accent: "#ffe08a", shape: "round", depth: "bottom", scale: 1.4 },
+  { id: "deep-isopod", name: "ダイオウグソクムシ", habitat: "深海", regionId: "deep-sea", stages: ["DS02", "DS03"], color: "#7a7266", accent: "#d8ccb0", shape: "long", depth: "floor", scale: 1.2 },
+  { id: "deep-barreleye", name: "デメニギス", habitat: "深海", regionId: "deep-sea", stages: ["DS03", "DS05"], color: "#4a6a6a", accent: "#a8f0d8", shape: "round", depth: "mid" },
+  { id: "deep-frilled-shark", name: "ラブカ", habitat: "深海", regionId: "deep-sea", stages: ["DS04", "DS05"], color: "#5a4a44", accent: "#c8b0a0", shape: "long", depth: "bottom", scale: 1.5 },
+  { id: "deep-coelacanth", name: "シーラカンス", habitat: "深海", regionId: "deep-sea", stages: ["DS04", "DS06"], color: "#3a5570", accent: "#8fb0c8", shape: "long", depth: "mid", scale: 1.6 },
+  { id: "deep-sea-pig", name: "センジュナマコ", habitat: "深海", regionId: "deep-sea", stages: ["DS05", "DS06"], color: "#d99794", accent: "#ffe0dc", shape: "long", depth: "floor" },
+  { id: "deep-basket-star", name: "テヅルモヅル", habitat: "深海", regionId: "deep-sea", stages: ["DS03", "DS04"], color: "#9a7a5a", accent: "#e6d0a8", shape: "tall", movement: "anchor", depth: "floor" },
+  { id: "deep-vampire-squid", name: "コウモリダコ", habitat: "深海", regionId: "deep-sea", stages: ["DS05", "DS06"], color: "#6a3a4a", accent: "#e08a9a", shape: "round", movement: "drift", depth: "mid" },
+  // ── 深海（レア2種）──
+  { id: "deep-shift-octopus", name: "シフトダコ", habitat: "深海", regionId: "deep-sea", stages: ["DS06"], color: "#5a6a9a", accent: "#ffe08a", shape: "round", rarity: "rare", movement: "drift", depth: "mid", scale: 1.3 },
+  { id: "deep-tab-jelly", name: "タブクラゲ", habitat: "深海", regionId: "deep-sea", stages: ["DS06"], color: "#4a7a8a", accent: "#a8f0f0", shape: "tall", rarity: "rare", movement: "drift", depth: "top" },
 ];
 
 export const AQUARIUM_VISIBLE_FISH_LIMIT = 80;

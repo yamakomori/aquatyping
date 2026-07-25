@@ -10,12 +10,14 @@ import { createGameState, gameReducer } from "../src/game/state/gameReducer.js";
 const SHALLOW_STAGE_IDS = Array.from({ length: 11 }, (_, index) => `SH${String(index + 1).padStart(2, "0")}`);
 const CORAL_STAGE_IDS = Array.from({ length: 6 }, (_, index) => `CO${String(index + 1).padStart(2, "0")}`);
 const CAVE_STAGE_IDS = Array.from({ length: 6 }, (_, index) => `CA${String(index + 1).padStart(2, "0")}`);
-// 浅瀬と珊瑚の森は全ステージが6問。海の洞窟は文が長くなるぶん後半で問題数を減らす。
+const DEEP_STAGE_IDS = Array.from({ length: 6 }, (_, index) => `DS${String(index + 1).padStart(2, "0")}`);
+// 浅瀬と珊瑚の森は全ステージが6問。海の洞窟と深海は文が長くなるぶん後半で問題数を減らす。
 const SIX_PROBLEM_STAGE_IDS = [...SHALLOW_STAGE_IDS, ...CORAL_STAGE_IDS];
 const ACTIVE_STAGE_IDS = [
   ...Array.from({ length: 9 }, (_, index) => `S${String(index).padStart(2, "0")}`),
   ...SIX_PROBLEM_STAGE_IDS,
   ...CAVE_STAGE_IDS,
+  ...DEEP_STAGE_IDS,
 ];
 const LESSON_PLAN = ["intro", "intro", "practice", "practice", "mixed", "treasure"];
 
@@ -58,6 +60,8 @@ test("curriculum v2 uses explicit order and region-sized sessions", () => {
   assert.equal(getNextStage("S08").id, "SH01");
   assert.equal(getNextStage("SH11").id, "CO01");
   assert.equal(getNextStage("CO06").id, "CA01");
+  assert.equal(getNextStage("CA06").id, "DS01");
+  assert.equal(getNextStage("DS06"), null);
 });
 
 // lessonPlan を持つ全ステージが、重複なしで役割の順どおりに1プレイぶんを組めること。

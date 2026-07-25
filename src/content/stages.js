@@ -1,5 +1,7 @@
 const LETTER_KEYS = "abcdefghijklmnopqrstuvwxyz".split("");
 const WORD_KEYS = [...LETTER_KEYS, "-"];
+// 深海は句読点「、。」を , . で打つ。どちらも S08 で解禁済み。
+const SENTENCE_KEYS = [...WORD_KEYS, ",", "."];
 const SIX_PROBLEM_LESSON_PLAN = ["intro", "intro", "practice", "practice", "mixed", "treasure"];
 // 文が長い海域では、1プレイの所要時間を保つために問題数を減らす。役割の順序は変えない。
 const FIVE_PROBLEM_LESSON_PLAN = ["intro", "practice", "practice", "mixed", "treasure"];
@@ -43,7 +45,8 @@ const coralStage = (stage, order) => ({
 
 // 海の洞窟は文を読んでから打つため、珊瑚の森より1打あたりの猶予を広げる。
 // 文が長くなる後半ほど problemCount を減らし、1プレイを30〜60秒に収める。
-const CAVE_LESSON_PLANS = { 6: SIX_PROBLEM_LESSON_PLAN, 5: FIVE_PROBLEM_LESSON_PLAN, 4: FOUR_PROBLEM_LESSON_PLAN };
+const THREE_PROBLEM_LESSON_PLAN = ["intro", "mixed", "treasure"];
+const GRADED_LESSON_PLANS = { 6: SIX_PROBLEM_LESSON_PLAN, 5: FIVE_PROBLEM_LESSON_PLAN, 4: FOUR_PROBLEM_LESSON_PLAN, 3: THREE_PROBLEM_LESSON_PLAN };
 const caveStage = (stage, order) => ({
   ...stage,
   regionId: "sea-cave",
@@ -51,11 +54,28 @@ const caveStage = (stage, order) => ({
   introducedKeys: [],
   availableKeys: WORD_KEYS,
   problemCount: stage.problemCount ?? 6,
-  lessonPlan: CAVE_LESSON_PLANS[stage.problemCount ?? 6],
+  lessonPlan: GRADED_LESSON_PLANS[stage.problemCount ?? 6],
   minAccuracy: stage.minAccuracy ?? 0.9,
   medalCriteria: {
     carefulMinAccuracy: stage.carefulMinAccuracy ?? 0.97,
     speedMaxMsPerKey: stage.speedMaxMsPerKey ?? 1650,
+  },
+});
+
+// 深海は最終海域。句読点つきの長い文を読んでから打つため、1打あたりの猶予をさらに広げ、
+// 洞窟と同じく文の長さに応じて問題数を減らす。
+const deepStage = (stage, order) => ({
+  ...stage,
+  regionId: "deep-sea",
+  order,
+  introducedKeys: [],
+  availableKeys: SENTENCE_KEYS,
+  problemCount: stage.problemCount ?? 5,
+  lessonPlan: GRADED_LESSON_PLANS[stage.problemCount ?? 5],
+  minAccuracy: stage.minAccuracy ?? 0.91,
+  medalCriteria: {
+    carefulMinAccuracy: stage.carefulMinAccuracy ?? 0.97,
+    speedMaxMsPerKey: stage.speedMaxMsPerKey ?? 1750,
   },
 });
 
@@ -95,4 +115,11 @@ export const STAGE_CONTENT = [
   caveStage({ id: "CA04", problemCount: 5, name: "洞窟のふたつのうごき", description: "「〜て」で、ふたつの うごきを つなごう。", focusTags: ["sentence-connect"], minCompletedPlays: 4, speedMaxMsPerKey: 1700 }, 29),
   caveStage({ id: "CA05", problemCount: 4, name: "洞窟のわけ", description: "「〜から」で、わけを つたえよう。", focusTags: ["sentence-reason"], minCompletedPlays: 4, minAccuracy: 0.91, speedMaxMsPerKey: 1700 }, 30),
   caveStage({ id: "CA06", problemCount: 4, name: "海の洞窟チャレンジ", description: "洞窟でおぼえた文を、4つ続けてたどろう。", focusTags: ["cave-challenge"], minCompletedPlays: 5, minAccuracy: 0.91, speedMaxMsPerKey: 1750 }, 31),
+
+  deepStage({ id: "DS01", problemCount: 6, name: "深海の読点", description: "「、」で、文にひと呼吸おこう。", focusTags: ["deep-comma"], minCompletedPlays: 4 }, 32),
+  deepStage({ id: "DS02", problemCount: 5, name: "深海の句点", description: "「。」で、文をしめくくろう。", focusTags: ["deep-period"], minCompletedPlays: 4 }, 33),
+  deepStage({ id: "DS03", problemCount: 4, name: "深海のふたつの文", description: "「。」で、ふたつの文をつづけよう。", focusTags: ["deep-two-sentences"], minCompletedPlays: 4 }, 34),
+  deepStage({ id: "DS04", problemCount: 3, name: "深海のながい文", description: "読点をふくむ長い文を、ゆっくりたどろう。", focusTags: ["deep-long-sentence"], minCompletedPlays: 4, speedMaxMsPerKey: 1800 }, 35),
+  deepStage({ id: "DS05", problemCount: 4, name: "深海のけれど", description: "「〜けれど」で、ぎゃくのことをつなごう。", focusTags: ["deep-however"], minCompletedPlays: 4 }, 36),
+  deepStage({ id: "DS06", problemCount: 3, name: "深海チャレンジ", description: "深海でおぼえた文を、3つ続けてたどろう。", focusTags: ["deep-challenge"], minCompletedPlays: 5, minAccuracy: 0.92, speedMaxMsPerKey: 1800 }, 37),
 ];

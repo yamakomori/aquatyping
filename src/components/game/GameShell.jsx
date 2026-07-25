@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { STAGES, getStage } from "../../domain/curriculum.js";
 import { ITEMS, getItem } from "../../domain/economy.js";
 import { getFingerGuide } from "../../domain/fingers.js";
@@ -562,6 +562,23 @@ function problemDisplayWidth(text) {
   return [...text].reduce((width, char) => width + (/[\x20-\x7e]/.test(char) ? 0.5 : 1), 0);
 }
 
+// お題やローマ字ガイドを最大2行の窓に収め、それを超える長い文は入力の進みに合わせて
+// 上へスクロールさせる。深海の長文で、いま打っている行が窓の中に残るようにする。
+// 2行以内に収まる文（洞窟までのすべて）は overflow が 0 なので、見た目は動かない。
+function ScrollingLine({ className, ariaLabel, style, progress, children }) {
+  const innerRef = useRef(null);
+  const [shift, setShift] = useState(0);
+  useLayoutEffect(() => {
+    const inner = innerRef.current;
+    if (!inner) return;
+    const overflow = Math.max(0, inner.scrollHeight - inner.parentElement.clientHeight);
+    setShift(overflow * Math.min(1, Math.max(0, progress || 0)));
+  }, [children, progress]);
+  return <p className={className} aria-label={ariaLabel} style={style}>
+    <span ref={innerRef} className="scroll-inner" style={{ transform: `translateY(${-shift}px)` }}>{children}</span>
+  </p>;
+}
+
 function TypingScreen({ state, dispatch }) {
   const { stage, index, problems, attempt, feedback, lastKey, lastKeyOk, inputSeq } = state.session;
   const display = attempt.matcher.display();
@@ -581,11 +598,11 @@ function TypingScreen({ state, dispatch }) {
     <div className="typing-stage sea-typing-stage">
       <FishingProgress progress={fishProgress} stageId={stage.id} />
       <p className="problem-title"><UiText>{attempt.problem.title}</UiText></p>
-      {/* お題の見た目の幅をCSSへ渡す。長い文ほど自動で小さくなり、固定高の箱で折り返さない。
+      {/* お題の見た目の幅をCSSへ渡す。長い文ほど自動で小さくなり、2行の窓に収める。
           潮だまりの直接入力は半角なので、全角の半分として数える。 */}
-      <p className="problem-text" aria-label="入力する文字" style={{ "--problem-length": problemDisplayWidth(attempt.problem.text) }}><span className="problem-text-typed">{attempt.problem.text.slice(0, typedCount)}</span><span className="problem-text-rest">{attempt.problem.text.slice(typedCount)}</span></p>
+      <ScrollingLine className="problem-text" ariaLabel="入力する文字" progress={typedCount / Math.max([...attempt.problem.text].length, 1)} style={{ "--problem-length": problemDisplayWidth(attempt.problem.text) }}><span className="problem-text-typed">{attempt.problem.text.slice(0, typedCount)}</span><span className="problem-text-rest">{attempt.problem.text.slice(typedCount)}</span></ScrollingLine>
       {/* ガイドも推奨ローマ字の長さで縮める。打っている途中で綴りが変わっても長さは動かさない。 */}
-      <p className="input-guide" aria-label="ローマ字入力" style={{ "--guide-length": attempt.problem.estimatedKeystrokes }}><span className="input-guide-typed">{display.typed}</span><span className="input-guide-next">{display.next}</span><span className="input-guide-rest">{display.rest}</span></p>
+      <ScrollingLine className="input-guide" ariaLabel="ローマ字入力" progress={display.typed.length / Math.max(attempt.problem.estimatedKeystrokes, 1)} style={{ "--guide-length": attempt.problem.estimatedKeystrokes }}><span className="input-guide-typed">{display.typed}</span><span className="input-guide-next">{display.next}</span><span className="input-guide-rest">{display.rest}</span></ScrollingLine>
     </div>
     {/* 罫線ラベルの位置は進捗表示に譲る。キーボードガイドを隠していても進捗は出したいので、
         ラベル自体はガイドの表示設定によらず常に描く。 */}

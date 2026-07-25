@@ -35,6 +35,8 @@ function preferredUnitAt(kana, pos) {
   const char = kana[pos];
   if (!char) return null;
   if (char === "ー") return { spelling: "-", kanaLength: 1 };
+  if (char === "、") return { spelling: ",", kanaLength: 1 };
+  if (char === "。") return { spelling: ".", kanaLength: 1 };
   if (char === "っ") {
     const next = preferredUnitAt(kana, pos + 1);
     if (!next) throw new Error(`「っ」の後ろに文字がありません: ${kana}`);

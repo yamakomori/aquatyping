@@ -375,10 +375,13 @@ button:disabled {
   max-width: 100%;
   margin: 0;
   font-size: clamp(2rem, 7vw, 3.6rem);
-  line-height: 1.15;
+  line-height: 1.2;
   font-weight: 900;
   letter-spacing: .08em;
   overflow-wrap: anywhere;
+  /* 最大2行の窓。これを超える長文は ScrollingLine が進行に合わせてスクロールさせる。 */
+  max-height: 2.4em;
+  overflow: hidden;
 }
 
 .input-guide {
@@ -387,9 +390,22 @@ button:disabled {
   margin: 12px 0 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.3;
   letter-spacing: .08em;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  max-height: 2.6em;
+  overflow: hidden;
+}
+
+/* スクロールする中身。窓に収まる文では translateY(0) のまま動かない。 */
+.scroll-inner {
+  display: block;
+  transition: transform .35s ease;
+}
+
+.reduce-motion .scroll-inner {
+  transition: none;
 }
 
 .input-guide-typed {
@@ -2282,6 +2298,54 @@ body:has(.region-backdrop-shallows) {
   background: linear-gradient(105deg, #1a2733, #14202b);
 }
 
+/* 第五海域「深海」。光の届かない濃紺と、発光生物のような一点の青緑で最も暗い海を見せる。 */
+.region-deep-sea .map-hero,
+.region-deep-sea .screen-heading {
+  border-color: #2f4a63;
+  background: linear-gradient(135deg, #141d33, #070c18);
+}
+
+.region-deep-sea .aquarium-preview {
+  border-color: #3a5578;
+  background: linear-gradient(178deg, #14203a 0%, #0a1224 50%, #03060f 100%);
+  box-shadow: inset 0 0 72px #01040a, 0 12px 28px #00030966;
+}
+
+.region-deep-sea .aquarium-preview::before {
+  background: radial-gradient(ellipse at 68% 12%, #4fd8c83a, transparent 46%), radial-gradient(ellipse at 22% 82%, #3a6fd42a, transparent 44%);
+}
+
+.region-deep-sea .aquarium-sand {
+  background: linear-gradient(0deg, #141d2a, #2b3a56aa);
+}
+
+.region-deep-sea .sea-typing-stage {
+  border-color: #37527a;
+  background: radial-gradient(ellipse at 74% 12%, #3fd8c033, transparent 38%), #0a1122;
+}
+
+.region-deep-sea .fishing-progress .fishing-line {
+  background: linear-gradient(#b8f0e4, #4f8fb0);
+}
+
+.region-deep-sea .stage-card {
+  border-color: #2c4262;
+  background: linear-gradient(105deg, #111a2e, #0b1526);
+}
+
+.region-deep-sea .stage-card.current {
+  border-color: #5fd6c4;
+  box-shadow: 0 5px 18px #3f9fa035;
+}
+
+.region-deep-sea .stage-number {
+  color: #6fe0cc;
+}
+
+.region-deep-sea .stage-card:nth-child(3n + 2) {
+  background: linear-gradient(105deg, #131d33, #0d1728);
+}
+
 @media (max-width: 560px) {
   .input-guide {
     max-width: 100%;
@@ -3150,18 +3214,18 @@ button:focus-visible {
 }
 
 /* 全角12文字までは clamp の値をそのまま使う。これは珊瑚の森までの最長に合わせた調整値。
-   海の洞窟以降は文が長くなるので、12文字を超えた分だけ文字数に反比例して縮め、
-   固定高の箱で折り返さないようにする。文字送りが .08em と em 基準なので、
-   font-size を縮めれば1行の必要幅も同じ比率で縮む。 */
+   海の洞窟以降は文が長くなるので、12文字を超えた分だけ文字数に反比例して縮める。
+   ただし max() で下限を設け、深海の長文でも読める大きさを保つ。下限を割る長さは
+   2行に折り返し、さらに超える分は ScrollingLine がスクロールで見せる。 */
 .problem-text {
-  font-size: calc(clamp(2.5rem, 6.4vw, 3.9rem) * 12 / max(var(--problem-length, 12), 12));
+  font-size: max(2rem, calc(clamp(2.5rem, 6.4vw, 3.9rem) * 12 / max(var(--problem-length, 12), 12)));
 }
 
 /* ローマ字は24文字までを基準にする（珊瑚の森までの最長）。
    洞窟以降はそれを超えた分だけ縮めて、固定高の箱で折り返さないようにする。 */
 .input-guide {
   margin-top: 10px;
-  font-size: calc(clamp(1.65rem, 4vw, 2.25rem) * 24 / max(var(--guide-length, 24), 24));
+  font-size: max(1.5rem, calc(clamp(1.65rem, 4vw, 2.25rem) * 24 / max(var(--guide-length, 24), 24)));
 }
 
 .keyboard-section {
@@ -3400,9 +3464,9 @@ button:focus-visible {
     padding-inline: 12px;
   }
 
-  /* 狭い画面は折り返しを許すが、長い文ほど行数が増えるので、ここでも文字数で縮める。 */
+  /* 狭い画面でも下限を割らずに縮め、2行の窓を超える長文はスクロールで見せる。 */
   .problem-text {
-    font-size: calc(clamp(2.25rem, 12vw, 3.45rem) * 12 / max(var(--problem-length, 12), 12));
+    font-size: max(1.75rem, calc(clamp(2.25rem, 12vw, 3.45rem) * 12 / max(var(--problem-length, 12), 12)));
   }
 
   .keyboard-section {

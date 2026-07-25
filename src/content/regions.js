@@ -27,4 +27,11 @@ export const REGION_CONTENT = [
     description: "みじかい文を、ひと息でたどる暗い海。",
     stageIds: ["CA01", "CA02", "CA03", "CA04", "CA05", "CA06"],
   },
+  {
+    id: "deep-sea",
+    name: "深海",
+    tankName: "深海の水槽",
+    description: "くらい海の底で、句読点をつけた長い文をたどる海。",
+    stageIds: ["DS01", "DS02", "DS03", "DS04", "DS05", "DS06"],
+  },
 ];

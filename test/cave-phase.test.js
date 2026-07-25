@@ -40,7 +40,8 @@ test("海の洞窟は珊瑚の森の次に、6ステージで並ぶ", () => {
       assert.equal(getNextStage(stageId).id, CAVE_STAGE_IDS[index + 1]);
     }
   }
-  assert.equal(getNextStage("CA06"), null);
+  // 洞窟の次は深海。
+  assert.equal(getNextStage("CA06").id, "DS01");
 });
 
 // 文が長くなるぶん後半で問題数を減らし、1プレイの所要時間をそろえている。

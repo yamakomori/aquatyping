@@ -61,6 +61,12 @@ const CONCEPT_LABELS = {
   "sentence-connect": "ふたつの うごきの文",
   "sentence-reason": "わけを つなぐ文",
   "cave-challenge": "海の洞窟チャレンジ",
+  "deep-comma": "読点「、」の文",
+  "deep-period": "句点「。」の文",
+  "deep-two-sentences": "ふたつの文",
+  "deep-long-sentence": "ながい文",
+  "deep-however": "「〜けれど」の文",
+  "deep-challenge": "深海チャレンジ",
 };
 
 export function learningConceptLabel(tag) {
