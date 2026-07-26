@@ -75,6 +75,7 @@ export const FISH_SPECIES = [
     color: "#e8b84d",
     accent: "#6d8b84",
     shape: "long",
+    scale: 1.1,
     sprite: {
       src: "/sprites/striped-wrasse-strip.png",
       frames: 4,
@@ -110,7 +111,7 @@ export const FISH_SPECIES = [
     shape: "long",
     school: true,
     depth: "top",
-    scale: 1.1,
+    scale: 1.15,
     sprite: {
       src: "/sprites/kibinago-strip.png",
       frames: 4,
@@ -242,7 +243,6 @@ export const FISH_SPECIES = [
     color: "#e7b955",
     accent: "#fff0ac",
     shape: "round",
-    scale: 1.15,
     sprite: {
       src: "/sprites/minami-hakofugu-strip.png",
       frames: 4,
@@ -331,7 +331,7 @@ export const FISH_SPECIES = [
     accent: "#ffe0c7",
     shape: "round",
     depth: "bottom",
-    scale: 1.3,
+    scale: 1.5,
     sprite: {
       src: "/sprites/madako-strip.png",
       frames: 4,
@@ -349,6 +349,7 @@ export const FISH_SPECIES = [
     accent: "#f4f9fd",
     shape: "long",
     school: true,
+    scale: 1.1,
     sprite: {
       src: "/sprites/threadfin-jack-strip.png",
       frames: 4,
