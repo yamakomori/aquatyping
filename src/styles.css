@@ -45,7 +45,7 @@ button:disabled {
 }
 
 .brand {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1rem;
 }
 
@@ -101,7 +101,7 @@ button:disabled {
   text-transform: uppercase;
   color: #52766b;
   font-size: .78rem;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 8px;
 }
 
@@ -228,7 +228,7 @@ button:disabled {
 
 .stage-number {
   color: #6c958a;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .stage-progress {
@@ -253,7 +253,7 @@ button:disabled {
   background: #f5f4ef;
   color: #9aa7a0;
   font-size: .63rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .medal.earned.careful {
@@ -288,7 +288,7 @@ button:disabled {
 
 .dev-stage-selector summary {
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .dev-stage-selector div {
@@ -310,7 +310,7 @@ button:disabled {
   min-height: 44px;
   padding: 10px 17px;
   border-radius: 12px;
-  font-weight: 800;
+  font-weight: 700;
   border: 1px solid transparent;
 }
 
@@ -333,7 +333,7 @@ button:disabled {
 
 .text-button {
   padding: 10px 0;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .danger-button {
@@ -368,7 +368,7 @@ button:disabled {
 .problem-title {
   margin: 10px 0 7px;
   color: #59736d;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .problem-text {
@@ -376,7 +376,7 @@ button:disabled {
   margin: 0;
   font-size: clamp(2rem, 7vw, 3.6rem);
   line-height: 1.2;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .08em;
   overflow-wrap: anywhere;
   /* 最大2行の窓。これを超える長文は ScrollingLine が進行に合わせてスクロールさせる。 */
@@ -464,7 +464,7 @@ button:disabled {
   color: #61716e;
   font-family: ui-monospace, monospace;
   font-size: .8rem;
-  font-weight: 800;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -509,7 +509,7 @@ button:disabled {
   background: #fffdf8;
   color: #46685f;
   font-size: .77rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.45;
   box-shadow: 0 3px 10px #30463b12;
 }
@@ -542,7 +542,7 @@ button:disabled {
 .hand-label {
   color: #6b7d78;
   font-size: .7rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .hand {
@@ -690,7 +690,7 @@ button:disabled {
 }
 
 .found-item small {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .new-medals {
@@ -704,7 +704,7 @@ button:disabled {
   background: #f0f4ed;
   color: #527068;
   font-size: .76rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .new-medals .medal {
@@ -734,7 +734,7 @@ button:disabled {
 
 .next-route-group span {
   font-size: .72rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .next-route-group strong {
@@ -1067,7 +1067,7 @@ body {
   margin: 24px 0 11px;
   color: #a7c6c5;
   font-size: .86rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .stage-card {
@@ -1666,7 +1666,7 @@ body {
   background: linear-gradient(120deg, #ffd66b, #e79a2b);
   color: #3a2606;
   font-size: .62rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .1em;
   box-shadow: 0 2px 8px #0006;
 }
@@ -1686,7 +1686,7 @@ body {
   place-items: center;
   color: #ffd66b;
   font-size: 1.5rem;
-  font-weight: 900;
+  font-weight: 700;
   text-shadow: 0 1px 4px #000a;
 }
 
@@ -1713,7 +1713,7 @@ body {
   border-radius: 999px;
   background: #071d30;
   color: #b9dadd;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .map-region-tab.selected {
@@ -1829,7 +1829,7 @@ body {
   border-radius: 999px;
   background: #071d30;
   color: #b9dadd;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .tank-tab.selected {
@@ -1880,7 +1880,7 @@ body {
   background: transparent;
   color: #9cc8c9;
   font-size: .73rem;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1905,7 +1905,7 @@ body {
   background: #7a5414;
   color: #fff1b8;
   font-size: .58rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .06em;
   transform: rotate(8deg);
 }
@@ -2030,6 +2030,209 @@ body {
   justify-content: safe center;
 }
 
+/* 水槽画面は海域の外。共通の観察室を背景にして、海へ出た画面と区別する。 */
+body:has(.screen-aquarium) {
+  background: #253f43;
+}
+
+.app-shell.screen-aquarium::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background-color: #253f43;
+  background-image: linear-gradient(180deg, #071f2652 0%, #04161d8f 100%), url("/backgrounds/aquarium-room.png");
+  background-position: center, center;
+  background-size: cover, cover;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.screen-aquarium .topbar,
+.screen-aquarium .screen-heading,
+.screen-aquarium .collection-heading {
+  text-shadow: 0 1px 4px #132c32;
+}
+
+/* 第一海域「潮だまり」。浅い水と暖かな岩場で、最初の海域らしい明るさをつくる。 */
+body:has(.region-backdrop-tidepool) {
+  background: radial-gradient(circle at 50% 45%, #176e74 0%, #0d4857 48rem, #062d3d 76rem);
+}
+
+.app-shell.region-backdrop-tidepool::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: clamp(360px, 42.9vw, 820px);
+  background-color: #76cbc7;
+  background-image: url("/backgrounds/tidepool.png");
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  pointer-events: none;
+}
+
+.region-backdrop-tidepool .brand,
+.region-backdrop-tidepool .text-button,
+.region-backdrop-tidepool .icon-button {
+  color: #f4fff9;
+  text-shadow: 0 1px 4px #073744;
+}
+
+.region-backdrop-tidepool .coin {
+  border-color: #7cb5a2;
+  background: #23626bd9;
+  color: #fff0ac;
+}
+
+.region-backdrop-tidepool .icon-button {
+  border-color: #75aaa2;
+  background: #185665a3;
+}
+
+.region-tidepool .map-hero {
+  border-color: #8fc6b4;
+  background: linear-gradient(135deg, #277681d6, #144d60ca);
+  box-shadow: 0 14px 34px #03263166;
+}
+
+.region-tidepool .map-hero .eyebrow,
+.region-tidepool .typing-stage-name {
+  color: #bce8c2;
+}
+
+.region-tidepool .map-hero p:not(.eyebrow) {
+  color: #ddf1e8;
+}
+
+.region-tidepool .map-hero .primary-button {
+  background: #2b8b85;
+  box-shadow: 0 3px 0 #17635f;
+}
+
+.region-tidepool .map-lead {
+  color: #ddf4e8;
+  text-shadow: 0 1px 4px #073744;
+}
+
+.region-tidepool .stage-card {
+  border-color: #63969a;
+  background: linear-gradient(105deg, #185160e8, #103d4fe8);
+  box-shadow: 0 8px 22px #0326314f;
+}
+
+.region-tidepool .stage-card.current {
+  border-color: #a4d9c5;
+  box-shadow: 0 8px 24px #2b857273;
+}
+
+.region-tidepool .stage-card:nth-child(3n + 2) {
+  background: linear-gradient(105deg, #1d5d68e8, #14495ae8);
+}
+
+.region-tidepool .stage-number {
+  color: #b9e7b7;
+}
+
+.region-tidepool .stage-card p {
+  color: #cbe0da;
+}
+
+.region-tidepool .stage-card small {
+  color: #b2cec7;
+}
+
+.region-tidepool .stage-card .secondary-button {
+  border-color: #7db1a9;
+  background: #1c5c68;
+  color: #effff8;
+}
+
+.region-tidepool .map-region-tab {
+  border-color: #679a99;
+  background: #174b59d9;
+  color: #dff2ec;
+}
+
+.region-tidepool .map-region-tab.selected {
+  border-color: #a7d9c5;
+  background: #2c7e79;
+  color: #fff;
+}
+
+.region-tidepool .aquarium-preview {
+  border-color: #9bcfbc;
+  background-color: #76cbc7;
+  background-image: linear-gradient(180deg, #f0fff01f 0%, #17475638 100%), url("/backgrounds/tidepool.png");
+  background-position: center;
+  background-size: cover;
+  box-shadow: inset 0 0 30px #17475652, 0 12px 28px #03263155;
+  image-rendering: pixelated;
+}
+
+.region-tidepool .aquarium-preview::before {
+  background: linear-gradient(180deg, #f1fff22b 0%, transparent 34%, #16455224 100%);
+}
+
+.region-tidepool .aquarium-preview p {
+  color: #f4fff9;
+  text-shadow: 0 1px 5px #174756;
+}
+
+.region-tidepool .water-shine {
+  opacity: .14;
+}
+
+.region-tidepool .aquarium-sand {
+  display: none;
+}
+
+.region-tidepool .sea-typing-stage {
+  border-color: #7fb2a9;
+  background-color: #155968;
+  background-image: linear-gradient(180deg, #1b6570bd 0%, #104657d9 100%);
+  box-shadow: 0 14px 34px #03263166;
+}
+
+.region-tidepool .sea-typing-stage .problem-title {
+  color: #d9eee7;
+}
+
+.region-tidepool .keyboard-guide {
+  border-color: #6fa29f;
+  background: #164d5de8;
+  box-shadow: 0 10px 26px #03263155;
+}
+
+.region-tidepool .keycap {
+  border-color: #70a19f;
+  background: #1b5b69;
+  color: #eaf5f0;
+}
+
+.region-tidepool .keycap.expected {
+  border-color: #e1bc68;
+  background: #8a682b;
+  color: #fff5cf;
+}
+
+.region-tidepool .speech-bubble {
+  border-color: #75aaa1;
+  background: #185463e8;
+  color: #e9f5ef;
+}
+
+.region-tidepool .fishing-progress .fishing-line {
+  background: linear-gradient(#f1fff1, #edce76);
+}
+
+/* 第二海域「浅瀬」。水槽では枠内に、海図とタイピングでは画面下端から海を立ち上げる。 */
 body:has(.region-backdrop-shallows) {
   background: radial-gradient(circle at 50% 45%, #0d6374 0%, #0a4158 48rem, #05283b 76rem);
 }
@@ -2202,6 +2405,68 @@ body:has(.region-backdrop-shallows) {
   background: linear-gradient(#e4fff2, #e2c66f);
 }
 
+/* 珊瑚の森以降も、海域画面では下端から背景画を立ち上げ、上端を海色へ溶かす。 */
+.app-shell:is(
+  .region-backdrop-coral-forest,
+  .region-backdrop-sea-cave,
+  .region-backdrop-deep-sea
+)::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: clamp(360px, 42.9vw, 820px);
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  pointer-events: none;
+}
+
+.region-backdrop-coral-forest .brand,
+.region-backdrop-coral-forest .text-button,
+.region-backdrop-coral-forest .icon-button,
+.region-backdrop-sea-cave .brand,
+.region-backdrop-sea-cave .text-button,
+.region-backdrop-sea-cave .icon-button,
+.region-backdrop-deep-sea .brand,
+.region-backdrop-deep-sea .text-button,
+.region-backdrop-deep-sea .icon-button {
+  color: #efffff;
+  text-shadow: 0 1px 4px #020d18;
+}
+
+body:has(.region-backdrop-coral-forest) {
+  background: radial-gradient(circle at 50% 45%, #21576a 0%, #123d54 48rem, #08283d 76rem);
+}
+
+.app-shell.region-backdrop-coral-forest::before {
+  background-color: #16566a;
+  background-image: url("/backgrounds/coral-forest.png");
+}
+
+body:has(.region-backdrop-sea-cave) {
+  background: radial-gradient(circle at 50% 45%, #15394b 0%, #0b2638 48rem, #041521 76rem);
+}
+
+.app-shell.region-backdrop-sea-cave::before {
+  background-color: #0b2c40;
+  background-image: url("/backgrounds/sea-cave.png");
+}
+
+body:has(.region-backdrop-deep-sea) {
+  background: radial-gradient(circle at 50% 45%, #0a1b32 0%, #050e20 48rem, #01050d 76rem);
+}
+
+.app-shell.region-backdrop-deep-sea::before {
+  background-color: #061226;
+  background-image: url("/backgrounds/deep-sea.png");
+}
+
 /* 第三海域「珊瑚の森」。暖色の珊瑚と木漏れ日のような光で浅瀬と区別する。 */
 .region-coral-forest .map-hero,
 .region-coral-forest .screen-heading {
@@ -2211,8 +2476,12 @@ body:has(.region-backdrop-shallows) {
 
 .region-coral-forest .aquarium-preview {
   border-color: #c77a72;
-  background: linear-gradient(155deg, #9b4f5d 0%, #185a68 43%, #07364f 100%);
+  background-color: #16566a;
+  background-image: linear-gradient(180deg, #ffd9b814 0%, #32192c35 100%), url("/backgrounds/coral-forest.png");
+  background-position: center;
+  background-size: cover;
   box-shadow: inset 0 0 48px #32192c99, 0 12px 28px #01101e55;
+  image-rendering: pixelated;
 }
 
 .region-coral-forest .aquarium-preview::before {
@@ -2220,7 +2489,11 @@ body:has(.region-backdrop-shallows) {
 }
 
 .region-coral-forest .aquarium-sand {
-  background: linear-gradient(0deg, #743f4d, #d27a6b99);
+  display: none;
+}
+
+.region-coral-forest .water-shine {
+  opacity: .11;
 }
 
 .region-coral-forest .sea-typing-stage {
@@ -2259,8 +2532,12 @@ body:has(.region-backdrop-shallows) {
 
 .region-sea-cave .aquarium-preview {
   border-color: #5d7684;
-  background: linear-gradient(168deg, #22333d 0%, #14252f 46%, #060f18 100%);
+  background-color: #0b2c40;
+  background-image: linear-gradient(180deg, #b9e8ff0a 0%, #01070d30 100%), url("/backgrounds/sea-cave.png");
+  background-position: center;
+  background-size: cover;
   box-shadow: inset 0 0 60px #01070d, 0 12px 28px #00060c66;
+  image-rendering: pixelated;
 }
 
 .region-sea-cave .aquarium-preview::before {
@@ -2268,7 +2545,11 @@ body:has(.region-backdrop-shallows) {
 }
 
 .region-sea-cave .aquarium-sand {
-  background: linear-gradient(0deg, #1d2a30, #46545a99);
+  display: none;
+}
+
+.region-sea-cave .water-shine {
+  opacity: .07;
 }
 
 .region-sea-cave .sea-typing-stage {
@@ -2307,8 +2588,12 @@ body:has(.region-backdrop-shallows) {
 
 .region-deep-sea .aquarium-preview {
   border-color: #3a5578;
-  background: linear-gradient(178deg, #14203a 0%, #0a1224 50%, #03060f 100%);
+  background-color: #061226;
+  background-image: linear-gradient(180deg, #4fd8c808 0%, #01040a30 100%), url("/backgrounds/deep-sea.png");
+  background-position: center;
+  background-size: cover;
   box-shadow: inset 0 0 72px #01040a, 0 12px 28px #00030966;
+  image-rendering: pixelated;
 }
 
 .region-deep-sea .aquarium-preview::before {
@@ -2316,7 +2601,11 @@ body:has(.region-backdrop-shallows) {
 }
 
 .region-deep-sea .aquarium-sand {
-  background: linear-gradient(0deg, #141d2a, #2b3a56aa);
+  display: none;
+}
+
+.region-deep-sea .water-shine {
+  opacity: .035;
 }
 
 .region-deep-sea .sea-typing-stage {
@@ -2347,6 +2636,10 @@ body:has(.region-backdrop-shallows) {
 }
 
 @media (max-width: 560px) {
+  .app-shell.screen-aquarium::before {
+    background-position: center, 22% center;
+  }
+
   .input-guide {
     max-width: 100%;
     font-size: clamp(1.05rem, 5.2vw, 1.4rem);
@@ -2565,7 +2858,7 @@ rt {
   color: #12313b;
   box-shadow: 3px 3px 0 #00172266;
   font-size: .7rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.45;
   letter-spacing: .02em;
   text-align: left;
@@ -2702,7 +2995,7 @@ button:focus-visible {
   border-radius: 7px;
   background: transparent;
   color: #e8f1ed;
-  font-weight: 850;
+  font-weight: 700;
 }
 
 .brand {
@@ -2732,12 +3025,17 @@ button:focus-visible {
   align-items: center;
   gap: 4px;
   border-radius: 7px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .region-backdrop-shallows .nav-button {
   color: #effffb;
   text-shadow: 0 1px 4px #063043;
+}
+
+.region-backdrop-tidepool .nav-button {
+  color: #f4fff9;
+  text-shadow: 0 1px 4px #073744;
 }
 
 .primary-button,
@@ -2824,7 +3122,7 @@ button:focus-visible {
   padding-left: 8px;
   border-left: 1px solid #5d8995;
   color: #b9dcdd;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .region-navigation {
@@ -2895,7 +3193,7 @@ button:focus-visible {
   background: transparent;
   color: #78989e;
   font-size: .9rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .region-dot span {
@@ -2908,6 +3206,19 @@ button:focus-visible {
 .region-dot.selected {
   border-bottom-color: #68c4c5;
   color: #efffff;
+}
+
+.map-screen.region-tidepool .region-navigation {
+  border-color: #4f8788;
+}
+
+.map-screen.region-tidepool .region-dot {
+  color: #a9c9c3;
+}
+
+.map-screen.region-tidepool .region-dot.selected {
+  border-bottom-color: #a7d9c5;
+  color: #f4fff9;
 }
 
 .section-intro {
@@ -2959,6 +3270,21 @@ button:focus-visible {
   background: linear-gradient(90deg, #0c536044, transparent 58%) !important;
 }
 
+.map-screen.region-tidepool .stage-list {
+  border-color: #55898d;
+  background: linear-gradient(100deg, #164b59e6, #103f50d9);
+  box-shadow: 0 18px 42px #0326314d;
+}
+
+.map-screen.region-tidepool .stage-card {
+  border-bottom-color: #46757b !important;
+}
+
+.map-screen.region-tidepool .stage-card.current {
+  border-left-color: #a4d9c5 !important;
+  background: linear-gradient(90deg, #398f7b4d, transparent 58%) !important;
+}
+
 .map-screen .stage-card.locked {
   opacity: .58;
 }
@@ -3002,7 +3328,7 @@ button:focus-visible {
   border-bottom: 1px solid #487688;
   background: transparent;
   color: #bce7e7;
-  font-weight: 850;
+  font-weight: 700;
 }
 
 .stage-action:hover {
@@ -3017,6 +3343,17 @@ button:focus-visible {
   background: #126c7a;
   box-shadow: 0 3px 0 #084653;
   color: #fff;
+}
+
+.map-screen.region-tidepool .stage-action {
+  border-bottom-color: #6b9d98;
+  color: #dff2ec;
+}
+
+.map-screen.region-tidepool .stage-action.primary {
+  border-color: #72b3a8;
+  background: #2b817c;
+  box-shadow: 0 3px 0 #195f5c;
 }
 
 .screen-heading {
@@ -3173,6 +3510,13 @@ button:focus-visible {
   font-size: .86rem;
 }
 
+/* お題名はルビ付き語（ruby）とルビ無しの助詞が混在する。flex 直下に置くと
+   各 ruby / テキストが個別の flex アイテムになり、ルビの有無で基準線がずれて
+   ガタガタになる。1つの inline アイテムにまとめて通常の行内レイアウトで揃える。 */
+.typing-stage-label {
+  min-width: 0;
+}
+
 .typing-stage-number {
   padding: 1px 7px;
   border: 1px solid #2f6b83;
@@ -3241,7 +3585,7 @@ button:focus-visible {
   margin: 0 auto 11px;
   color: #8eb7b8;
   font-size: .72rem;
-  font-weight: 850;
+  font-weight: 700;
   letter-spacing: .12em;
 }
 

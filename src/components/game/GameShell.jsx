@@ -119,11 +119,10 @@ export default function GameShell() {
         : <MapScreen state={state} dispatch={dispatch} isDev={import.meta.env.DEV} />;
   const backdropRegionId = state.screen === "typing" ? state.session?.stage.regionId
     : state.screen === "map" ? state.selectedMapRegionId
-      : state.screen === "aquarium" ? state.selectedTankId
       : state.screen === "result" ? state.result?.stage.regionId
         : null;
 
-  return <div className={`app-shell ${backdropRegionId ? `region-backdrop-${backdropRegionId}` : ""} ${state.save.settings.reducedMotion ? "reduce-motion" : ""}`}>
+  return <div className={`app-shell screen-${state.screen} ${backdropRegionId ? `region-backdrop-${backdropRegionId}` : ""} ${state.save.settings.reducedMotion ? "reduce-motion" : ""}`}>
     {/* タイピング中はヘッダーを隠す。高さを問題に回せるし、練習中に誤って別画面へ飛ばない。 */}
     {state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
     {content}
@@ -593,7 +592,7 @@ function TypingScreen({ state, dispatch }) {
     {/* ステージ名は枠の外、「やめる」と同じ行へ。行をひとつ増やさずに見出しを立てられる。 */}
     <div className="typing-top">
       <button className="text-button exit-lesson-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><UiIcon name="chevronLeft" size={18} /><span>やめる</span></button>
-      <p className="eyebrow typing-stage-name"><span className="typing-stage-number">{String(stageNumber).padStart(2, "0")}</span><UiText>{stage.name}</UiText></p>
+      <p className="eyebrow typing-stage-name"><span className="typing-stage-number">{String(stageNumber).padStart(2, "0")}</span><span className="typing-stage-label"><UiText>{stage.name}</UiText></span></p>
     </div>
     <div className="typing-stage sea-typing-stage">
       <FishingProgress progress={fishProgress} stageId={stage.id} />
