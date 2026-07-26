@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react"
 import { STAGES, getStage } from "../../domain/curriculum.js";
 import { ITEMS, getItem } from "../../domain/economy.js";
 import { getFingerGuide } from "../../domain/fingers.js";
+import { typedKeyFrom } from "../../domain/keyboard.js";
 import {
   AQUARIUM_COMPACT_VISIBLE_FISH_LIMIT,
   AQUARIUM_VISIBLE_FISH_LIMIT,
@@ -73,11 +74,13 @@ export default function GameShell() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
+      // キーの取り出しは物理キー優先の共通処理へ寄せる。端末や入力ソースで key が揺れても同じ結果になる。
+      const typedKey = typedKeyFrom(event);
       if (state.screen === "result") {
         if (event.key === "Escape") dispatch({ type: "SHOW_MAP" });
-        if (event.key.toLowerCase() === "m") dispatch({ type: "SHOW_MAP" });
-        if (event.key.toLowerCase() === "r") dispatch({ type: "START_STAGE", stageId: state.result?.stage.id ?? state.save.currentStageId });
-        if (event.key.toLowerCase() === "n" && state.result?.nextStageId) dispatch({ type: "START_STAGE", stageId: state.result.nextStageId });
+        if (typedKey === "m") dispatch({ type: "SHOW_MAP" });
+        if (typedKey === "r") dispatch({ type: "START_STAGE", stageId: state.result?.stage.id ?? state.save.currentStageId });
+        if (typedKey === "n" && state.result?.nextStageId) dispatch({ type: "START_STAGE", stageId: state.result.nextStageId });
         return;
       }
       if ((state.screen === "map" || state.screen === "aquarium") && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
@@ -95,9 +98,9 @@ export default function GameShell() {
         }
         return;
       }
-      if (state.screen !== "typing" || event.key.length !== 1) return;
+      if (state.screen !== "typing" || typedKey === null) return;
       event.preventDefault();
-      dispatch({ type: "TYPE_KEY", key: event.key.toLowerCase(), now: Date.now() });
+      dispatch({ type: "TYPE_KEY", key: typedKey, now: Date.now() });
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);

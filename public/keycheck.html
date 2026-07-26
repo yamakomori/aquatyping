@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>キー入力チェック（スペース調査用）</title>
+    <style>
+      body { font-family: -apple-system, "Roboto Mono", monospace; margin: 0; padding: 16px; background: #10161d; color: #e8eef5; }
+      h1 { font-size: 18px; margin: 0 0 4px; }
+      p { font-size: 13px; color: #9fb0c2; margin: 0 0 12px; }
+      #log { font-size: 13px; line-height: 1.5; }
+      .row { border-bottom: 1px solid #23303d; padding: 6px 0; white-space: pre-wrap; word-break: break-all; }
+      .ok { color: #7ee0a5; }
+      .ng { color: #ff8f8f; }
+      button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 0; background: #2b6cb0; color: #fff; }
+    </style>
+  </head>
+  <body>
+    <h1>キー入力チェック</h1>
+    <p>
+      アプリ本体と同じく window の keydown を見ています。スペースバーを押して、
+      key / code / U+ の値を確認してください。何も出ない場合はイベント自体が届いていません。
+    </p>
+    <button id="clear">クリア</button>
+    <div id="log"></div>
+    <script>
+      const log = document.getElementById("log");
+      document.getElementById("clear").addEventListener("click", () => { log.textContent = ""; });
+
+      const codePoints = (text) =>
+        [...text].map((ch) => "U+" + ch.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")).join(" ");
+
+      window.addEventListener("keydown", (event) => {
+        // アプリ本体 (GameShell.jsx) と同じ判定
+        const passesFilter = event.key.length === 1;
+        const acceptedAsSpace = event.key === " ";
+
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML =
+          `key=${JSON.stringify(event.key)} (${codePoints(event.key)})\n` +
+          `code=${JSON.stringify(event.code)}  keyCode=${event.keyCode}  isComposing=${event.isComposing}\n` +
+          `修飾: ctrl=${event.ctrlKey} meta=${event.metaKey} alt=${event.altKey} shift=${event.shiftKey}\n` +
+          `<span class="${passesFilter ? "ok" : "ng"}">key.length===1 のフィルタ: ${passesFilter ? "通過" : "落ちる（無反応になる）"}</span>\n` +
+          `<span class="${acceptedAsSpace ? "ok" : "ng"}">半角スペース(U+0020)として一致: ${acceptedAsSpace ? "する" : "しない（ミス判定になる）"}</span>`;
+        log.prepend(row);
+
+        if (event.key.length === 1) event.preventDefault();
+      });
+    </script>
+  </body>
+</html>
