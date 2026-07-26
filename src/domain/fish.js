@@ -45,18 +45,18 @@ export const FISH_SPECIES = [
 
   // ── 珊瑚の森（通常10種）──
   { id: "coral-butterfly", name: "チョウチョウウオ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO02"], color: "#f19a5b", accent: "#fff0b8", shape: "round", school: true, sprite: { src: "/sprites/coral-butterfly-strip.png", frames: 4, frameMs: 280, sourceFacing: "right" } },
-  { id: "coral-cardinal", name: "ネンブツダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO03"], color: "#e86f75", accent: "#ffe5cb", shape: "long", school: true },
-  { id: "coral-parrotfish", name: "アオブダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO04"], color: "#55b79f", accent: "#f2d479", shape: "round", scale: 1.2 },
-  { id: "coral-anthias", name: "キンギョハナダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO02"], color: "#ff8a6a", accent: "#ffd9c0", shape: "round", school: true, depth: "top" },
-  { id: "coral-tang", name: "ナンヨウハギ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO02", "CO03"], color: "#2f6fd0", accent: "#ffd23a", shape: "round" },
-  { id: "coral-bannerfish", name: "ハタタテダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO03", "CO04"], color: "#f0ead2", accent: "#f2c14a", shape: "tall" },
-  { id: "coral-trigger", name: "モンガラカワハギ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO04", "CO05"], color: "#464b57", accent: "#f0e6c0", shape: "round", scale: 1.15 },
-  { id: "coral-starfish", name: "アオヒトデ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO05"], color: "#3f7fd0", accent: "#7fb0e6", shape: "round", movement: "drift", depth: "floor" },
-  { id: "coral-lionfish", name: "ハナミノカサゴ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO05", "CO06"], color: "#c0524a", accent: "#f6e2c0", shape: "tall", depth: "bottom" },
-  { id: "coral-turtle", name: "アオウミガメ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#6caf83", accent: "#dff2a7", shape: "round", scale: 1.5, depth: "top" },
+  { id: "coral-cardinal", name: "ネンブツダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO03"], color: "#e86f75", accent: "#ffe5cb", shape: "long", school: true, sprite: { src: "/sprites/coral-cardinal-strip.png", frames: 4, frameMs: 260, sourceFacing: "right" } },
+  { id: "coral-parrotfish", name: "アオブダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO04"], color: "#55b79f", accent: "#f2d479", shape: "round", scale: 1.2, sprite: { src: "/sprites/coral-parrotfish-strip.png", frames: 4, frameMs: 300, sourceFacing: "right" } },
+  { id: "coral-anthias", name: "キンギョハナダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO02"], color: "#ff8a6a", accent: "#ffd9c0", shape: "round", school: true, depth: "top", sprite: { src: "/sprites/coral-anthias-strip.png", frames: 4, frameMs: 260, sourceFacing: "right" } },
+  { id: "coral-tang", name: "ナンヨウハギ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO02", "CO03"], color: "#2f6fd0", accent: "#ffd23a", shape: "round", sprite: { src: "/sprites/coral-tang-strip.png", frames: 4, frameMs: 280, sourceFacing: "right" } },
+  { id: "coral-bannerfish", name: "ハタタテダイ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO03", "CO04"], color: "#f0ead2", accent: "#f2c14a", shape: "tall", sprite: { src: "/sprites/coral-bannerfish-strip.png", frames: 4, frameMs: 300, sourceFacing: "right" } },
+  { id: "coral-trigger", name: "モンガラカワハギ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO04", "CO05"], color: "#464b57", accent: "#f0e6c0", shape: "round", scale: 1.15, sprite: { src: "/sprites/coral-trigger-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
+  { id: "coral-starfish", name: "アオヒトデ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO05"], color: "#3f7fd0", accent: "#7fb0e6", shape: "round", movement: "drift", depth: "floor", sprite: { src: "/sprites/coral-starfish-strip.png", frames: 4, frameMs: 380, sourceFacing: "right" } },
+  { id: "coral-lionfish", name: "ハナミノカサゴ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO05", "CO06"], color: "#c0524a", accent: "#f6e2c0", shape: "tall", depth: "bottom", sprite: { src: "/sprites/coral-lionfish-strip.png", frames: 4, frameMs: 340, sourceFacing: "right" } },
+  { id: "coral-mandarinfish", name: "ニシキテグリ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#168f8e", accent: "#f3983f", shape: "long", scale: 1.15, depth: "bottom", sprite: { src: "/sprites/coral-mandarinfish-strip.png", frames: 4, frameMs: 300, sourceFacing: "right" } },
   // ── 珊瑚の森（レア2種）──
-  { id: "coral-cleaner-shrimp", name: "エンターエビ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#ef8275", accent: "#fff0db", shape: "long", rarity: "rare", depth: "bottom" },
-  { id: "coral-key-slug", name: "タイプウミウシ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#d05aa0", accent: "#ffe27a", shape: "tall", rarity: "rare", movement: "drift", depth: "bottom" },
+  { id: "coral-cleaner-shrimp", name: "エンターエビ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#ef8275", accent: "#fff0db", shape: "long", rarity: "rare", depth: "bottom", sprite: { src: "/sprites/enter-shrimp-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
+  { id: "coral-key-slug", name: "タイプウミウシ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO06"], color: "#d05aa0", accent: "#ffe27a", shape: "tall", rarity: "rare", movement: "drift", depth: "bottom", sprite: { src: "/sprites/type-slug-strip.png", frames: 4, frameMs: 360, sourceFacing: "right" } },
 
   // ── 海の洞窟（通常10種）──
   // 岩陰や海食洞に実際にいる生きものを選んでいる。暗い海なので、色は赤・銀・黄を軸にする。

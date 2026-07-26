@@ -1,7 +1,7 @@
 # 生き物スプライト案
 
 `concept1.png` と `concept3.png` の静かな水中世界、低彩度の配色、輪郭の読みやすいドット絵を基準にした生き物素材。
-現在は26種をアプリ本体へ接続している。潮だまりと浅瀬は、通常種とレア種を含む全24種を4コマの透過スプライトへ置き換え済み。
+現在は37種をアプリ本体へ接続している。潮だまり・浅瀬・珊瑚の森は、通常種とレア種を含む全36種を4コマの透過スプライトへ置き換え済み。
 
 - ミナミハコフグ案 → 既存の `shallow-puffer`（ミナミハコフグ）
 - キーアンコウ案 → 既存の `deep-lantern`（カーソルアンコウ・レア）
@@ -148,6 +148,28 @@
 - 新規7種の高解像度原画は `tmp/imagegen/shallows/` に残し、単色の青またはマゼンタ背景から直接 `1024 × 256px` のRGBAへ整形した。
 - 実在種の識別点は、ハナヒゲウツボの青い細長い体と黄色い背びれ・鼻先、タコクラゲの白斑、マダコの8本の腕、イトヒキアジの菱形の体と長いひれ、チンアナゴの黒斑、ヒラメの片側に並ぶ目、マイワシの銀青色の体側を優先した。
 - チンアナゴの3コマ目は、砂から出たまま左右をきょろきょろ見回す演出として意図的に反対側を向かせている。検証時の横重心差はこの首振りによるものとして許容する。
+
+## 珊瑚の森（通常種・レア種）
+
+| 種ID | 表示名 | ファイル | 動き | 1コマ |
+|---|---|---|---|---:|
+| `coral-butterfly` | チョウチョウウオ | `coral-butterfly-strip.png` | 尾びれ、最後に泡 | 280ms |
+| `coral-cardinal` | ネンブツダイ | `coral-cardinal-strip.png` | 尾とひれ、最後に泡 | 260ms |
+| `coral-parrotfish` | アオブダイ | `coral-parrotfish-strip.png` | 尾と胸びれ、最後に泡 | 300ms |
+| `coral-anthias` | キンギョハナダイ | `coral-anthias-strip.png` | 尾とひれ、最後に泡 | 260ms |
+| `coral-tang` | ナンヨウハギ | `coral-tang-strip.png` | 尾と胸びれ、最後に泡 | 280ms |
+| `coral-bannerfish` | ハタタテダイ | `coral-bannerfish-strip.png` | 長い背びれと尾、最後に泡 | 300ms |
+| `coral-trigger` | モンガラカワハギ | `coral-trigger-strip.png` | 尾とひれ、最後に泡 | 320ms |
+| `coral-starfish` | アオヒトデ | `coral-starfish-strip.png` | 腕をゆっくり曲げ、最後に泡 | 380ms |
+| `coral-lionfish` | ハナミノカサゴ | `coral-lionfish-strip.png` | 胸びれと背びれ、最後に泡 | 340ms |
+| `coral-mandarinfish` | ニシキテグリ | `coral-mandarinfish-strip.png` | 胸びれと尾、最後に泡 | 300ms |
+| `coral-cleaner-shrimp` | エンターエビ | `enter-shrimp-strip.png` | JIS Enterキーを引いて押す | 320ms |
+| `coral-key-slug` | タイプウミウシ | `type-slug-strip.png` | A・S・Dキーを順に傾ける | 360ms |
+
+- ガイド役のウミガメを釣る矛盾を避けるため、`coral-turtle`（アオウミガメ）は `coral-mandarinfish`（ニシキテグリ）へ置き換えた。リリース前のため旧IDの互換処理は持たない。
+- ニシキテグリは青緑の体と橙色の迷路模様、大きな胸びれを識別点にし、アオブダイと輪郭・模様が重ならないようにした。
+- エンターエビのキーは、子どもにもJIS配列と分かる縦長の逆L字型にし、上面へ `ENTER` を明記した。
+- タイプウミウシは背中の3つのキーキャップへ `A`・`S`・`D` を一文字ずつ記し、順に傾く動きでタイピングを表した。
 
 ## 潮だまり・浅瀬のレア種
 
