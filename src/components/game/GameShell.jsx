@@ -240,7 +240,7 @@ function MapScreen({ state, dispatch, isDev }) {
   </section>;
 }
 
-function FishVisual({ caughtFish, className = "", index = 0, muted = false, isNew = false, position: requestedPosition, roaming = false, nodeRef }) {
+function FishVisual({ caughtFish, className = "", index = 0, muted = false, position: requestedPosition, roaming = false, nodeRef }) {
   const species = getFishSpecies(caughtFish?.speciesId);
   const position = requestedPosition ?? { left: `${9 + ((index * 19) % 76)}%`, top: `${20 + ((index * 23) % 54)}%` };
   const spriteDuration = species.sprite ? species.sprite.frames * species.sprite.frameMs : 0;
@@ -250,7 +250,7 @@ function FishVisual({ caughtFish, className = "", index = 0, muted = false, isNe
     // Offset each individual's frame cycle so they don't all blow bubbles in unison.
     "--sprite-delay": `-${stableFishNumber(caughtFish) % spriteDuration}ms`,
   } : {};
-  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span>{isNew && <span className="new-fish-badge">NEW</span>}</span>;
+  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
 }
 
 // Deterministic PRNG (mulberry32) so each fish wanders the same way across renders.
@@ -719,7 +719,7 @@ function RewardOverlay({ state, dispatch }) {
       <div className="reward-card first-catch-card">
         <button className="dialog-close" onClick={() => dispatch({ type: "SHOW_MAP" })} aria-label="レッスン一覧にもどる"><UiIcon name="close" size={20} /></button>
         <p className="eyebrow"><UiText>｜最初の魚《さいしょのさかな》</UiText></p>
-        <FishVisual caughtFish={state.result.caughtFish} className="reward-fish" isNew />
+        <div className="reward-fish-slot"><FishVisual caughtFish={state.result.caughtFish} className="reward-fish" /><span className="new-fish-badge">NEW</span></div>
         <h1><UiText>{fish.name}</UiText>が<br />つれた！</h1>
         <p><UiText>水槽《すいそう》につれてかえろう。</UiText></p>
         <button className="primary-button first-aquarium-button" onClick={() => dispatch({ type: "SHOW_AQUARIUM", regionId: state.result.caughtFish.regionId })}><UiIcon name="aquarium" /><UiText plain>水槽をみる</UiText></button>
@@ -730,7 +730,7 @@ function RewardOverlay({ state, dispatch }) {
   return <section className="reward-overlay" role="dialog" aria-modal="true" aria-label={state.result.isRareCatch ? "レアな生き物がつれた" : "つれた魚"}>
     <div className={`reward-card fish-reward ${state.result.isRareCatch ? "rare" : ""}`}>
       {state.result.isRareCatch && <p className="eyebrow rare-eyebrow"><UiText>レアな生《い》き物《もの》！</UiText></p>}
-      <FishVisual caughtFish={state.result.caughtFish} className="reward-fish" isNew={state.result.isNewSpecies} />
+      <div className="reward-fish-slot"><FishVisual caughtFish={state.result.caughtFish} className="reward-fish" />{state.result.isNewSpecies && <span className="new-fish-badge">NEW</span>}</div>
       <h1><UiText>{fish.name}</UiText>が<br />つれた！</h1>
       <p className="result-message"><UiText>{state.result.isRareCatch ? "きらめく、めずらしい生《い》き物《もの》だ！" : state.result.accuracy >= 0.85 ? "ていねいに糸をたぐれたね。" : "最後《さいご》までつれたね。すてき！"}</UiText></p>
       {(earned.careful || earned.speed || earned.gold) && <div className="new-medals"><span>あたらしいメダル</span><StageMedals medals={earned} onlyEarned /></div>}
