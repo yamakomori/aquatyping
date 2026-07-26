@@ -148,7 +148,7 @@ function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
 }
 
 function IntroScreen({ state, dispatch }) {
-  return <main className="intro-screen"><div className="intro-card"><Avatar save={state.save} /><p className="eyebrow"><UiText>ことばの小さな海へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの短い問題を打つと、</UiText><br /><UiText>最初の魚に会えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
+  return <main className="intro-screen"><div className="intro-card"><Avatar save={state.save} /><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
 }
 
 function Avatar({ save }) {
@@ -199,12 +199,12 @@ function MapScreen({ state, dispatch, isDev }) {
   return <section className={`map-screen region-${region.id}`}>
     <div className="map-hero sea-hero">
       <div className="map-hero-copy">
-        <p className="eyebrow"><UiText>海をえらぶ</UiText></p>
+        <p className="eyebrow"><UiText>海《うみ》をえらぶ</UiText></p>
         <h1><UiText>{region.name}</UiText></h1>
         <p><UiText>{region.description}</UiText></p>
       </div>
       <div className="aquarium-feature">
-        <AquariumPreview fish={tankFish} emptyMessage="海へ出ると、魚に出会えるよ。" compact />
+        <AquariumPreview fish={tankFish} emptyMessage="海《うみ》へ出《で》ると、魚《さかな》に｜出会える《であえる》よ。" compact />
         <button className="aquarium-attached-button" onClick={() => dispatch({ type: "SHOW_AQUARIUM", regionId: region.id })}>
           <UiIcon name="aquarium" />
           <strong><UiText plain>水槽をみる</UiText></strong>
@@ -224,8 +224,8 @@ function MapScreen({ state, dispatch, isDev }) {
     return <article key={stage.id} className={`stage-card ${unlocked ? "" : "locked"} ${current ? "current" : ""}`}>
       <span className="stage-number">{String(index + 1).padStart(2, "0")}</span>
       <div className="stage-copy">
-        <h3><UiText>{unlocked ? stage.name : "まだ いけない 海"}</UiText></h3>
-        <p><UiText>{unlocked ? stage.description : "ひとつ前の海で 魚をつると、ひらくよ。"}</UiText></p>
+        <h3><UiText>{unlocked ? stage.name : "まだ いけない 海《うみ》"}</UiText></h3>
+        <p><UiText>{unlocked ? stage.description : "ひとつ｜前の海《まえのうみ》で 魚《さかな》をつると、ひらくよ。"}</UiText></p>
         {unlocked && <div className="stage-progress">
           <small><UiText plain>{plays} 回つりをした</UiText></small>
           <small className="fish-discovery"><UiText plain>出会った魚</UiText> {discovery.discovered}/{discovery.total}</small>
@@ -585,7 +585,7 @@ function TypingScreen({ state, dispatch }) {
   const finger = getFingerGuide(display.next);
   // 直接入力もかな入力も progress() は「お題の何文字目まで進んだか」を返すので、そこで打ち終わりを切る。
   const typedCount = attempt.matcher.progress();
-  const companionText = attempt.completed ? "みつけた！ 魚影が近づいているよ。" : feedback || (finger.label ? `${finger.label}で ${display.next === " " ? "Space" : display.next.toUpperCase()} を おそう。` : "つぎのキーを、ゆっくりさがそう。");
+  const companionText = attempt.completed ? "みつけた！ 魚影《ぎょえい》が｜近づいて《ちかづいて》いるよ。" : feedback || (finger.label ? `${finger.label}で ${display.next === " " ? "Space" : display.next.toUpperCase()} を おそう。` : "つぎのキーを、ゆっくりさがそう。");
   const fishProgress = (index + (attempt.completed ? 1 : 0)) / problems.length;
   // 海図のステージカードと同じ、海域内の通し番号。
   const stageNumber = STAGES.filter((item) => item.regionId === stage.regionId).findIndex((item) => item.id === stage.id) + 1;
@@ -638,7 +638,7 @@ function Hand({ side, active }) {
 function WardrobeScreen({ state, dispatch }) {
   return <section className="wardrobe-screen">
     <div className="screen-heading">
-      <div><p className="eyebrow"><UiText>相棒のもちもの</UiText></p><h1><UiText>今日は、なにを身につける？</UiText></h1><p><UiText>{state.message || "海で見つけたコインで、身じたくできるよ。"}</UiText></p></div>
+      <div><p className="eyebrow"><UiText>相棒《あいぼう》のもちもの</UiText></p><h1><UiText>今日《きょう》は、なにを身《み》につける？</UiText></h1><p><UiText>{state.message || "海《うみ》で｜見つけた《みつけた》コインで、身《み》じたくできるよ。"}</UiText></p></div>
       <Avatar save={state.save} />
     </div>
     <div className="item-grid">{ITEMS.map((item) => {
@@ -648,7 +648,7 @@ function WardrobeScreen({ state, dispatch }) {
       return <article key={item.id} className={`item-card ${equipped ? "equipped" : ""}`}>
         <div className="item-preview" style={item.color ? { "--item-color": item.color } : undefined}>{visual}</div>
         <h2><UiText>{item.name}</UiText></h2>
-        <p><UiText>{item.slot === "bodyColor" ? "からだの色" : item.slot === "head" ? "あたま" : "ふく"}</UiText></p>
+        <p><UiText>{item.slot === "bodyColor" ? "からだの色《いろ》" : item.slot === "head" ? "あたま" : "ふく"}</UiText></p>
         <button className="secondary-button" disabled={equipped} onClick={() => dispatch({ type: "PURCHASE_OR_EQUIP", itemId: item.id })}><UiText plain>{equipped ? "つけている" : owned ? "つける" : `${item.price} コインで みつける`}</UiText></button>
       </article>;
     })}</div>
@@ -672,29 +672,29 @@ function AquariumScreen({ state, dispatch }) {
   const selectTank = (regionId) => dispatch({ type: "SELECT_TANK", regionId });
   return <section className={`aquarium-screen region-${region.id}`}>
     <div className="screen-heading aquarium-heading">
-      <div><p className="eyebrow"><UiText>あなたの水槽</UiText></p><h1><UiText>{region.tankName}</UiText></h1><p><UiText>{collection.total === 0 ? "海へ出ると、最初の魚に出会えるよ。" : `${tankFish.length} 匹が、この水槽を泳いでいるよ。`}</UiText></p></div>
+      <div><p className="eyebrow"><UiText>あなたの水槽《すいそう》</UiText></p><h1><UiText>{region.tankName}</UiText></h1><p><UiText>{collection.total === 0 ? "海《うみ》へ出《で》ると、｜最初の魚《さいしょのさかな》に｜出会える《であえる》よ。" : `${tankFish.length} 匹《ひき》が、この水槽《すいそう》を｜泳いで《およいで》いるよ。`}</UiText></p></div>
       <Avatar save={state.save} />
     </div>
     {unlockedRegions.length > 1 && <RegionNavigator regions={unlockedRegions} selectedId={region.id} onSelect={selectTank} label="水槽を選ぶ" />}
     <div className="aquarium-main">
-      <AquariumPreview fish={tankFish} emptyMessage="まだ魚はいないよ。最初の海へ出かけよう。" seedSalt={tankSaltRef.current.salt} />
+      <AquariumPreview fish={tankFish} emptyMessage="まだ魚《さかな》はいないよ。最初《さいしょ》の海《うみ》へ出《で》かけよう。" seedSalt={tankSaltRef.current.salt} />
       <button className="aquarium-depart-button primary-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><strong><UiText plain>海へ出かける</UiText></strong><UiIcon name="play" /></button>
     </div>
-    <div className="collection-heading fish-book-heading"><div><h2><UiText>出会った魚</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
+    <div className="collection-heading fish-book-heading"><div><h2><UiText>｜出会った魚《であったさかな》</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
     <div className="fish-collection">{species.map((item) => {
       const count = counts[item.id] ?? 0;
       const discovered = state.save.discoveredFishSpeciesIds.includes(item.id);
       const rare = item.rarity === "rare";
       const releaseTarget = tankFish.find((fish) => fish.speciesId === item.id);
-      return <article className={`fish-card ${discovered ? "" : "undiscovered"} ${rare ? "rare" : ""}`} key={item.id}>{rare && <span className="rare-ribbon"><UiText>レア</UiText></span>}{discovered ? <FishVisual caughtFish={{ speciesId: item.id }} /> : <UnknownFishVisual rare={rare} />}<div><h3><UiText>{discovered ? item.name : rare ? "レアな生き物" : "未発見の生き物"}</UiText></h3><p><UiText>{discovered ? (count > 0 ? `水槽に ${count} 匹` : "図鑑に記録されている") : rare ? "この海をきわめると 出会えるかも" : "この海で待っているみたい"}</UiText></p>{count > 0 && releaseTarget && <button className="release-button" onClick={() => dispatch({ type: "REQUEST_RELEASE", fishId: releaseTarget.id })}><UiText plain>{count > 1 ? "1匹を海へ逃がす" : "海へ逃がす"}</UiText></button>}</div></article>;
+      return <article className={`fish-card ${discovered ? "" : "undiscovered"} ${rare ? "rare" : ""}`} key={item.id}>{rare && <span className="rare-ribbon"><UiText>レア</UiText></span>}{discovered ? <FishVisual caughtFish={{ speciesId: item.id }} /> : <UnknownFishVisual rare={rare} />}<div><h3><UiText>{discovered ? item.name : rare ? "レアな生《い》き物《もの》" : "｜未発見の生き物《みはっけんのいきもの》"}</UiText></h3><p><UiText>{discovered ? (count > 0 ? `水槽《すいそう》に ${count} 匹《ひき》` : "図鑑《ずかん》に記録《きろく》されている") : rare ? "この海《うみ》をきわめると ｜出会える《であえる》かも" : "この海《うみ》で待《ま》っているみたい"}</UiText></p>{count > 0 && releaseTarget && <button className="release-button" onClick={() => dispatch({ type: "REQUEST_RELEASE", fishId: releaseTarget.id })}><UiText plain>{count > 1 ? "1匹を海へ逃がす" : "海へ逃がす"}</UiText></button>}</div></article>;
     })}</div>
   </section>;
 }
 
 function SettingsScreen({ state, dispatch }) {
   return <section className="settings-screen">
-    <p className="eyebrow"><UiText>設定</UiText></p>
-    <h1><UiText>遊びやすくする</UiText></h1>
+    <p className="eyebrow"><UiText>設定《せってい》</UiText></p>
+    <h1><UiText>｜遊び《あそび》やすくする</UiText></h1>
     <div className="settings-list">
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_GUIDE" })}><span><UiText plain>キーボードガイド</UiText></span><strong><UiText plain>{state.save.settings.keyboardGuide ? "表示中" : "非表示"}</UiText></strong></button>
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_MOTION" })}><span><UiText plain>動きをひかえめにする</UiText></span><strong>{state.save.settings.reducedMotion ? "オン" : "オフ"}</strong></button>
@@ -715,10 +715,10 @@ function RewardOverlay({ state, dispatch }) {
     return <section className="reward-overlay" role="dialog" aria-modal="true" aria-label="最初につれた魚">
       <div className="reward-card first-catch-card">
         <button className="dialog-close" onClick={() => dispatch({ type: "SHOW_MAP" })} aria-label="レッスン一覧にもどる"><UiIcon name="close" size={20} /></button>
-        <p className="eyebrow"><UiText>最初の魚</UiText></p>
+        <p className="eyebrow"><UiText>｜最初の魚《さいしょのさかな》</UiText></p>
         <FishVisual caughtFish={state.result.caughtFish} className="reward-fish" isNew />
         <h1><UiText>{fish.name}</UiText>が<br />つれた！</h1>
-        <p><UiText>水槽につれてかえろう。</UiText></p>
+        <p><UiText>水槽《すいそう》につれてかえろう。</UiText></p>
         <button className="primary-button first-aquarium-button" onClick={() => dispatch({ type: "SHOW_AQUARIUM", regionId: state.result.caughtFish.regionId })}><UiIcon name="aquarium" /><UiText plain>水槽をみる</UiText></button>
         {nextName && <button className="secondary-button first-next-stage-button" onClick={() => dispatch({ type: "START_STAGE", stageId: state.result.nextStageId })}><UiText plain>次の海へ進む</UiText> <small><UiText plain>{nextName}</UiText> <kbd>N</kbd></small></button>}
       </div>
@@ -726,12 +726,12 @@ function RewardOverlay({ state, dispatch }) {
   }
   return <section className="reward-overlay" role="dialog" aria-modal="true" aria-label={state.result.isRareCatch ? "レアな生き物がつれた" : "つれた魚"}>
     <div className={`reward-card fish-reward ${state.result.isRareCatch ? "rare" : ""}`}>
-      {state.result.isRareCatch && <p className="eyebrow rare-eyebrow"><UiText>レアな生き物！</UiText></p>}
+      {state.result.isRareCatch && <p className="eyebrow rare-eyebrow"><UiText>レアな生《い》き物《もの》！</UiText></p>}
       <FishVisual caughtFish={state.result.caughtFish} className="reward-fish" isNew={state.result.isNewSpecies} />
       <h1><UiText>{fish.name}</UiText>が<br />つれた！</h1>
-      <p className="result-message"><UiText>{state.result.isRareCatch ? "きらめく、めずらしい生き物だ！" : state.result.accuracy >= 0.85 ? "ていねいに糸をたぐれたね。" : "最後までつれたね。すてき！"}</UiText></p>
+      <p className="result-message"><UiText>{state.result.isRareCatch ? "きらめく、めずらしい生《い》き物《もの》だ！" : state.result.accuracy >= 0.85 ? "ていねいに糸をたぐれたね。" : "最後《さいご》までつれたね。すてき！"}</UiText></p>
       {(earned.careful || earned.speed || earned.gold) && <div className="new-medals"><span>あたらしいメダル</span><StageMedals medals={earned} onlyEarned /></div>}
-      {nextName && <div className="next-route-group"><div><span><UiText>{nextRegionWasJustUnlocked ? "あたらしい海が ひらいた！" : nextStageWasJustUnlocked ? "あたらしい道が ひらいた！" : "次の海へ進めるよ"}</UiText></span><strong><UiText>{nextName}</UiText></strong></div><button className="primary-button route-button" onClick={() => dispatch({ type: "START_STAGE", stageId: state.result.nextStageId })}>すすむ <kbd>N</kbd></button></div>}
+      {nextName && <div className="next-route-group"><div><span><UiText>{nextRegionWasJustUnlocked ? "あたらしい海《うみ》が ひらいた！" : nextStageWasJustUnlocked ? "あたらしい道《みち》が ひらいた！" : "｜次の海《つぎのうみ》へ｜進める《すすめる》よ"}</UiText></span><strong><UiText>{nextName}</UiText></strong></div><button className="primary-button route-button" onClick={() => dispatch({ type: "START_STAGE", stageId: state.result.nextStageId })}>すすむ <kbd>N</kbd></button></div>}
       <div className="result-actions">
         <button className="secondary-button shortcut-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><strong><UiText plain>レッスン一覧へ</UiText></strong><small><kbd>M</kbd></small></button>
         <button className="secondary-button shortcut-button" onClick={() => dispatch({ type: "START_STAGE", stageId: state.result.stage.id })}><strong><UiText plain>もう1回</UiText></strong><small><kbd>R</kbd></small></button>
@@ -746,5 +746,5 @@ function ReleaseConfirmDialog({ state, dispatch }) {
   const species = getFishSpecies(fish.speciesId);
   const sameSpeciesCount = state.save.caughtFish.filter((item) => item.speciesId === fish.speciesId).length;
   const multiple = sameSpeciesCount > 1;
-  return <section className="release-confirm-overlay" role="alertdialog" aria-modal="true" aria-label="魚を海へ逃がす"><div className="release-confirm-card"><FishVisual caughtFish={fish} /><p className="eyebrow"><UiText>海へ逃がす</UiText></p><h2><UiText>{species.name}</UiText>を<br /><UiText>{multiple ? "1匹だけ海へ逃がす？" : "海へ逃がす？"}</UiText></h2><p><UiText>{multiple ? `水槽にいる ${sameSpeciesCount} 匹のうち、1匹だけ海へ帰すよ。` : "水槽からはいなくなるよ。"}</UiText><br /><UiText>図鑑の記録は残るよ。</UiText></p><div className="release-confirm-actions"><button className="secondary-button" onClick={() => dispatch({ type: "CANCEL_RELEASE" })}>キャンセル</button><button className="primary-button" onClick={() => dispatch({ type: "CONFIRM_RELEASE" })}><UiText plain>{multiple ? "1匹逃がす" : "海へ逃がす"}</UiText></button></div></div></section>;
+  return <section className="release-confirm-overlay" role="alertdialog" aria-modal="true" aria-label="魚を海へ逃がす"><div className="release-confirm-card"><FishVisual caughtFish={fish} /><p className="eyebrow"><UiText>｜海へ逃がす《うみへにがす》</UiText></p><h2><UiText>{species.name}</UiText>を<br /><UiText>{multiple ? "1匹《ひき》だけ｜海へ逃がす《うみへにがす》？" : "｜海へ逃がす《うみへにがす》？"}</UiText></h2><p><UiText>{multiple ? `水槽《すいそう》にいる ${sameSpeciesCount} 匹《ひき》のうち、1匹《ひき》だけ海《うみ》へ帰《かえ》すよ。` : "水槽《すいそう》からはいなくなるよ。"}</UiText><br /><UiText>図鑑《ずかん》の記録《きろく》は｜残る《のこる》よ。</UiText></p><div className="release-confirm-actions"><button className="secondary-button" onClick={() => dispatch({ type: "CANCEL_RELEASE" })}>キャンセル</button><button className="primary-button" onClick={() => dispatch({ type: "CONFIRM_RELEASE" })}><UiText plain>{multiple ? "1匹逃がす" : "海へ逃がす"}</UiText></button></div></div></section>;
 }

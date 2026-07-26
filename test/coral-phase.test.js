@@ -5,6 +5,7 @@ import { fishForCatch } from "../src/domain/fish.js";
 import { learningConceptLabel } from "../src/domain/learning.js";
 import { chooseProblems, getProblemsForStage } from "../src/domain/problems.js";
 import { getRegion } from "../src/domain/regions.js";
+import { stripFurigana } from "../src/domain/furigana.js";
 
 const CORAL_STAGE_IDS = ["CO01", "CO02", "CO03", "CO04", "CO05", "CO06"];
 const PHASE_TWO_IDS = CORAL_STAGE_IDS.slice(1);
@@ -59,7 +60,7 @@ test("coral forest learning tags have child-friendly labels", () => {
 });
 
 test("aquarium cleaning uses the correct suisou reading", () => {
-  const problem = getProblemsForStage("CO06").find((item) => item.title === "水槽を おそうじ");
+  const problem = getProblemsForStage("CO06").find((item) => stripFurigana(item.title) === "水槽を おそうじ");
   assert.ok(problem);
   assert.equal(problem.input, "すいそうをきれいにする");
   assert.equal(problem.preferredInput, "suisouwokireinisuru");

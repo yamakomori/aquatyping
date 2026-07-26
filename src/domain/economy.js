@@ -32,9 +32,9 @@ export function rewardForPlay() {
 
 export function purchase(save, itemId) {
   const item = getItem(itemId);
-  if (!item) return { ok: false, reason: "そのアイテムは見つかりません。" };
-  if (save.ownedItemIds.includes(itemId)) return { ok: false, reason: "もう持っているよ。" };
-  if (save.coins < item.price) return { ok: false, reason: "コインが もう少し必要だよ。" };
+  if (!item) return { ok: false, reason: "そのアイテムは見《み》つかりません。" };
+  if (save.ownedItemIds.includes(itemId)) return { ok: false, reason: "もう｜持って《もって》いるよ。" };
+  if (save.coins < item.price) return { ok: false, reason: "コインが もう少《すこ》し必要《ひつよう》だよ。" };
   return {
     ok: true,
     save: {

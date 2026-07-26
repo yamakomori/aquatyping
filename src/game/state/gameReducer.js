@@ -32,7 +32,7 @@ function startStage(state, stageId, allowLocked = false) {
     focusKeys: reviewKeys,
     focusTags: reviewConcepts,
   });
-  if (problems.length === 0) return { ...state, message: "この道の問題を準備中です。" };
+  if (problems.length === 0) return { ...state, message: "この道《みち》の問題《もんだい》を準備中《じゅんびちゅう》です。" };
   return {
     ...state,
     screen: "typing",
@@ -77,7 +77,7 @@ function completeProblem(state, nextAttempt, durationMs, lastPress = {}) {
         coins: state.session.earned.coins + reward.coins,
         xp: state.session.earned.xp + reward.xp,
       },
-      feedback: "みつけた！ 小さなひかりが ふえたよ。",
+      feedback: "みつけた！ ｜小さな《ちいさな》ひかりが ふえたよ。",
     },
   };
 }
@@ -182,7 +182,7 @@ export function gameReducer(state, action) {
           ...state.session,
           attempt,
           ...lastPress,
-          feedback: result.accepted ? "" : "だいじょうぶ。吹き出しの指を、ゆっくり見よう。",
+          feedback: result.accepted ? "" : "だいじょうぶ。吹《ふ》き出《で》しの指《ゆび》を、ゆっくり見《み》よう。",
         },
       };
     }
@@ -248,7 +248,7 @@ export function gameReducer(state, action) {
           ? { ...state.result, fishReleased: true }
           : state.result,
         releaseCandidateId: null,
-        message: `${sameSpeciesCount > 1 ? "1匹を" : ""}海へ逃がしたよ。図鑑には残るよ。`,
+        message: `${sameSpeciesCount > 1 ? "1匹《ひき》を" : ""}海《うみ》へ逃《に》がしたよ。図鑑《ずかん》には｜残る《のこる》よ。`,
       };
     }
     case "RESET":

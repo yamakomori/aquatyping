@@ -1,15 +1,15 @@
 const FINGERS = {
-  q: ["left", "pinky", "左手の小指"], a: ["left", "pinky", "左手の小指"], z: ["left", "pinky", "左手の小指"],
-  w: ["left", "ring", "左手の薬指"], s: ["left", "ring", "左手の薬指"], x: ["left", "ring", "左手の薬指"],
-  e: ["left", "middle", "左手の中指"], d: ["left", "middle", "左手の中指"], c: ["left", "middle", "左手の中指"],
-  r: ["left", "index", "左手の人さし指"], f: ["left", "index", "左手の人さし指"], v: ["left", "index", "左手の人さし指"],
-  t: ["left", "index", "左手の人さし指"], g: ["left", "index", "左手の人さし指"], b: ["left", "index", "左手の人さし指"],
-  y: ["right", "index", "右手の人さし指"], h: ["right", "index", "右手の人さし指"], n: ["right", "index", "右手の人さし指"],
-  u: ["right", "index", "右手の人さし指"], j: ["right", "index", "右手の人さし指"], m: ["right", "index", "右手の人さし指"],
-  i: ["right", "middle", "右手の中指"], k: ["right", "middle", "右手の中指"], ",": ["right", "middle", "右手の中指"],
-  o: ["right", "ring", "右手の薬指"], l: ["right", "ring", "右手の薬指"], ".": ["right", "ring", "右手の薬指"],
-  p: ["right", "pinky", "右手の小指"], ";": ["right", "pinky", "右手の小指"], "/": ["right", "pinky", "右手の小指"], "-": ["right", "pinky", "右手の小指"],
-  " ": ["both", "thumb", "親指"],
+  q: ["left", "pinky", "左手《ひだりて》の小指《こゆび》"], a: ["left", "pinky", "左手《ひだりて》の小指《こゆび》"], z: ["left", "pinky", "左手《ひだりて》の小指《こゆび》"],
+  w: ["left", "ring", "左手《ひだりて》の薬指《くすりゆび》"], s: ["left", "ring", "左手《ひだりて》の薬指《くすりゆび》"], x: ["left", "ring", "左手《ひだりて》の薬指《くすりゆび》"],
+  e: ["left", "middle", "左手《ひだりて》の中指《なかゆび》"], d: ["left", "middle", "左手《ひだりて》の中指《なかゆび》"], c: ["left", "middle", "左手《ひだりて》の中指《なかゆび》"],
+  r: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"], f: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"], v: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"],
+  t: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"], g: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"], b: ["left", "index", "左手《ひだりて》の｜人さし指《ひとさしゆび》"],
+  y: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"], h: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"], n: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"],
+  u: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"], j: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"], m: ["right", "index", "右手《みぎて》の｜人さし指《ひとさしゆび》"],
+  i: ["right", "middle", "右手《みぎて》の中指《なかゆび》"], k: ["right", "middle", "右手《みぎて》の中指《なかゆび》"], ",": ["right", "middle", "右手《みぎて》の中指《なかゆび》"],
+  o: ["right", "ring", "右手《みぎて》の薬指《くすりゆび》"], l: ["right", "ring", "右手《みぎて》の薬指《くすりゆび》"], ".": ["right", "ring", "右手《みぎて》の薬指《くすりゆび》"],
+  p: ["right", "pinky", "右手《みぎて》の小指《こゆび》"], ";": ["right", "pinky", "右手《みぎて》の小指《こゆび》"], "/": ["right", "pinky", "右手《みぎて》の小指《こゆび》"], "-": ["right", "pinky", "右手《みぎて》の小指《こゆび》"],
+  " ": ["both", "thumb", "親指《おやゆび》"],
 };
 
 export function getFingerGuide(key) {
