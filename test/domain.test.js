@@ -195,11 +195,15 @@ test("all sprite species keep valid four-frame metadata", () => {
       "shallow-garden-eel",
       "shallow-puffer",
       "shallow-sardine",
+      "shallow-space-puffer",
+      "shallow-tenkey-crab",
       "shell-octopus",
       "shellfish",
       "sun-threadfish",
       "tide-goby",
       "tide-hermit",
+      "tide-keycap-barnacle",
+      "tide-mantis",
       "tide-shrimp",
     ],
   );
@@ -374,6 +378,21 @@ test("each region has twelve species: ten common and two rare", () => {
     assert.equal(regionFish.length, 12, regionId);
     assert.equal(rareFishForRegion(regionId).length, 2, regionId);
   }
+});
+
+test("tidepool, shallows, and deep-sea keep their current rare rosters", () => {
+  assert.deepEqual(
+    rareFishForRegion("tidepool").map((fish) => fish.id),
+    ["tide-keycap-barnacle", "tide-mantis"],
+  );
+  assert.deepEqual(
+    rareFishForRegion("shallows").map((fish) => fish.id),
+    ["shallow-tenkey-crab", "shallow-space-puffer"],
+  );
+  assert.deepEqual(
+    rareFishForRegion("deep-sea").map((fish) => fish.id),
+    ["deep-lantern", "deep-tab-jelly"],
+  );
 });
 
 test("a region counts as cleared once every stage has been cleared at least once", () => {

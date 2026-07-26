@@ -25,9 +25,8 @@ export const FISH_SPECIES = [
   { id: "deep-jelly", name: "ミズクラゲ", habitat: "潮だまり", regionId: "tidepool", stages: ["S08"], color: "#a9c2d6", accent: "#e6f4f3", shape: "tall", movement: "drift", depth: "top", sprite: { src: "/sprites/moon-jelly-strip.png", frames: 4, frameMs: 360, sourceFacing: "right" } },
   { id: "tide-hermit", name: "ヤドカリ", habitat: "潮だまり", regionId: "tidepool", stages: ["S07", "S08"], color: "#d08a5a", accent: "#ffe6c8", shape: "round",  movement: "anchor", depth: "floor", sprite: { src: "/sprites/hermit-crab-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
   // ── 潮だまり（レア2種：タイピング由来の架空名）──
-  // 旧カリキュラムで捕まえた個体を図鑑と水槽に残すため、魚種IDは維持する。
-  { id: "deep-lantern", name: "カーソルアンコウ", habitat: "潮だまり", regionId: "tidepool", stages: ["S08"], color: "#7187a9", accent: "#f5cb6d", shape: "round", rarity: "rare", depth: "bottom", scale: 2, sprite: { src: "/sprites/key-angler-strip.png", frames: 4, frameMs: 350, sourceFacing: "right" } },
-  { id: "tide-mantis", name: "デリートシャコ", habitat: "潮だまり", regionId: "tidepool", stages: ["S08"], color: "#3fae86", accent: "#ffd27a", shape: "long", rarity: "rare", depth: "bottom" },
+  { id: "tide-keycap-barnacle", name: "キャップフジツボ", habitat: "潮だまり", regionId: "tidepool", stages: ["S08"], color: "#e7d7ad", accent: "#d4aa55", shape: "tall", rarity: "rare", movement: "anchor", depth: "floor", scale: 1.2, sprite: { src: "/sprites/keycap-barnacle-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
+  { id: "tide-mantis", name: "デリートシャコ", habitat: "潮だまり", regionId: "tidepool", stages: ["S08"], color: "#3fae86", accent: "#ffd27a", shape: "long", rarity: "rare", depth: "floor", scale: 1.25, sprite: { src: "/sprites/delete-mantis-strip.png", frames: 4, frameMs: 280, sourceFacing: "right" } },
 
   // ── 浅瀬（通常10種）──
   { id: "shallow-puffer", name: "ミナミハコフグ", habitat: "浅瀬", regionId: "shallows", stages: ["SH01", "SH02"], color: "#e7b955", accent: "#fff0ac", shape: "round", scale: 1.15, sprite: { src: "/sprites/minami-hakofugu-strip.png", frames: 4, frameMs: 250, sourceFacing: "right" } },
@@ -41,8 +40,8 @@ export const FISH_SPECIES = [
   { id: "shallow-flounder", name: "ヒラメ", habitat: "浅瀬", regionId: "shallows", stages: ["SH06", "SH07"], color: "#8a836e", accent: "#d8cfb8", shape: "long", depth: "floor", scale: 1.3, sprite: { src: "/sprites/olive-flounder-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
   { id: "shallow-sardine", name: "マイワシ", habitat: "浅瀬", regionId: "shallows", stages: ["SH08", "SH09", "SH10", "SH11"], color: "#8fb8cf", accent: "#eef6fb", shape: "long", school: true, depth: "top", sprite: { src: "/sprites/japanese-sardine-strip.png", frames: 4, frameMs: 240, sourceFacing: "right" } },
   // ── 浅瀬（レア2種）──
-  { id: "shallow-tenkey-crab", name: "テンキーガニ", habitat: "浅瀬", regionId: "shallows", stages: ["SH11"], color: "#d0655a", accent: "#ffe0c0", shape: "round", rarity: "rare", depth: "bottom" },
-  { id: "shallow-space-puffer", name: "スペースフグ", habitat: "浅瀬", regionId: "shallows", stages: ["SH11"], color: "#7ea6c2", accent: "#eef6fb", shape: "round", rarity: "rare", scale: 1.2 },
+  { id: "shallow-tenkey-crab", name: "テンキーガニ", habitat: "浅瀬", regionId: "shallows", stages: ["SH11"], color: "#d0655a", accent: "#ffe0c0", shape: "round", rarity: "rare", depth: "bottom", scale: 1.2, sprite: { src: "/sprites/tenkey-crab-strip.png", frames: 4, frameMs: 300, sourceFacing: "right" } },
+  { id: "shallow-space-puffer", name: "スペースフグ", habitat: "浅瀬", regionId: "shallows", stages: ["SH11"], color: "#7ea6c2", accent: "#eef6fb", shape: "round", rarity: "rare", scale: 1.2, sprite: { src: "/sprites/space-puffer-strip.png", frames: 4, frameMs: 320, sourceFacing: "right" } },
 
   // ── 珊瑚の森（通常10種）──
   { id: "coral-butterfly", name: "チョウチョウウオ", habitat: "珊瑚の森", regionId: "coral-forest", stages: ["CO01", "CO02"], color: "#f19a5b", accent: "#fff0b8", shape: "round", school: true, sprite: { src: "/sprites/coral-butterfly-strip.png", frames: 4, frameMs: 280, sourceFacing: "right" } },
@@ -88,7 +87,7 @@ export const FISH_SPECIES = [
   { id: "deep-basket-star", name: "テヅルモヅル", habitat: "深海", regionId: "deep-sea", stages: ["DS03", "DS04"], color: "#9a7a5a", accent: "#e6d0a8", shape: "tall", movement: "anchor", depth: "floor" },
   { id: "deep-vampire-squid", name: "コウモリダコ", habitat: "深海", regionId: "deep-sea", stages: ["DS05", "DS06"], color: "#6a3a4a", accent: "#e08a9a", shape: "round", movement: "drift", depth: "mid" },
   // ── 深海（レア2種）──
-  { id: "deep-shift-octopus", name: "シフトダコ", habitat: "深海", regionId: "deep-sea", stages: ["DS06"], color: "#5a6a9a", accent: "#ffe08a", shape: "round", rarity: "rare", movement: "drift", depth: "mid", scale: 1.3 },
+  { id: "deep-lantern", name: "カーソルアンコウ", habitat: "深海", regionId: "deep-sea", stages: ["DS06"], color: "#7187a9", accent: "#f5cb6d", shape: "round", rarity: "rare", depth: "bottom", scale: 2, sprite: { src: "/sprites/key-angler-strip.png", frames: 4, frameMs: 350, sourceFacing: "right" } },
   { id: "deep-tab-jelly", name: "タブクラゲ", habitat: "深海", regionId: "deep-sea", stages: ["DS06"], color: "#4a7a8a", accent: "#a8f0f0", shape: "tall", rarity: "rare", movement: "drift", depth: "top" },
 ];
 

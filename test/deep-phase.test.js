@@ -99,7 +99,7 @@ test("深海も通常10種とレア2種で構成される", () => {
   const rare = rareFishForRegion("deep-sea");
   assert.equal(species.length, 12);
   assert.equal(rare.length, 2);
-  assert.deepEqual(rare.map((fish) => fish.name), ["シフトダコ", "タブクラゲ"]);
+  assert.deepEqual(rare.map((fish) => fish.name), ["カーソルアンコウ", "タブクラゲ"]);
 });
 
 test("魚種名が全海域を通じて重複していない", () => {
