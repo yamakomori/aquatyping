@@ -2738,11 +2738,11 @@ body:has(.region-backdrop-deep-sea) {
 
 /* 打鍵フィードバック。正しいキーは跳ね、間違ったキーは赤く揺れる。
    .region-* .keycap より後ろに置き、キーボードガイド配下に限定して海域テーマより確実に勝たせる。 */
+/* 0% と 100% は書かない。省略した端は元の transform が使われるので、
+   浮かせてある .expected のキーでも跳ねる前後で位置が飛ばない。 */
 @keyframes keycap-pop {
-  0% { transform: translateY(0) scale(1); }
   25% { transform: translateY(3px) scale(.92); }
   60% { transform: translateY(-5px) scale(1.1); }
-  100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes keycap-shake {
@@ -2755,6 +2755,11 @@ body:has(.region-backdrop-deep-sea) {
 
 .keyboard-guide .keycap.pressed {
   animation: keycap-pop .2s ease-out;
+}
+
+/* 打ち終えたキーは水色に沈める。ただし同じキーを続けて打つ場面では、
+   そのキーが「次に押すキー」のままなので、黄色のガイドを消さずに跳ねだけ見せる。 */
+.keyboard-guide .keycap.pressed:not(.expected) {
   border-color: #7fd4c6;
   background: #12586f;
   color: #eafffb;
