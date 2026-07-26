@@ -16,6 +16,50 @@ npm run dev
 npm test
 ```
 
+## デバッグ用セーブデータ
+
+現在のステージ・海域・魚種定義から、進行済みのデバッグ用セーブデータを生成できる。
+ジェネレータは標準出力へコマンドまたはJSONを出すだけで、ブラウザのセーブデータやファイルを自動では変更しない。
+
+### 全海域・全魚種
+
+```bash
+npm run --silent debug:save
+```
+
+全ステージを解放・プレイ済みにし、現行の全魚種を通常種・レア種とも1匹ずつ捕獲・発見済みにする。
+現在地は最終ステージ、イントロは閲覧済み、コインと経験値はそれぞれ `99,999` になる。
+出力された `localStorage.setItem(...); location.reload();` を、対象ページのブラウザ開発者コンソールへ貼り付けて使用する。
+
+### 海域を指定する
+
+```bash
+npm run --silent debug:save -- --region shallows
+```
+
+指定海域の最終ステージを現在地にし、その海域までのステージを解放・プレイ済みにする。
+捕獲・発見済みにする魚は指定海域の12種（通常10種＋レア2種）だけになる。
+
+指定できる海域ID:
+
+- `tidepool`
+- `shallows`
+- `coral-forest`
+- `sea-cave`
+- `deep-sea`
+
+### JSONで出力する
+
+```bash
+npm run --silent debug:save -- --format json
+npm run --silent debug:save -- --region tidepool --format json
+```
+
+魚の個体IDは `debug-<魚種ID>` の決定的な形式で生成する。同じゲーム定義とオプションなら同じ内容になる。
+魚種・ステージ・海域は `FISH_SPECIES`、`STAGES`、`REGIONS` を直接参照するため、現在のロスターへ自動追従する。
+
+ヘルプは `npm run --silent debug:save -- --help` で表示する。存在しない海域や未対応の出力形式はエラー終了する。
+
 ## MVPに含むもの
 
 - 潮だまりは3問、浅瀬と珊瑚の森は6問、海の洞窟は6〜4問、深海は6〜3問の短いプレイ
