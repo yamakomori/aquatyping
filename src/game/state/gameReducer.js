@@ -182,7 +182,7 @@ export function gameReducer(state, action) {
           ...state.session,
           attempt,
           ...lastPress,
-          feedback: result.accepted ? "" : "だいじょうぶ。吹《ふ》き出《で》しの指《ゆび》を、ゆっくり見《み》よう。",
+          feedback: result.accepted ? "" : "だいじょうぶ。\n吹《ふ》き出《で》しの指《ゆび》を、\nゆっくり見《み》よう。",
         },
       };
     }

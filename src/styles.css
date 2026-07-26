@@ -3863,3 +3863,143 @@ button:focus-visible {
     white-space: nowrap;
   }
 }
+
+/* タイピング中の案内役。キーボードの左下へ少し重ね、
+   吹き出しはウミガメの頭上へ置いて「先生の声」として見せる。 */
+.keyboard-area {
+  box-sizing: border-box;
+}
+
+.guide-companion {
+  position: absolute;
+  z-index: 2;
+  top: auto;
+  right: auto;
+  bottom: -5px;
+  left: -100px;
+  width: 280px;
+  height: 210px;
+  display: block;
+  pointer-events: none;
+}
+
+.guide-turtle {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 150px;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 2px #00111d66);
+  animation: guide-turtle-bob 3.2s ease-in-out infinite;
+  transform: translateY(2px);
+}
+
+.speech-bubble {
+  position: absolute;
+  bottom: 122px;
+  left: 0px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 235px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 2px solid #8a7444;
+  border-radius: 12px 12px 12px 4px;
+  background: #061b29;
+  color: #eef6e9;
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: .015em;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  box-shadow: 0 4px 0 #00111dcc, 0 9px 22px #00111d66;
+}
+
+.speech-bubble::before,
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: auto;
+  left: 78%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  transform: translateX(-50%);
+}
+
+.speech-bubble::before {
+  bottom: -13px;
+  border-width: 13px 10px 0;
+  border-color: #8a7444 transparent transparent;
+}
+
+.speech-bubble::after {
+  bottom: -9px;
+  border-width: 10px 8px 0;
+  border-color: #061b29 transparent transparent;
+}
+
+@keyframes guide-turtle-bob {
+  0%,
+  100% {
+    transform: translateY(2px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.reduce-motion .guide-turtle {
+  animation: none;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-turtle {
+    animation: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .keyboard-section-label {
+    margin-bottom: 11px;
+  }
+
+  .keyboard-area {
+    padding-top: 72px;
+  }
+
+  .guide-companion {
+    top: 0;
+    right: auto;
+    bottom: -3px;
+    left: -14px;
+    width: 238px;
+    height: auto;
+  }
+
+  .guide-turtle {
+    width: 118px;
+  }
+
+  .speech-bubble {
+    top: 0;
+    bottom: auto;
+    left: 8px;
+    width: max-content;
+    max-width: 210px;
+    padding: 8px 10px;
+    font-size: .72rem;
+    line-height: 1.45;
+  }
+
+  .speech-bubble::before,
+  .speech-bubble::after {
+    left: 64%;
+  }
+}
