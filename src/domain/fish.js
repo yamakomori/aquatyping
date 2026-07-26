@@ -677,6 +677,12 @@ export const FISH_SPECIES = [
     accent: "#ffd9c0",
     shape: "round",
     school: true,
+    sprite: {
+      src: "/sprites/cave-soldierfish-strip.png",
+      frames: 4,
+      frameMs: 280,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-sweeper",
@@ -688,6 +694,12 @@ export const FISH_SPECIES = [
     accent: "#f0f5fa",
     shape: "round",
     school: true,
+    sprite: {
+      src: "/sprites/cave-sweeper-strip.png",
+      frames: 4,
+      frameMs: 260,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-pineconefish",
@@ -698,6 +710,12 @@ export const FISH_SPECIES = [
     color: "#e0b34a",
     accent: "#4a3f2a",
     shape: "round",
+    sprite: {
+      src: "/sprites/cave-pineconefish-strip.png",
+      frames: 4,
+      frameMs: 320,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-boxer-shrimp",
@@ -709,6 +727,12 @@ export const FISH_SPECIES = [
     accent: "#f6efe4",
     shape: "long",
     depth: "bottom",
+    sprite: {
+      src: "/sprites/cave-boxer-shrimp-strip.png",
+      frames: 4,
+      frameMs: 320,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-moray",
@@ -721,6 +745,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "bottom",
     scale: 1.35,
+    sprite: {
+      src: "/sprites/cave-moray-strip.png",
+      frames: 4,
+      frameMs: 340,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-featherstar",
@@ -733,6 +763,12 @@ export const FISH_SPECIES = [
     shape: "tall",
     movement: "anchor",
     depth: "floor",
+    sprite: {
+      src: "/sprites/cave-featherstar-strip.png",
+      frames: 4,
+      frameMs: 380,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-spiny-lobster",
@@ -745,6 +781,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "bottom",
     scale: 1.4,
+    sprite: {
+      src: "/sprites/cave-spiny-lobster-strip.png",
+      frames: 4,
+      frameMs: 340,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-triton",
@@ -758,6 +800,12 @@ export const FISH_SPECIES = [
     movement: "anchor",
     depth: "floor",
     scale: 1.2,
+    sprite: {
+      src: "/sprites/cave-triton-strip.png",
+      frames: 4,
+      frameMs: 400,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-flashlight-fish",
@@ -769,6 +817,12 @@ export const FISH_SPECIES = [
     accent: "#9ff0c8",
     shape: "round",
     school: true,
+    sprite: {
+      src: "/sprites/cave-flashlight-fish-strip.png",
+      frames: 4,
+      frameMs: 300,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-bullhead-shark",
@@ -781,6 +835,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "bottom",
     scale: 1.8,
+    sprite: {
+      src: "/sprites/cave-bullhead-shark-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
   // ── 海の洞窟（レア2種）──
   {
@@ -795,6 +855,12 @@ export const FISH_SPECIES = [
     rarity: "rare",
     depth: "bottom",
     scale: 1.4,
+    sprite: {
+      src: "/sprites/cave-escape-eel-strip.png",
+      frames: 4,
+      frameMs: 320,
+      sourceFacing: "right",
+    },
   },
   {
     id: "cave-alt-nautilus",
@@ -808,6 +874,12 @@ export const FISH_SPECIES = [
     rarity: "rare",
     movement: "drift",
     scale: 1.4,
+    sprite: {
+      src: "/sprites/cave-alt-nautilus-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
 
   // ── 深海（通常10種）──
