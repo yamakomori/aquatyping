@@ -4014,3 +4014,658 @@ button:focus-visible {
     left: 64%;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Minimal UI system
+   背景アートは世界観として残し、操作面は「塗り・余白・一貫した反応」で整理する。 */
+
+:root {
+  --ui-canvas: #061b2a;
+  --ui-surface: #0a2a3b;
+  --ui-surface-raised: #103649;
+  --ui-surface-active: #164656;
+  --ui-ink: #eef7f4;
+  --ui-ink-muted: #a9c3c3;
+  --ui-accent: #72d3cf;
+  --ui-accent-fill: #197985;
+  --ui-accent-fill-hover: #238b94;
+  --ui-danger: #ffb5ad;
+  --ui-danger-surface: #462b35;
+  --ui-radius-control: 10px;
+  --ui-radius-card: 18px;
+  --ui-radius-panel: 24px;
+  --ui-motion: 160ms ease;
+}
+
+body {
+  background: var(--ui-canvas);
+}
+
+body:has(.region-backdrop-tidepool) {
+  background: #164958;
+}
+
+body:has(.region-backdrop-shallows) {
+  background: #07384c;
+}
+
+body:has(.region-backdrop-coral-forest) {
+  background: #16384a;
+}
+
+body:has(.region-backdrop-sea-cave) {
+  background: #0d2737;
+}
+
+body:has(.region-backdrop-deep-sea) {
+  background: #071321;
+}
+
+button {
+  transition:
+    background-color var(--ui-motion),
+    color var(--ui-motion),
+    opacity var(--ui-motion);
+}
+
+button:active:not(:disabled) {
+  transform: none;
+  opacity: .82;
+}
+
+button:focus-visible {
+  outline: 3px solid #f0ca72;
+  outline-offset: 3px;
+}
+
+/* Header: navigation is a single ghost-button family. */
+.topbar {
+  height: 82px;
+  padding-inline: 20px;
+  border: 0;
+}
+
+.brand,
+.nav-button,
+.icon-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+  text-shadow: none !important;
+}
+
+.brand,
+.nav-button {
+  padding: 9px 11px;
+}
+
+.brand:hover,
+.nav-button:hover,
+.icon-button:hover,
+.text-button:hover,
+.region-arrow:hover {
+  border-color: transparent;
+  background: #ffffff12;
+  color: #fff;
+}
+
+.coin {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: #e0ad4024;
+}
+
+/* Controls: filled, quiet and destructive are the only button treatments. */
+.primary-button,
+.stage-action.primary,
+.aquarium-attached-button {
+  border: 0 !important;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-accent-fill) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.primary-button:hover,
+.stage-action.primary:hover,
+.aquarium-attached-button:hover {
+  background: var(--ui-accent-fill-hover) !important;
+}
+
+.secondary-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-surface-raised);
+  color: #d7efed;
+}
+
+.secondary-button:hover {
+  background: var(--ui-surface-active);
+  color: #fff;
+}
+
+.danger-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-danger-surface);
+  color: var(--ui-danger);
+}
+
+.danger-button:hover {
+  background: #59343e;
+  color: #ffd9d4;
+}
+
+.text-button,
+.stage-action,
+.release-button,
+.release-result-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+}
+
+.text-button,
+.release-button,
+.release-result-button {
+  padding: 9px 10px;
+}
+
+.back-button {
+  margin-left: -10px;
+}
+
+/* Brand character: silhouette and color do the work; an extra outline is unnecessary. */
+.avatar {
+  filter: none;
+}
+
+.avatar-head,
+.avatar-body {
+  border: 0;
+  box-shadow: none;
+}
+
+.avatar-head {
+  top: 21px;
+  left: 24px;
+  width: 50px;
+  height: 51px;
+}
+
+.avatar-body {
+  bottom: 7px;
+  left: 18px;
+  width: 62px;
+  height: 54px;
+}
+
+.avatar-eye {
+  top: 43px;
+}
+
+.avatar-eye.left {
+  left: 40px;
+}
+
+.avatar-eye.right {
+  left: 55px;
+}
+
+/* Intro and overlays: reserve elevation for content that truly floats. */
+.intro-screen {
+  background: var(--ui-canvas);
+}
+
+.intro-card,
+.reward-card,
+.release-confirm-card {
+  border: 0;
+  border-radius: var(--ui-radius-panel);
+  background: var(--ui-surface);
+}
+
+.intro-card {
+  box-shadow: none;
+}
+
+.reward-card,
+.release-confirm-card {
+  box-shadow: 0 24px 64px #00081480;
+}
+
+.dialog-close {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+}
+
+.dialog-close:hover {
+  border-color: transparent;
+  background: #ffffff12;
+}
+
+.found-item,
+.new-medals,
+.next-route-group {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+}
+
+.found-item {
+  background: #5a461e;
+}
+
+.new-medals {
+  background: var(--ui-surface-raised);
+}
+
+.next-route-group {
+  background: #10404b;
+}
+
+.route-button kbd,
+.shortcut-button kbd,
+.shortcut-button kbd {
+  border: 0;
+  background: #ffffff12;
+}
+
+/* Page rhythm: headings sit in space; feature panels use a single solid fill. */
+.map-screen,
+.wardrobe-screen,
+.settings-screen,
+.typing-screen,
+.aquarium-screen {
+  width: min(100% - 48px, 980px);
+}
+
+.map-hero {
+  min-height: 300px;
+  padding: 42px;
+  border: 0 !important;
+  border-radius: var(--ui-radius-panel);
+  background: var(--ui-surface) !important;
+  box-shadow: none !important;
+}
+
+.screen-heading {
+  min-height: 190px;
+  padding: 32px 0 40px;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.section-intro {
+  margin: 48px 0 18px;
+}
+
+.eyebrow {
+  color: var(--ui-accent);
+}
+
+.map-hero p:not(.eyebrow),
+.screen-heading p:not(.eyebrow),
+.stage-copy > p,
+.item-card p,
+.fish-card p,
+.fish-card small,
+.tank-fish-card p {
+  color: var(--ui-ink-muted);
+}
+
+/* Region selection: selection is a filled state, not an underline. */
+.region-navigation {
+  min-height: 76px;
+  margin: 24px 0 0;
+  border: 0;
+}
+
+.region-arrow {
+  padding: 8px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+}
+
+.region-dot {
+  min-width: 78px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+}
+
+.region-dot:hover {
+  background: #ffffff0d;
+  color: #d8eeee;
+}
+
+.region-dot.selected,
+.map-screen.region-tidepool .region-dot.selected {
+  border: 0;
+  background: #ffffff14;
+  color: #fff;
+}
+
+/* Lesson list: cards are separated by breathing room instead of rules. */
+.map-screen .stage-list,
+.map-screen.region-tidepool .stage-list {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-screen .stage-card,
+.map-screen.region-shallows .stage-card,
+.map-screen.region-tidepool .stage-card,
+.map-screen.region-coral-forest .stage-card,
+.map-screen.region-sea-cave .stage-card,
+.map-screen.region-deep-sea .stage-card {
+  min-height: 124px;
+  padding: 25px 28px;
+  border: 0 !important;
+  border-radius: var(--ui-radius-card);
+  background: #08283a !important;
+  box-shadow: none !important;
+}
+
+.map-screen .stage-card.current,
+.map-screen.region-shallows .stage-card.current,
+.map-screen.region-tidepool .stage-card.current,
+.map-screen.region-coral-forest .stage-card.current,
+.map-screen.region-sea-cave .stage-card.current,
+.map-screen.region-deep-sea .stage-card.current {
+  background: #104251 !important;
+}
+
+.map-screen .stage-card.locked {
+  background: #092333 !important;
+  opacity: .62;
+}
+
+.stage-number {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff0d;
+}
+
+.stage-action {
+  padding: 9px 11px;
+  color: #bce7e7;
+}
+
+.stage-action:hover {
+  border: 0;
+  background: #ffffff10;
+}
+
+.stage-action.primary {
+  padding-inline: 15px 10px;
+}
+
+.dev-stage-selector {
+  margin-top: 28px;
+  padding: 16px;
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: #071f30;
+}
+
+/* Aquarium and collection: artwork stays illustrative; UI chrome stays flat. */
+.aquarium-preview,
+.region-tidepool .aquarium-preview,
+.region-shallows .aquarium-preview,
+.region-coral-forest .aquarium-preview,
+.region-sea-cave .aquarium-preview,
+.region-deep-sea .aquarium-preview {
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  box-shadow: none;
+}
+
+.region-tidepool .aquarium-preview {
+  background-image: url("/backgrounds/tidepool.png");
+}
+
+.region-shallows .aquarium-preview {
+  background-image: url("/backgrounds/shallows.png");
+}
+
+.region-coral-forest .aquarium-preview {
+  background-image: url("/backgrounds/coral-forest.png");
+}
+
+.region-sea-cave .aquarium-preview {
+  background-image: url("/backgrounds/sea-cave.png");
+}
+
+.region-deep-sea .aquarium-preview {
+  background-image: url("/backgrounds/deep-sea.png");
+}
+
+.aquarium-preview::before,
+.region-tidepool .aquarium-preview::before,
+.region-shallows .aquarium-preview::before,
+.region-coral-forest .aquarium-preview::before,
+.region-sea-cave .aquarium-preview::before,
+.region-deep-sea .aquarium-preview::before,
+.water-shine {
+  display: none;
+}
+
+.aquarium-sand {
+  background: #123f4c;
+}
+
+.aquarium-attached-button {
+  right: 18px;
+  bottom: 0;
+}
+
+.aquarium-attached-button small {
+  padding-left: 0;
+  border: 0;
+  color: #d3efed;
+}
+
+.aquarium-depart-button {
+  box-shadow: none;
+}
+
+.collection-heading {
+  margin-top: 42px;
+  padding-bottom: 0;
+  border: 0;
+}
+
+.fish-collection,
+.tank-fish-list,
+.item-grid {
+  gap: 12px;
+}
+
+.fish-card,
+.tank-fish-card,
+.item-card {
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: var(--ui-surface);
+}
+
+.fish-card.undiscovered,
+.fish-card.rare.undiscovered {
+  border: 0;
+  background: #081f2f;
+}
+
+.fish-card.rare {
+  border: 0;
+  background: #3f351c;
+}
+
+.rare-ribbon {
+  border-radius: 0 0 0 var(--ui-radius-control);
+  background: #e9b84d;
+  box-shadow: none;
+}
+
+.item-card {
+  padding: 20px;
+}
+
+.item-card.equipped {
+  border: 0;
+  background: #104251;
+}
+
+.item-preview {
+  border: 0;
+}
+
+/* Settings rows are independent surfaces with space between them. */
+.settings-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.setting-row {
+  padding: 20px;
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: var(--ui-surface);
+}
+
+.setting-row:hover {
+  background: var(--ui-surface-raised);
+}
+
+.setting-row strong {
+  color: var(--ui-accent);
+}
+
+/* Typing: one calm practice surface, with state communicated by fill. */
+.sea-typing-stage,
+.region-tidepool .sea-typing-stage,
+.region-shallows .sea-typing-stage,
+.region-coral-forest .sea-typing-stage,
+.region-sea-cave .sea-typing-stage,
+.region-deep-sea .sea-typing-stage {
+  border: 0;
+  border-radius: var(--ui-radius-panel);
+  background: var(--ui-surface) !important;
+}
+
+.exit-lesson-button {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: #ffffff0d;
+}
+
+.typing-stage-number {
+  padding: 3px 8px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: #ffffff0d;
+}
+
+.keyboard-section-label > .section-rule {
+  height: 0;
+}
+
+.keyboard-guide {
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: #071f30;
+  box-shadow: none;
+}
+
+.keycap {
+  border: 0;
+  border-radius: 7px;
+  background: #103649;
+}
+
+.keycap.expected,
+.region-tidepool .keycap.expected,
+.region-shallows .keycap.expected {
+  border: 0;
+  background: #8a671f;
+  box-shadow: none;
+  transform: none;
+}
+
+.finger-guide {
+  border: 0;
+}
+
+.typing-screen .guide-companion .speech-bubble {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  box-shadow: none;
+}
+
+.speech-bubble::before {
+  border-color: #061b29 transparent transparent;
+}
+
+.speech-bubble::after {
+  display: none;
+}
+
+.fishing-progress .fishing-line,
+.region-tidepool .fishing-progress .fishing-line,
+.region-shallows .fishing-progress .fishing-line,
+.region-coral-forest .fishing-progress .fishing-line,
+.region-sea-cave .fishing-progress .fishing-line,
+.region-deep-sea .fishing-progress .fishing-line {
+  background: #d5c27c;
+}
+
+@media (max-width: 760px) {
+  .map-screen,
+  .wardrobe-screen,
+  .settings-screen,
+  .typing-screen,
+  .aquarium-screen {
+    width: min(100% - 28px, 980px);
+  }
+
+  .topbar {
+    padding-inline: 8px;
+  }
+
+  .map-hero {
+    padding: 32px 24px 36px;
+  }
+
+  .map-screen .stage-card,
+  .map-screen.region-shallows .stage-card,
+  .map-screen.region-tidepool .stage-card,
+  .map-screen.region-coral-forest .stage-card,
+  .map-screen.region-sea-cave .stage-card,
+  .map-screen.region-deep-sea .stage-card {
+    padding: 22px 20px;
+  }
+
+  .typing-screen .guide-companion .speech-bubble {
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 8px;
+    width: max-content;
+    max-width: 210px;
+    padding: 8px 10px;
+    font-size: .72rem;
+    line-height: 1.45;
+  }
+}
