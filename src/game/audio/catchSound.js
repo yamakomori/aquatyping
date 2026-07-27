@@ -1,5 +1,5 @@
-// 魚がつれた瞬間の効果音。音源ファイルは持たず Web Audio API で合成する。
-// 読み込み待ちが無いので演出とズレず、レア用の派生も数値の差し替えだけで作れる。
+// 水をテーマにしたゲーム内効果音。音源ファイルは持たず Web Audio API で合成する。
+// 読み込み待ちが無いので演出とズレず、打鍵音も短い波形で重ねて鳴らせる。
 // 音作りの試聴・調整は public/catch-sound.html で行える。
 
 let ctx = null;
@@ -73,8 +73,17 @@ function connectOut(node) {
   node.connect(wet);
 }
 
+// 打鍵音は連続するため、捕獲音より残響を抑えて輪郭を保つ。
+function connectTypingOut(node) {
+  node.connect(dry);
+  const send = ctx.createGain();
+  send.gain.value = 0.16;
+  node.connect(send);
+  send.connect(wet);
+}
+
 // 水滴の芯：サイン波が短く上へ滑る（水滴の「ぽ」の正体はこの上昇）
-function drop(at, { from, to, duration, gain }) {
+function drop(at, { from, to, duration, gain }, connect = connectOut) {
   const osc = ctx.createOscillator();
   osc.type = "sine";
   osc.frequency.setValueAtTime(from, at);
@@ -86,7 +95,7 @@ function drop(at, { from, to, duration, gain }) {
   env.gain.exponentialRampToValueAtTime(0.0001, at + duration * 2.2);
 
   osc.connect(env);
-  connectOut(env);
+  connect(env);
   osc.start(at);
   osc.stop(at + duration * 2.4);
 }
@@ -202,6 +211,29 @@ function playSplashdown(at, pitch) {
   bucketRing(at + 0.04, { freq: 300 * pitch, duration: rand(0.4, 0.5), gain: 0.16, q: 7 });
   bucketRing(at + 0.055, { freq: 460 * pitch, duration: 0.3, gain: 0.08, q: 9 });
   droplets(at + 0.16, { count: 5, spread: 0.3, pitch });
+}
+
+/**
+ * タイピングの「ポコッ」という短い水音を鳴らす。
+ * 正解は上向きの泡、ミスは低く沈む泡の音にして、画面を見なくても区別できるようにする。
+ * @param {boolean} accepted
+ */
+export function playTypingSound(accepted = true) {
+  if (typeof window === "undefined") return;
+  primeCatchSound();
+  if (!ctx) return;
+  try {
+    const pitch = rand(0.94, 1.06);
+    const at = ctx.currentTime + 0.006;
+    if (accepted) {
+      drop(at, { from: 330 * pitch, to: 690 * pitch, duration: 0.03, gain: 0.105 }, connectTypingOut);
+      drop(at + 0.012, { from: 720 * pitch, to: 1040 * pitch, duration: 0.018, gain: 0.032 }, connectTypingOut);
+    } else {
+      drop(at, { from: 260 * pitch, to: 175 * pitch, duration: 0.045, gain: 0.082 }, connectTypingOut);
+    }
+  } catch {
+    // 再生に失敗しても入力は止めない
+  }
 }
 
 /**

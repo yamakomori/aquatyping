@@ -15,7 +15,7 @@ import {
 } from "../../domain/fish.js";
 import { getRegion, getRegionForStage, getUnlockedRegions } from "../../domain/regions.js";
 import { loadSave, persistSave } from "../../domain/save.js";
-import { playCatchSound, primeCatchSound } from "../../game/audio/catchSound.js";
+import { playCatchSound, playTypingSound, primeCatchSound } from "../../game/audio/catchSound.js";
 import { createGameState, gameReducer } from "../../game/state/gameReducer.js";
 import { UiIcon, UiText } from "./UiPrimitives.jsx";
 import "../../styles.css";
@@ -84,6 +84,11 @@ export default function GameShell() {
     if (state.screen !== "result" || !state.result || !state.save.settings.sound) return;
     playCatchSound(state.result.isRareCatch || state.result.firstCatch ? "rare" : "normal");
   }, [state.screen, state.result?.caughtFish.id, state.save.settings.sound]);
+
+  useEffect(() => {
+    if (state.screen !== "typing" || !state.session?.inputSeq || !state.save.settings.sound) return;
+    playTypingSound(state.session.lastKeyOk);
+  }, [state.screen, state.session?.inputSeq, state.save.settings.sound]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -757,7 +762,7 @@ function SettingsScreen({ state, dispatch }) {
     <h1><UiText>｜遊び《あそび》やすくする</UiText></h1>
     <div className="settings-list">
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_GUIDE" })}><span><UiText plain>キーボードガイド</UiText></span><strong><UiText plain>{state.save.settings.keyboardGuide ? "表示中" : "非表示"}</UiText></strong></button>
-      <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_SOUND" })}><span><UiText plain>魚がつれた音</UiText></span><strong>{state.save.settings.sound ? "オン" : "オフ"}</strong></button>
+      <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_SOUND" })}><span><UiText plain>ゲームの効果音</UiText></span><strong>{state.save.settings.sound ? "オン" : "オフ"}</strong></button>
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_MOTION" })}><span><UiText plain>動きをひかえめにする</UiText></span><strong>{state.save.settings.reducedMotion ? "オン" : "オフ"}</strong></button>
     </div>
     <button className="danger-button" onClick={() => window.confirm("冒険のきろくを最初からにしますか？") && dispatch({ type: "RESET" })}><UiText plain>冒険のきろくを最初からにする</UiText></button>
