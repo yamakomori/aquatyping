@@ -9,18 +9,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: radial-gradient(circle at 80% 0%, #e6efe4 0, transparent 32rem), #f6f3ec;
-}
-
-button {
-  font: inherit;
-  cursor: pointer;
-}
-
 button:disabled {
   cursor: default;
   opacity: .5;
@@ -60,10 +48,6 @@ button:disabled {
   background: #f1e4bf;
   border-radius: 999px;
   font-size: .9rem;
-}
-
-.brand:hover {
-  background: #e8e8df;
 }
 
 .map-screen,
@@ -107,14 +91,6 @@ button:disabled {
 .screen-heading p:not(.eyebrow) {
   margin: 10px 0 0;
   color: #516366;
-}
-
-.avatar {
-  width: 96px;
-  height: 118px;
-  position: relative;
-  flex: 0 0 auto;
-  filter: drop-shadow(0 8px 8px #30463b22);
 }
 
 .avatar-head {
@@ -184,46 +160,14 @@ button:disabled {
   background: #fffdf8;
 }
 
-.stage-card.current {
-  border-color: #6c958a;
-  box-shadow: 0 5px 18px #52766b18;
-}
-
-.stage-card.locked {
-  background: #efeee9;
-  color: #7c8583;
-}
-
 .stage-card h2 {
   margin: 0;
   font-size: 1.07rem;
 }
 
-.stage-card p {
-  margin: 6px 0;
-  color: #607073;
-  font-size: .91rem;
-}
-
-.stage-card small {
-  color: #8a9794;
-}
-
 .stage-number {
   color: #6c958a;
   font-weight: 700;
-}
-
-.stage-progress {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-.stage-medals {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .medal {
@@ -352,19 +296,6 @@ button:disabled {
   margin: 10px 0 7px;
   color: #59736d;
   font-weight: 700;
-}
-
-.problem-text {
-  max-width: 100%;
-  margin: 0;
-  font-size: clamp(2rem, 7vw, 3.6rem);
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: .08em;
-  overflow-wrap: anywhere;
-  /* 最大2行の窓。これを超える長文は ScrollingLine が進行に合わせてスクロールさせる。 */
-  max-height: 2.4em;
-  overflow: hidden;
 }
 
 .input-guide {
@@ -739,10 +670,6 @@ button:disabled {
   transition: none !important;
 }
 
-.wardrobe-screen .screen-heading {
-  background: #e7e1cf;
-}
-
 .item-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -768,13 +695,6 @@ button:disabled {
   margin: 9px 0 4px;
 }
 
-.item-card p {
-  min-height: 20px;
-  margin: 0 0 10px;
-  font-size: .82rem;
-  color: #71807d;
-}
-
 .item-preview {
   width: 64px;
   height: 64px;
@@ -788,19 +708,8 @@ button:disabled {
   border: 2px solid #455e5a;
 }
 
-.back-button {
-  margin-top: 18px;
-}
-
 .settings-screen {
   max-width: 650px;
-}
-
-.settings-list {
-  margin-top: 22px;
-  border: 1px solid #d8d5ca;
-  border-radius: 16px;
-  overflow: hidden;
 }
 
 .setting-row {
@@ -817,10 +726,6 @@ button:disabled {
 
 .setting-row:last-child {
   border-bottom: 0;
-}
-
-.setting-row strong {
-  color: #52766b;
 }
 
 @keyframes float {
@@ -1010,10 +915,6 @@ button:disabled {
   background: #031426;
 }
 
-body {
-  background: radial-gradient(circle at 72% -16%, #0f4160 0, transparent 34rem), radial-gradient(circle at 12% 90%, #082d46 0, transparent 40rem), #031426;
-}
-
 .brand,
 .text-button {
   color: #e8f1ed;
@@ -1068,6 +969,8 @@ body {
 }
 
 .stage-card p {
+  margin: 6px 0;
+  font-size: .91rem;
   color: #a7c1c5;
 }
 
@@ -1172,17 +1075,6 @@ body {
   height: 24%;
   opacity: .58;
   background: repeating-linear-gradient(100deg, transparent 0 18px, #b2f1fa1a 19px 25px, transparent 26px 45px);
-}
-
-.aquarium-sand {
-  position: absolute;
-  z-index: -1;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 22%;
-  background: linear-gradient(0deg, #0c3442, #14506499);
-  clip-path: polygon(0 39%, 12% 52%, 29% 38%, 44% 63%, 62% 41%, 78% 60%, 100% 35%, 100% 100%, 0 100%);
 }
 
 .fish-visual {
@@ -1293,26 +1185,10 @@ body {
   margin: 26px 0 12px;
 }
 
-.collection-heading h2 {
-  margin: 0;
-  font-size: 1.22rem;
-}
-
 .fish-collection {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 12px;
-}
-
-.fish-card {
-  min-height: 110px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid #254b61;
-  border-radius: 15px;
-  background: #071d30;
 }
 
 .fish-card .fish-visual {
@@ -1358,14 +1234,6 @@ body {
 
 .typing-top {
   color: #aac4c7;
-}
-
-.sea-typing-stage {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #16465d;
-  border-radius: 22px;
-  background: radial-gradient(ellipse at 82% 16%, #12617a55, transparent 34%), #04182b;
 }
 
 .sea-typing-stage .eyebrow,
@@ -1468,6 +1336,9 @@ body {
 }
 
 .item-card p {
+  min-height: 20px;
+  margin: 0 0 10px;
+  font-size: .82rem;
   color: #a7c6c5;
 }
 
@@ -1475,14 +1346,6 @@ body {
   border-color: #254b61;
   background: #071d30;
   color: #e8f1ed;
-}
-
-.settings-list {
-  border-color: #254b61;
-}
-
-.setting-row strong {
-  color: #82d0d1;
 }
 
 @keyframes fish-swim {
@@ -1552,10 +1415,6 @@ body {
 
 }
 
-.stage-progress {
-  flex-wrap: wrap;
-}
-
 .fish-discovery {
   color: #83cfd1 !important;
 }
@@ -1565,11 +1424,6 @@ body {
   background: #061827;
 }
 
-.fish-card {
-  position: relative;
-  overflow: hidden;
-}
-
 .fish-card.rare {
   border-color: #e6b23c;
   background: linear-gradient(160deg, #241b06, #0a1c2c 60%);
@@ -1577,20 +1431,6 @@ body {
 
 .fish-card.rare.undiscovered {
   border-style: dashed;
-}
-
-.rare-ribbon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 2px 10px;
-  border-bottom-left-radius: 10px;
-  background: linear-gradient(120deg, #ffd66b, #e79a2b);
-  color: #3a2606;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  box-shadow: 0 2px 8px #0006;
 }
 
 .unknown-fish-visual.rare {
@@ -1619,14 +1459,6 @@ body {
 
 .rare-eyebrow {
   color: #ffcf5f !important;
-}
-
-.intro-screen {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background: radial-gradient(ellipse at 50% 15%, #15516a 0, transparent 34rem), #031426;
 }
 
 .intro-card {
@@ -1664,11 +1496,6 @@ body {
   display: block;
   margin: 4px auto 0;
   color: #9bc8ca;
-}
-
-.first-aquarium-button {
-  width: 100%;
-  margin: 8px 0 2px;
 }
 
 .first-catch-card {
@@ -2584,6 +2411,8 @@ rt {
 }
 
 .stage-medals {
+  display: flex;
+  align-items: center;
   gap: 6px;
 }
 
@@ -2740,11 +2569,6 @@ rt {
   height: 21px;
 }
 
-button:focus-visible {
-  outline: 3px solid #f0ca72;
-  outline-offset: 3px;
-}
-
 .ui-icon {
   display: block;
   flex: 0 0 auto;
@@ -2890,13 +2714,6 @@ button:focus-visible {
   font-size: .9rem;
 }
 
-.aquarium-attached-button small {
-  padding-left: 8px;
-  border-left: 1px solid #5d8995;
-  color: #b9dcdd;
-  font-weight: 700;
-}
-
 .region-navigation {
   min-height: 73px;
   display: grid;
@@ -2984,17 +2801,9 @@ button:focus-visible {
   border-color: #4f8788;
 }
 
-.map-screen.region-tidepool .region-dot {
-  color: #a9c9c3;
-}
-
 .map-screen.region-tidepool .region-dot.selected {
   border-bottom-color: #a7d9c5;
   color: #f4fff9;
-}
-
-.section-intro {
-  margin: 38px 0 14px;
 }
 
 .section-intro .eyebrow {
@@ -3057,10 +2866,6 @@ button:focus-visible {
   background: linear-gradient(90deg, #398f7b4d, transparent 58%) !important;
 }
 
-.map-screen .stage-card.locked {
-  opacity: .58;
-}
-
 .stage-number {
   width: 42px;
   height: 42px;
@@ -3087,6 +2892,10 @@ button:focus-visible {
 }
 
 .stage-progress {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
   row-gap: 6px;
 }
 
@@ -3184,10 +2993,20 @@ button:focus-visible {
 }
 
 .collection-heading h2 {
+  margin: 0;
   font-size: 1.55rem;
 }
 
 .fish-card {
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #254b61;
+  background: #071d30;
+  position: relative;
+  overflow: hidden;
   border-radius: 4px 14px 4px 4px;
 }
 
@@ -3270,15 +3089,6 @@ button:focus-visible {
   min-width: 0;
 }
 
-.typing-stage-number {
-  padding: 1px 7px;
-  border: 1px solid #2f6b83;
-  border-radius: 999px;
-  color: #5bc5d0;
-  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .06em;
-}
-
 .typing-count {
   font-size: .8rem;
   letter-spacing: .08em;
@@ -3301,6 +3111,10 @@ button:focus-visible {
 }
 
 .sea-typing-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #16465d;
+  background: radial-gradient(ellipse at 82% 16%, #12617a55, transparent 34%), #04182b;
   border-radius: 4px 4px 30px 4px;
 }
 
@@ -3314,6 +3128,13 @@ button:focus-visible {
    ただし max() で下限を設け、深海の長文でも読める大きさを保つ。下限を割る長さは
    2行に折り返し、さらに超える分は ScrollingLine がスクロールで見せる。 */
 .problem-text {
+  max-width: 100%;
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: .08em;
+  max-height: 2.4em;
+  overflow: hidden;
   font-size: max(2rem, calc(clamp(2.5rem, 6.4vw, 3.9rem) * 12 / max(var(--problem-length, 12), 12)));
 }
 
@@ -3401,27 +3222,14 @@ button:focus-visible {
   margin: 0 0 12px;
 }
 
-.dialog-close {
-  position: absolute;
-  top: 11px;
-  right: 11px;
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 1px solid #31596c;
-  border-radius: 50%;
-  background: #09283b;
-  color: #c9dfdf;
-}
-
 .dialog-close:hover {
   border-color: #6ebfc1;
   color: #fff;
 }
 
 .first-aquarium-button {
+  width: 100%;
+  margin: 8px 0 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4009,6 +3817,9 @@ button:focus-visible {
 }
 
 body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
   background: var(--ui-canvas);
 }
 
@@ -4033,8 +3844,9 @@ body:has(.region-backdrop-deep-sea) {
 }
 
 button {
-  transition:
-    background-color var(--ui-motion),
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--ui-motion),
     color var(--ui-motion),
     box-shadow var(--ui-motion),
     opacity var(--ui-motion),
@@ -4177,11 +3989,16 @@ button:focus-visible {
 }
 
 .back-button {
+  margin-top: 18px;
   margin-left: -10px;
 }
 
 /* Brand character: silhouette and color do the work; an extra outline is unnecessary. */
 .avatar {
+  width: 96px;
+  height: 118px;
+  position: relative;
+  flex: 0 0 auto;
   filter: none;
 }
 
@@ -4219,6 +4036,10 @@ button:focus-visible {
 
 /* Intro and overlays: reserve elevation for content that truly floats. */
 .intro-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
   background: var(--ui-canvas);
 }
 
@@ -4240,6 +4061,15 @@ button:focus-visible {
 }
 
 .dialog-close {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #c9dfdf;
   border: 0;
   border-radius: var(--ui-radius-control);
   background: transparent;
@@ -4662,6 +4492,13 @@ button:focus-visible {
 }
 
 .aquarium-sand {
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 22%;
+  clip-path: polygon(0 39%, 12% 52%, 29% 38%, 44% 63%, 62% 41%, 78% 60%, 100% 35%, 100% 100%, 0 100%);
   background: #123f4c;
 }
 
@@ -4671,6 +4508,7 @@ button:focus-visible {
 }
 
 .aquarium-attached-button small {
+  font-weight: 700;
   padding-left: 0;
   border: 0;
   color: #d3efed;
@@ -4714,6 +4552,15 @@ button:focus-visible {
 }
 
 .rare-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 10px;
+  border-bottom-left-radius: 10px;
+  color: #3a2606;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .1em;
   border-radius: 0 0 0 var(--ui-radius-control);
   background: #e9b84d;
   box-shadow: none;
@@ -4779,6 +4626,9 @@ button:focus-visible {
 }
 
 .typing-stage-number {
+  color: #5bc5d0;
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .06em;
   padding: 3px 8px;
   border: 0;
   border-radius: var(--ui-radius-control);
