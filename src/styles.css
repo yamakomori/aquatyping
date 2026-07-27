@@ -1338,14 +1338,6 @@ body:has(.region-backdrop-tidepool) {
   box-shadow: 0 8px 24px #2b857273;
 }
 
-.region-tidepool .stage-card:nth-child(3n + 2) {
-  background: linear-gradient(105deg, #1d5d68e8, #14495ae8);
-}
-
-.region-tidepool .stage-number {
-  color: #b9e7b7;
-}
-
 .region-tidepool .stage-card p {
   color: #cbe0da;
 }
@@ -1374,10 +1366,6 @@ body:has(.region-backdrop-tidepool) {
 .region-tidepool .aquarium-preview p {
   color: #f4fff9;
   text-shadow: 0 1px 5px #174756;
-}
-
-.region-tidepool .water-shine {
-  opacity: .14;
 }
 
 .region-tidepool .aquarium-sand {
@@ -1473,14 +1461,6 @@ body:has(.region-backdrop-shallows) {
   box-shadow: 0 8px 24px #0b718073;
 }
 
-.region-shallows .stage-card:nth-child(3n + 2) {
-  background: linear-gradient(105deg, #105064e8, #0b3b50e8);
-}
-
-.region-shallows .stage-number {
-  color: #8ce4dc;
-}
-
 .region-shallows .stage-card p {
   color: #c1dddd;
 }
@@ -1504,10 +1484,6 @@ body:has(.region-backdrop-shallows) {
 
 .region-shallows .aquarium-preview::before {
   background: linear-gradient(180deg, #d9fff21a 0%, transparent 35%, #02283a1f 100%);
-}
-
-.region-shallows .water-shine {
-  opacity: .18;
 }
 
 .region-shallows .aquarium-sand {
@@ -1621,10 +1597,6 @@ body:has(.region-backdrop-deep-sea) {
   display: none;
 }
 
-.region-coral-forest .water-shine {
-  opacity: .11;
-}
-
 .region-coral-forest .sea-typing-stage {
   border-color: #a85f69;
   background: radial-gradient(ellipse at 82% 16%, #df8b7055, transparent 36%), #173348;
@@ -1633,14 +1605,6 @@ body:has(.region-backdrop-deep-sea) {
 .region-coral-forest .stage-card.current {
   border-color: #df8d7b;
   box-shadow: 0 5px 18px #ba5f6b35;
-}
-
-.region-coral-forest .stage-number {
-  color: #f2a183;
-}
-
-.region-coral-forest .stage-card:nth-child(3n + 2) {
-  background: linear-gradient(105deg, #1c2438, #173040);
 }
 
 .region-sea-cave .aquarium-preview {
@@ -1658,10 +1622,6 @@ body:has(.region-backdrop-deep-sea) {
   display: none;
 }
 
-.region-sea-cave .water-shine {
-  opacity: .07;
-}
-
 .region-sea-cave .sea-typing-stage {
   border-color: #55707e;
   background: radial-gradient(ellipse at 26% 8%, #9fd0ea38, transparent 40%), #101f2a;
@@ -1670,14 +1630,6 @@ body:has(.region-backdrop-deep-sea) {
 .region-sea-cave .stage-card.current {
   border-color: #8fc4dd;
   box-shadow: 0 5px 18px #5f93aa35;
-}
-
-.region-sea-cave .stage-number {
-  color: #93cbe4;
-}
-
-.region-sea-cave .stage-card:nth-child(3n + 2) {
-  background: linear-gradient(105deg, #1a2733, #14202b);
 }
 
 .region-deep-sea .aquarium-preview {
@@ -1693,18 +1645,6 @@ body:has(.region-backdrop-deep-sea) {
 
 .region-deep-sea .aquarium-sand {
   display: none;
-}
-
-.region-deep-sea .water-shine {
-  opacity: .035;
-}
-
-.region-deep-sea .stage-number {
-  color: #6fe0cc;
-}
-
-.region-deep-sea .stage-card:nth-child(3n + 2) {
-  background: linear-gradient(105deg, #131d33, #0d1728);
 }
 
 @media (max-width: 560px) {
@@ -2752,26 +2692,6 @@ rt {
   color: #dcffff;
 }
 
-.region-backdrop-tidepool .pixel-bubbles-world {
-  color: #d5fff1;
-}
-
-.region-backdrop-shallows .pixel-bubbles-world {
-  color: #bfefff;
-}
-
-.region-backdrop-coral-forest .pixel-bubbles-world {
-  color: #ffe1d0;
-}
-
-.region-backdrop-sea-cave .pixel-bubbles-world {
-  color: #d1edff;
-}
-
-.region-backdrop-deep-sea .pixel-bubbles-world {
-  color: #83e8dc;
-}
-
 .region-fade-backdrop {
   position: fixed;
   z-index: -2;
@@ -3115,6 +3035,10 @@ rt {
   --region-action: #2b817c;
   --region-action-hover: #35958d;
   --region-action-shadow: #185a57;
+  --region-stripe: linear-gradient(105deg, #1d5d68e8, #14495ae8);
+  --region-number-ink: #b9e7b7;
+  --region-shine: .14;
+  --region-art: url("/backgrounds/tidepool.png");
 }
 
 .region-shallows {
@@ -3124,6 +3048,10 @@ rt {
   --region-action: #167783;
   --region-action-hover: #218b94;
   --region-action-shadow: #0b525c;
+  --region-stripe: linear-gradient(105deg, #105064e8, #0b3b50e8);
+  --region-number-ink: #8ce4dc;
+  --region-shine: .18;
+  --region-art: url("/backgrounds/shallows.png");
 }
 
 .region-coral-forest {
@@ -3133,6 +3061,10 @@ rt {
   --region-action: #a25765;
   --region-action-hover: #b96873;
   --region-action-shadow: #703945;
+  --region-stripe: linear-gradient(105deg, #1c2438, #173040);
+  --region-number-ink: #f2a183;
+  --region-shine: .11;
+  --region-art: url("/backgrounds/coral-forest.png");
 }
 
 .region-sea-cave {
@@ -3142,6 +3074,10 @@ rt {
   --region-action: #47788b;
   --region-action-hover: #568da0;
   --region-action-shadow: #2d5261;
+  --region-stripe: linear-gradient(105deg, #1a2733, #14202b);
+  --region-number-ink: #93cbe4;
+  --region-shine: .07;
+  --region-art: url("/backgrounds/sea-cave.png");
 }
 
 .region-deep-sea {
@@ -3151,6 +3087,50 @@ rt {
   --region-action: #286f78;
   --region-action-hover: #33838a;
   --region-action-shadow: #174b52;
+  --region-stripe: linear-gradient(105deg, #131d33, #0d1728);
+  --region-number-ink: #6fe0cc;
+  --region-shine: .035;
+  --region-art: url("/backgrounds/deep-sea.png");
+}
+
+.region-backdrop-tidepool {
+  --region-bubble-ink: #d5fff1;
+}
+
+.region-backdrop-shallows {
+  --region-bubble-ink: #bfefff;
+}
+
+.region-backdrop-coral-forest {
+  --region-bubble-ink: #ffe1d0;
+}
+
+.region-backdrop-sea-cave {
+  --region-bubble-ink: #d1edff;
+}
+
+.region-backdrop-deep-sea {
+  --region-bubble-ink: #83e8dc;
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .stage-card:nth-child(3n + 2) {
+  background: var(--region-stripe);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .stage-number {
+  color: var(--region-number-ink);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .water-shine {
+  opacity: var(--region-shine);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview {
+  background-image: var(--region-art);
+}
+
+:is(.region-backdrop-tidepool, .region-backdrop-shallows, .region-backdrop-coral-forest, .region-backdrop-sea-cave, .region-backdrop-deep-sea) .pixel-bubbles-world {
+  color: var(--region-bubble-ink);
 }
 
 body {
@@ -3254,20 +3234,12 @@ button:focus-visible {
   background: var(--ui-accent-fill-hover) !important;
 }
 
-.region-tidepool :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
-.region-shallows :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
-.region-coral-forest :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
-.region-sea-cave :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
-.region-deep-sea :is(.primary-button, .stage-action.primary, .aquarium-attached-button) {
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) :is(.primary-button, .stage-action.primary, .aquarium-attached-button) {
   --button-shadow: var(--region-action-shadow);
   background: var(--region-action) !important;
 }
 
-.region-tidepool :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
-.region-shallows :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
-.region-coral-forest :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
-.region-sea-cave :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
-.region-deep-sea :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover {
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover {
   background: var(--region-action-hover) !important;
 }
 
@@ -3746,11 +3718,7 @@ button:focus-visible {
 
 /* Aquarium and collection: artwork stays illustrative; UI chrome stays flat. */
 .aquarium-preview,
-.region-tidepool .aquarium-preview,
-.region-shallows .aquarium-preview,
-.region-coral-forest .aquarium-preview,
-.region-sea-cave .aquarium-preview,
-.region-deep-sea .aquarium-preview {
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview {
   border: 0;
   box-shadow: none;
 }
@@ -3760,33 +3728,9 @@ button:focus-visible {
   border-radius: 8px 8px 24px 24px !important;
 }
 
-.region-tidepool .aquarium-preview {
-  background-image: url("/backgrounds/tidepool.png");
-}
-
-.region-shallows .aquarium-preview {
-  background-image: url("/backgrounds/shallows.png");
-}
-
-.region-coral-forest .aquarium-preview {
-  background-image: url("/backgrounds/coral-forest.png");
-}
-
-.region-sea-cave .aquarium-preview {
-  background-image: url("/backgrounds/sea-cave.png");
-}
-
-.region-deep-sea .aquarium-preview {
-  background-image: url("/backgrounds/deep-sea.png");
-}
-
 .aquarium-preview::before,
-.region-tidepool .aquarium-preview::before,
-.region-shallows .aquarium-preview::before,
-.region-coral-forest .aquarium-preview::before,
-.region-sea-cave .aquarium-preview::before,
-.region-deep-sea .aquarium-preview::before,
-.water-shine {
+.water-shine,
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview::before {
   display: none;
 }
 
@@ -3957,11 +3901,7 @@ button:focus-visible {
 
 /* Typing: one calm practice surface, with state communicated by fill. */
 .sea-typing-stage,
-.region-tidepool .sea-typing-stage,
-.region-shallows .sea-typing-stage,
-.region-coral-forest .sea-typing-stage,
-.region-sea-cave .sea-typing-stage,
-.region-deep-sea .sea-typing-stage {
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .sea-typing-stage {
   border: 0;
   border-radius: var(--ui-radius-panel);
   background: var(--region-surface, var(--ui-surface)) !important;
