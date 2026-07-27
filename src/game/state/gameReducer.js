@@ -202,7 +202,15 @@ export function gameReducer(state, action) {
       };
     }
     case "SHOW_MAP":
-      return { ...state, screen: "map", session: null, result: null, releaseCandidateId: null, selectedMapRegionId: getRegionForStage(state.save.currentStageId).id, message: "" };
+      return {
+        ...state,
+        screen: "map",
+        session: null,
+        result: null,
+        releaseCandidateId: null,
+        selectedMapRegionId: action.regionId ?? getRegionForStage(state.save.currentStageId).id,
+        message: "",
+      };
     case "SELECT_MAP_REGION":
       return { ...state, selectedMapRegionId: action.regionId };
     case "SHOW_WARDROBE":

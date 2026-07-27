@@ -9,7 +9,6 @@ import {
   fishCollectionStats,
   fishCountsBySpecies,
   fishDiscovery,
-  fishForCatch,
   fishSpeciesForRegion,
   getFishSpecies,
   selectAquariumFish,
@@ -31,6 +30,13 @@ const AQUARIUM_SLOT_ORDER = [
   7, 16, 3, 20, 11, 12, 23, 0, 18, 5, 14, 9,
   21, 2, 17, 6, 22, 10, 13, 4, 19, 1, 15, 8,
 ];
+
+const BUBBLE_SPECS = [
+  [4, 1, -10], [9, 2, 12], [15, 1, 7], [21, 3, -16], [28, 1, 11], [34, 2, -8],
+  [41, 1, 15], [47, 2, -13], [54, 1, 9], [60, 3, 17], [67, 1, -11], [73, 2, 8],
+  [79, 1, -15], [85, 2, 13], [92, 1, -7], [12, 1, 17], [38, 2, 10], [70, 1, -16],
+];
+const TANK_BUBBLE_SPECS = [0, 1, 4, 7, 8, 11, 12, 13, 16].map((index) => BUBBLE_SPECS[index]);
 
 // Vertical swimming bands as % of tank height (slightly overlapping for a natural blend).
 // 4層がはっきり分かれるよう、水槽の高さをおおむね四分割して割り当てる。
@@ -137,12 +143,36 @@ export default function GameShell() {
         : null;
 
   return <div className={`app-shell screen-${state.screen} ${backdropRegionId ? `region-backdrop-${backdropRegionId}` : ""} ${state.save.settings.reducedMotion ? "reduce-motion" : ""}`}>
+    {backdropRegionId && <BubbleField variant="world" />}
     {/* タイピング中はヘッダーを隠す。高さを問題に回せるし、練習中に誤って別画面へ飛ばない。 */}
     {state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
     {content}
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
     {state.releaseCandidateId && <ReleaseConfirmDialog state={state} dispatch={dispatch} />}
   </div>;
+}
+
+function BubbleField({ variant }) {
+  const visibleSpecs = variant === "tank" ? TANK_BUBBLE_SPECS : BUBBLE_SPECS;
+  return <div className={`pixel-bubbles pixel-bubbles-${variant}`} aria-hidden="true">{visibleSpecs.map(([left, scale, drift], index) => {
+    const duration = variant === "tank"
+      ? 16 - (scale * 2) + (index % 3)
+      : 32 - (scale * 4) + (index % 5);
+    const delay = -((index * 3.7) % duration);
+    const opacity = variant === "tank" ? .2 + (scale * .08) : .08 + (scale * .055);
+    return <span
+      className="pixel-bubble"
+      key={`${variant}-${index}`}
+      style={{
+        "--bubble-left": `${left}%`,
+        "--bubble-scale": scale,
+        "--bubble-drift": `${drift}px`,
+        "--bubble-duration": `${duration}s`,
+        "--bubble-delay": `${delay}s`,
+        "--bubble-opacity": opacity,
+      }}
+    ><span className="pixel-bubble-art" /></span>;
+  })}</div>;
 }
 
 function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
@@ -532,7 +562,7 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
     };
   });
   useAquariumRoaming(containerRef, nodesRef, metaRef, `${seedSalt}:${visibleFish.map((f) => f.id).join(",")}`);
-  return <div ref={containerRef} className="aquarium-preview" aria-label={ariaLabel}><div className="water-shine" />{visibleFish.length > 0 ? visibleFish.map((caughtFish, index) => <FishVisual key={caughtFish.id} caughtFish={caughtFish} index={index} roaming position={metaRef.current[index].base} nodeRef={(el) => { nodesRef.current[index] = el; }} />) : <p><span><UiText>{emptyMessage}</UiText></span></p>}<span className="aquarium-sand" /></div>;
+  return <div ref={containerRef} className="aquarium-preview" aria-label={ariaLabel}><div className="water-shine" /><BubbleField variant="tank" />{visibleFish.length > 0 ? visibleFish.map((caughtFish, index) => <FishVisual key={caughtFish.id} caughtFish={caughtFish} index={index} roaming position={metaRef.current[index].base} nodeRef={(el) => { nodesRef.current[index] = el; }} />) : <p><span><UiText>{emptyMessage}</UiText></span></p>}<span className="aquarium-sand" /></div>;
 }
 
 function UnknownFishVisual({ rare = false }) {
@@ -583,17 +613,30 @@ function problemDisplayWidth(text) {
   return [...text].reduce((width, char) => width + (/[\x20-\x7e]/.test(char) ? 0.5 : 1), 0);
 }
 
-// お題やローマ字ガイドを最大2行の窓に収め、それを超える長い文は入力の進みに合わせて
-// 上へスクロールさせる。深海の長文で、いま打っている行が窓の中に残るようにする。
-// 2行以内に収まる文（洞窟までのすべて）は overflow が 0 なので、見た目は動かない。
+// お題やローマ字ガイドを最大2行の窓に収め、それを超える長い文は行単位で
+// 上へスクロールさせる。毎打鍵ではなく、入力位置が次の表示行へ移ったときだけ動かす。
+// 高さ計算の丸め誤差も吸収し、窓に収まる文がわずかに動かないようにする。
 function ScrollingLine({ className, ariaLabel, style, progress, children }) {
   const innerRef = useRef(null);
   const [shift, setShift] = useState(0);
   useLayoutEffect(() => {
     const inner = innerRef.current;
     if (!inner) return;
-    const overflow = Math.max(0, inner.scrollHeight - inner.parentElement.clientHeight);
-    setShift(overflow * Math.min(1, Math.max(0, progress || 0)));
+    const viewportHeight = inner.parentElement.clientHeight;
+    const contentHeight = inner.scrollHeight;
+    const lineHeight = Number.parseFloat(window.getComputedStyle(inner).lineHeight);
+    if (!Number.isFinite(lineHeight) || contentHeight <= viewportHeight + 2) {
+      setShift(0);
+      return;
+    }
+
+    const totalLines = Math.max(1, Math.round(contentHeight / lineHeight));
+    const visibleLines = Math.max(1, Math.round(viewportHeight / lineHeight));
+    const hiddenLines = Math.max(0, totalLines - visibleLines);
+    const normalizedProgress = Math.min(1, Math.max(0, progress || 0));
+    const activeLine = Math.min(totalLines - 1, Math.floor(normalizedProgress * totalLines));
+    const firstVisibleLine = Math.min(hiddenLines, Math.max(0, activeLine - visibleLines + 1));
+    setShift(firstVisibleLine * lineHeight);
   }, [children, progress]);
   return <p className={className} aria-label={ariaLabel} style={style}>
     <span ref={innerRef} className="scroll-inner" style={{ transform: `translateY(${-shift}px)` }}>{children}</span>
@@ -607,7 +650,6 @@ function TypingScreen({ state, dispatch }) {
   // 直接入力もかな入力も progress() は「お題の何文字目まで進んだか」を返すので、そこで打ち終わりを切る。
   const typedCount = attempt.matcher.progress();
   const companionText = attempt.completed ? "その調子！" : feedback || (finger.label ? `${finger.label}で\n${display.next === " " ? "Space" : display.next.toUpperCase()}をおそう。` : "つぎのキーを、ゆっくりさがそう。");
-  const fishProgress = (index + (attempt.completed ? 1 : 0)) / problems.length;
   // 海図のステージカードと同じ、海域内の通し番号。
   const stageNumber = STAGES.filter((item) => item.regionId === stage.regionId).findIndex((item) => item.id === stage.id) + 1;
   return <section className={`typing-screen region-${stage.regionId} ${state.save.settings.reducedMotion ? "reduce-motion" : ""}`}>
@@ -617,7 +659,6 @@ function TypingScreen({ state, dispatch }) {
       <p className="eyebrow typing-stage-name"><span className="typing-stage-number">{String(stageNumber).padStart(2, "0")}</span><span className="typing-stage-label"><UiText>{stage.name}</UiText></span></p>
     </div>
     <div className="typing-stage sea-typing-stage">
-      <FishingProgress progress={fishProgress} stageId={stage.id} />
       <p className="problem-title"><UiText>{attempt.problem.title}</UiText></p>
       {/* お題の見た目の幅をCSSへ渡す。長い文ほど自動で小さくなり、2行の窓に収める。
           潮だまりの直接入力は半角なので、全角の半分として数える。 */}
@@ -636,12 +677,6 @@ function TypingScreen({ state, dispatch }) {
       {state.save.settings.keyboardGuide && <KeyboardGuide expected={display.next} finger={finger} companionText={companionText} lastKey={lastKey} lastKeyOk={lastKeyOk} inputSeq={inputSeq} />}
     </div>
   </section>;
-}
-
-function FishingProgress({ progress, stageId }) {
-  const positions = { "--progress": progress, "--line-height": `${48 + progress * 42}%`, "--fish-left": `${74 - progress * 42}%`, "--fish-top": `${56 - progress * 24}%`, "--fish-opacity": .25 + progress * .75 };
-  const fish = fishForCatch({ stageId, playCount: 1 });
-  return <div className="fishing-progress" style={positions} aria-label={`魚が ${Math.round(progress * 100)} パーセント近づいています`}><span className="fishing-line" /><FishVisual caughtFish={fish} muted={progress < 1} /></div>;
 }
 
 function GuideTurtle() {
@@ -703,7 +738,7 @@ function AquariumScreen({ state, dispatch }) {
     {unlockedRegions.length > 1 && <RegionNavigator regions={unlockedRegions} selectedId={region.id} onSelect={selectTank} label="水槽を選ぶ" />}
     <div className="aquarium-main">
       <AquariumPreview fish={tankFish} emptyMessage="まだ魚《さかな》はいないよ。最初《さいしょ》の海《うみ》へ出《で》かけよう。" seedSalt={tankSaltRef.current.salt} />
-      <button className="aquarium-depart-button primary-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><strong><UiText plain>海へ出かける</UiText></strong><UiIcon name="play" /></button>
+      <button className="aquarium-depart-button primary-button" onClick={() => dispatch({ type: "SHOW_MAP", regionId: region.id })}><strong><UiText plain>{region.name}へ出かける</UiText></strong><UiIcon name="play" /></button>
     </div>
     <div className="collection-heading fish-book-heading"><div><h2><UiText>｜出会った魚《であったさかな》</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
     <div className="fish-collection">{species.map((item) => {

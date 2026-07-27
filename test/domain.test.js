@@ -52,6 +52,18 @@ test("purchase equips an unowned affordable item", () => {
   assert.equal(outcome.save.equipped.head, "head-leaf");
 });
 
+test("水槽から出かけると選択中の海域を表示する", () => {
+  const state = {
+    ...createGameState(createSave()),
+    screen: "aquarium",
+    selectedTankId: "coral-forest",
+    selectedMapRegionId: "tidepool",
+  };
+  const next = gameReducer(state, { type: "SHOW_MAP", regionId: state.selectedTankId });
+  assert.equal(next.screen, "map");
+  assert.equal(next.selectedMapRegionId, "coral-forest");
+});
+
 test("typing session records a miss without losing progress", () => {
   const problem = { id: "test", stageId: "S00", input: "fj", inputMode: "direct", targetKeys: ["f", "j"] };
   const started = startAttempt(problem, 0);

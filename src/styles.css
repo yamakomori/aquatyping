@@ -1422,28 +1422,6 @@ body {
   color: #e8f1ed;
 }
 
-.fishing-progress {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-}
-
-.fishing-progress .fishing-line {
-  position: absolute;
-  top: 0;
-  right: 17%;
-  width: 1px;
-  height: var(--line-height);
-  background: linear-gradient(#bce5d7, #c8952e);
-}
-
-.fishing-progress .fish-visual {
-  left: var(--fish-left) !important;
-  top: var(--fish-top) !important;
-  opacity: var(--fish-opacity);
-}
-
 .keyboard-guide {
   border: 1px solid #34576a;
   background: #092539;
@@ -1614,10 +1592,6 @@ body {
 
   .collection-heading {
     align-items: center;
-  }
-
-  .fishing-progress .fish-visual {
-    transform: scale(.72);
   }
 
   .topbar-actions {
@@ -2235,10 +2209,6 @@ body:has(.region-backdrop-tidepool) {
   color: #e9f5ef;
 }
 
-.region-tidepool .fishing-progress .fishing-line {
-  background: linear-gradient(#f1fff1, #edce76);
-}
-
 /* 第二海域「浅瀬」。水槽では枠内に、海図とタイピングでは画面下端から海を立ち上げる。 */
 body:has(.region-backdrop-shallows) {
   background: radial-gradient(circle at 50% 45%, #0d6374 0%, #0a4158 48rem, #05283b 76rem);
@@ -2408,16 +2378,10 @@ body:has(.region-backdrop-shallows) {
   color: #e0f3ee;
 }
 
-.region-shallows .fishing-progress .fishing-line {
-  background: linear-gradient(#e4fff2, #e2c66f);
-}
-
 /* 珊瑚の森以降も、海域画面では下端から背景画を立ち上げ、上端を海色へ溶かす。 */
-.app-shell:is(
-  .region-backdrop-coral-forest,
+.app-shell:is(.region-backdrop-coral-forest,
   .region-backdrop-sea-cave,
-  .region-backdrop-deep-sea
-)::before {
+  .region-backdrop-deep-sea)::before {
   content: "";
   position: fixed;
   z-index: -1;
@@ -2508,10 +2472,6 @@ body:has(.region-backdrop-deep-sea) {
   background: radial-gradient(ellipse at 82% 16%, #df8b7055, transparent 36%), #173348;
 }
 
-.region-coral-forest .fishing-progress .fishing-line {
-  background: linear-gradient(#fff3d8, #ef9b78);
-}
-
 .region-coral-forest .stage-card {
   border-color: #65475b;
   background: linear-gradient(105deg, #151f35, #10283a);
@@ -2564,10 +2524,6 @@ body:has(.region-backdrop-deep-sea) {
   background: radial-gradient(ellipse at 26% 8%, #9fd0ea38, transparent 40%), #101f2a;
 }
 
-.region-sea-cave .fishing-progress .fishing-line {
-  background: linear-gradient(#dff2ff, #7fb3c9);
-}
-
 .region-sea-cave .stage-card {
   border-color: #3d5461;
   background: linear-gradient(105deg, #16222c, #101c26);
@@ -2618,10 +2574,6 @@ body:has(.region-backdrop-deep-sea) {
 .region-deep-sea .sea-typing-stage {
   border-color: #37527a;
   background: radial-gradient(ellipse at 74% 12%, #3fd8c033, transparent 38%), #0a1122;
-}
-
-.region-deep-sea .fishing-progress .fishing-line {
-  background: linear-gradient(#b8f0e4, #4f8fb0);
 }
 
 .region-deep-sea .stage-card {
@@ -2741,16 +2693,37 @@ body:has(.region-backdrop-deep-sea) {
 /* 0% と 100% は書かない。省略した端は元の transform が使われるので、
    浮かせてある .expected のキーでも跳ねる前後で位置が飛ばない。 */
 @keyframes keycap-pop {
-  25% { transform: translateY(3px) scale(.92); }
-  60% { transform: translateY(-5px) scale(1.1); }
+  25% {
+    transform: translateY(3px) scale(.92);
+  }
+
+  60% {
+    transform: translateY(-5px) scale(1.1);
+  }
 }
 
 @keyframes keycap-shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-4px);
+  }
+
+  40% {
+    transform: translateX(4px);
+  }
+
+  60% {
+    transform: translateX(-3px);
+  }
+
+  80% {
+    transform: translateX(3px);
+  }
 }
 
 .keyboard-guide .keycap.pressed {
@@ -3838,6 +3811,119 @@ button:focus-visible {
   }
 }
 
+/* Pixel bubbles: an eight-pixel ring, scaled only by whole numbers to stay crisp. */
+.app-shell::before {
+  z-index: -2 !important;
+}
+
+.pixel-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #c9f8f1;
+  pointer-events: none;
+}
+
+.pixel-bubbles-world {
+  position: fixed;
+  z-index: -1;
+}
+
+.pixel-bubbles-tank {
+  z-index: 0;
+  color: #dcffff;
+}
+
+.region-backdrop-tidepool .pixel-bubbles-world {
+  color: #d5fff1;
+}
+
+.region-backdrop-shallows .pixel-bubbles-world {
+  color: #bfefff;
+}
+
+.region-backdrop-coral-forest .pixel-bubbles-world {
+  color: #ffe1d0;
+}
+
+.region-backdrop-sea-cave .pixel-bubbles-world {
+  color: #d1edff;
+}
+
+.region-backdrop-deep-sea .pixel-bubbles-world {
+  color: #83e8dc;
+}
+
+.pixel-bubble {
+  position: absolute;
+  bottom: -28px;
+  left: var(--bubble-left);
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  animation: pixel-bubble-rise var(--bubble-duration) linear var(--bubble-delay) infinite;
+  will-change: bottom, opacity, transform;
+}
+
+.pixel-bubble-art {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 2px;
+  height: 2px;
+  background: currentColor;
+  box-shadow:
+    2px 0 0 currentColor,
+    -2px 2px 0 currentColor,
+    4px 2px 0 currentColor,
+    -2px 4px 0 currentColor,
+    4px 4px 0 currentColor,
+    0 6px 0 currentColor,
+    2px 6px 0 currentColor;
+  transform: scale(var(--bubble-scale));
+  transform-origin: top left;
+}
+
+@keyframes pixel-bubble-rise {
+  0% {
+    bottom: -28px;
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  8% {
+    opacity: var(--bubble-opacity);
+  }
+
+  42% {
+    transform: translateX(var(--bubble-drift));
+  }
+
+  72% {
+    transform: translateX(0);
+  }
+
+  92% {
+    opacity: var(--bubble-opacity);
+  }
+
+  100% {
+    bottom: calc(100% + 28px);
+    opacity: 0;
+    transform: translateX(var(--bubble-drift));
+  }
+}
+
+.reduce-motion .pixel-bubbles {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-bubbles {
+    display: none;
+  }
+}
+
 @media (max-width: 430px) {
   .coin {
     display: none;
@@ -3954,6 +4040,7 @@ button:focus-visible {
 }
 
 @keyframes guide-turtle-bob {
+
   0%,
   100% {
     transform: translateY(2px);
@@ -4394,16 +4481,15 @@ button:focus-visible {
 .aquarium-heading .eyebrow {
   width: max-content;
   margin: 0 0 16px;
-  padding: 7px 14px;
-  border-inline: 1px solid currentColor;
+  padding: 14px;
   border-radius: 999px;
-  background: #ffffff0d;
+  background: rgb(255 255 255 / 10%);
   line-height: 1;
 }
 
 .map-hero p:not(.eyebrow),
 .screen-heading p:not(.eyebrow),
-.stage-copy > p,
+.stage-copy>p,
 .item-card p,
 .fish-card p,
 .fish-card small,
@@ -4513,7 +4599,7 @@ button:focus-visible {
   outline: 0;
 }
 
-.stage-card > :not(.stage-card-hitbox) {
+.stage-card> :not(.stage-card-hitbox) {
   position: relative;
   z-index: 1;
   pointer-events: none;
@@ -4753,7 +4839,7 @@ button:focus-visible {
   background: #ffffff0d;
 }
 
-.keyboard-section-label > .section-rule {
+.keyboard-section-label>.section-rule {
   height: 0;
 }
 
@@ -4797,16 +4883,8 @@ button:focus-visible {
   display: none;
 }
 
-.fishing-progress .fishing-line,
-.region-tidepool .fishing-progress .fishing-line,
-.region-shallows .fishing-progress .fishing-line,
-.region-coral-forest .fishing-progress .fishing-line,
-.region-sea-cave .fishing-progress .fishing-line,
-.region-deep-sea .fishing-progress .fishing-line {
-  background: #d5c27c;
-}
-
 @media (max-width: 760px) {
+
   .map-screen,
   .wardrobe-screen,
   .settings-screen,
