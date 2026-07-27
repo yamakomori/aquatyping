@@ -1,0 +1,205 @@
+.reduce-motion .scroll-inner {
+  transition: none;
+}
+
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-6px) rotate(5deg);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.96);
+  }
+}
+
+@keyframes screen-rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(.995);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reduce-motion .intro-screen,
+.reduce-motion .map-screen,
+.reduce-motion .typing-screen,
+.reduce-motion .aquarium-screen,
+.reduce-motion .wardrobe-screen,
+.reduce-motion .settings-screen {
+  animation: none;
+}
+
+@keyframes fish-swim {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(calc(var(--swim-x, 7px) * .55), var(--swim-y, -7px)) rotate(var(--swim-rot, 0deg));
+  }
+
+  100% {
+    transform: translate(var(--swim-x, 7px), calc(var(--swim-y, -7px) * .35)) rotate(0deg);
+  }
+}
+
+@keyframes fish-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(calc(var(--swim-x, 7px) * .3), calc(var(--swim-y, -7px) * 1.7)) rotate(calc(var(--swim-rot, 0deg) * -1));
+  }
+
+  100% {
+    transform: translate(calc(var(--swim-x, 7px) * .5), calc(var(--swim-y, -7px) * .8)) rotate(0deg);
+  }
+}
+
+@keyframes fish-sprite-frames {
+  0% {
+    background-position-x: 0%;
+  }
+
+  25% {
+    background-position-x: 33.333%;
+  }
+
+  50% {
+    background-position-x: 66.667%;
+  }
+
+  75%,
+  100% {
+    background-position-x: 100%;
+  }
+}
+
+@keyframes keycap-pop {
+  25% {
+    transform: translateY(3px) scale(.92);
+  }
+
+  60% {
+    transform: translateY(-5px) scale(1.1);
+  }
+}
+
+@keyframes keycap-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-4px);
+  }
+
+  40% {
+    transform: translateX(4px);
+  }
+
+  60% {
+    transform: translateX(-3px);
+  }
+
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+/* 動きを抑える設定では、跳ね・揺れは止めつつ色の合図は残す。 */
+.reduce-motion .keyboard-guide .keycap.pressed,
+.reduce-motion .keyboard-guide .keycap.wrong {
+  animation: none;
+}
+
+@keyframes region-backdrop-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pixel-bubble-rise {
+  0% {
+    bottom: -28px;
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  8% {
+    opacity: var(--bubble-opacity);
+  }
+
+  42% {
+    transform: translateX(var(--bubble-drift));
+  }
+
+  72% {
+    transform: translateX(0);
+  }
+
+  92% {
+    opacity: var(--bubble-opacity);
+  }
+
+  100% {
+    bottom: calc(100% + 28px);
+    opacity: 0;
+    transform: translateX(var(--bubble-drift));
+  }
+}
+
+.reduce-motion .pixel-bubbles {
+  display: none;
+}
+
+.reduce-motion .region-fade-backdrop {
+  display: none;
+}
+
+@keyframes guide-turtle-bob {
+
+  0%,
+  100% {
+    transform: translateY(2px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.reduce-motion .guide-turtle {
+  animation: none;
+  transform: none;
+}
+
+.reduce-motion .aquarium-magnifier {
+  transition: none;
+}

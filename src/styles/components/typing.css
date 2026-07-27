@@ -1,0 +1,772 @@
+.typing-screen {
+  margin: 28px auto 56px;
+}
+
+.typing-top {
+  justify-content: space-between;
+  font-size: .9rem;
+}
+
+.typing-stage {
+  min-height: 270px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.problem-title {
+  font-weight: 700;
+}
+
+.input-guide {
+  max-width: 100%;
+  min-height: 42px;
+  margin: 12px 0 0;
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  line-height: 1.3;
+  letter-spacing: .08em;
+  white-space: pre-wrap;
+  max-height: 2.6em;
+  overflow: hidden;
+}
+
+/* スクロールする中身。窓に収まる文では translateY(0) のまま動かない。 */
+.scroll-inner {
+  display: block;
+  transition: transform .35s ease;
+}
+
+.input-guide-typed {
+  color: #91a4a0;
+}
+
+.input-guide-next {
+  color: #d19b2d;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+.shortcut-button kbd {
+  padding: 1px 4px;
+  border-radius: 4px;
+  font: inherit;
+  font-size: .9em;
+}
+
+.keyboard-area {
+  min-height: 174px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.keyboard-guide {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.keycap {
+  min-width: 34px;
+  padding: 7px 5px;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: .8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.keycap.space {
+  min-width: 200px;
+}
+
+.guide-companion {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.guide-companion .avatar {
+  width: 58px;
+  height: 72px;
+  transform: scale(.72);
+  transform-origin: top left;
+  margin: 0 0 -20px 10px;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 41px;
+  left: 43px;
+  border: 6px solid transparent;
+  border-right-color: #b8c9bf;
+  transform: translateX(-11px);
+}
+
+.finger-guide {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+.hand-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hand-label {
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.hand {
+  position: relative;
+  width: 76px;
+  height: 38px;
+}
+
+.hand .palm {
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  width: 48px;
+  height: 18px;
+  border: 1.5px solid #9caea5;
+  border-radius: 8px 8px 4px 4px;
+}
+
+.hand .finger {
+  position: absolute;
+  bottom: 15px;
+  width: 10px;
+  border: 1.5px solid #9caea5;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+}
+
+.hand .pinky {
+  left: 12px;
+  height: 17px;
+}
+
+.hand .ring {
+  left: 24px;
+  height: 25px;
+}
+
+.hand .middle {
+  left: 36px;
+  height: 30px;
+}
+
+.hand .index {
+  left: 48px;
+  height: 27px;
+}
+
+.hand .thumb {
+  bottom: 3px;
+  left: 59px;
+  width: 11px;
+  height: 17px;
+  transform: rotate(42deg);
+  border-bottom: 1.5px solid #9caea5;
+  border-radius: 7px;
+}
+
+.hand.right {
+  transform: scaleX(-1);
+}
+
+.hand .finger.active {
+  border-color: #c8952e;
+  background: #f6dfa4;
+  box-shadow: 0 0 0 3px #f6dfa477;
+}
+
+.hand.right+* {
+  transform: scaleX(-1);
+}
+
+.shortcut-button small {
+  font-size: .7rem;
+  opacity: .82;
+}
+
+.primary-button.shortcut-button small {
+  color: #e7f0ec;
+}
+
+.typing-screen {
+  animation: screen-rise-in .22s cubic-bezier(.2, .8, .2, 1) both;
+  transform-origin: 50% 35%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-screen {
+      animation: none;
+    }
+}
+
+@media (max-width: 560px) {
+  .typing-screen {
+      width: min(100% - 24px, 920px);
+      margin-top: 12px;
+    }
+
+    .typing-stage {
+      min-height: 235px;
+      padding-top: 15px;
+    }
+
+    .keyboard-area {
+      min-height: 174px;
+      padding: 0;
+    }
+
+    .guide-companion {
+      top: -45px;
+      left: 4px;
+      width: 180px;
+      display: block;
+    }
+
+    .guide-companion .avatar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(.57);
+      margin: 0;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: 2px;
+      left: 42px;
+      width: 160px;
+      padding: 6px 9px;
+      font-size: .7rem;
+    }
+
+    .speech-bubble::before {
+      display: none;
+    }
+
+    .keycap {
+      min-width: 27px;
+      font-size: .7rem;
+      padding: 7px 3px;
+    }
+
+    .keycap.space {
+      min-width: 160px;
+    }
+
+    .finger-guide {
+      gap: 10px;
+    }
+
+    .hand-group {
+      gap: 3px;
+    }
+
+    .hand-label {
+      font-size: .62rem;
+    }
+
+    .hand {
+      width: 67px;
+      transform: scale(.86);
+      transform-origin: center;
+    }
+
+    .hand.right {
+      transform: scaleX(-1) scale(.86);
+    }
+}
+
+.typing-screen {
+  color: var(--ui-ink-base);
+}
+
+.typing-top {
+  color: #aac4c7;
+}
+
+.sea-typing-stage .problem-title,
+.sea-typing-stage .problem-text,
+.sea-typing-stage .input-guide {
+  position: relative;
+  z-index: 1;
+}
+
+.problem-title {
+  color: #96c7c8;
+}
+
+.input-guide-rest {
+  color: var(--ui-ink-base);
+}
+
+.keycap {
+  color: #d1e2df;
+}
+
+.keycap.expected {
+  color: #fff2c3;
+}
+
+.hand .palm,
+.hand .finger {
+  border-color: #68909a;
+  background: #0d3045;
+}
+
+.hand-label {
+  color: #a5c4c4;
+}
+
+.shortcut-button kbd {
+  color: #d7f2ed;
+}
+
+@media (max-width: 560px) {
+    .input-guide {
+      max-width: 100%;
+      font-size: clamp(1.05rem, 5.2vw, 1.4rem);
+      letter-spacing: .04em;
+    }
+
+    .keyboard-guide {
+      padding-inline: 7px;
+    }
+
+    .key-row {
+      gap: 2px;
+    }
+
+    .keycap {
+      min-width: 22px;
+      padding-inline: 2px;
+    }
+}
+
+.keyboard-guide .keycap.pressed {
+  animation: keycap-pop .2s ease-out;
+}
+
+/* 打ち終えたキーは水色に沈める。ただし同じキーを続けて打つ場面では、
+   そのキーが「次に押すキー」のままなので、黄色のガイドを消さずに跳ねだけ見せる。 */
+.keyboard-guide .keycap.pressed:not(.expected) {
+  border-color: #7fd4c6;
+  background: #12586f;
+  color: #eafffb;
+}
+
+.keyboard-guide .keycap.wrong {
+  animation: keycap-shake .32s ease-in-out;
+  border-color: #e2604f;
+  background: #7a2723;
+  color: #ffdcd5;
+}
+
+/* お題のうち終わった部分。ローマ字ガイドの typed と同じく、済んだ文字を落ち着いた色にする。 */
+.problem-text-typed {
+  color: #7f9d99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .keyboard-guide .keycap.pressed,
+    .keyboard-guide .keycap.wrong {
+      animation: none !important;
+    }
+}
+
+/* ヘッダーを出さない画面。上マージンだと .app-shell の外へ抜けて（margin collapsing）
+   :root の地色が黒帯として出るので、padding で余白を取る。 */
+.typing-screen {
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding-top: 14px;
+}
+
+.typing-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 0;
+  margin-bottom: 14px;
+}
+
+.typing-top .exit-lesson-button {
+  justify-self: start;
+}
+
+/* ヘッダーが無いぶん、唯一の離脱口である「やめる」をボタンらしく見せる。 */
+.exit-lesson-button {
+  gap: 4px;
+  font-size: .92rem;
+}
+
+.exit-lesson-button:hover {
+  border-color: #5ba9bd;
+  background: #12435e;
+  color: #fff;
+}
+
+.exit-lesson-button:active {
+  transform: translateY(1px);
+}
+
+/* 海図のステージカードと同じ「01」表記を、ステージ名の前に添える。 */
+.typing-stage-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  font-size: .86rem;
+}
+
+/* お題名はルビ付き語（ruby）とルビ無しの助詞が混在する。flex 直下に置くと
+   各 ruby / テキストが個別の flex アイテムになり、ルビの有無で基準線がずれて
+   ガタガタになる。1つの inline アイテムにまとめて通常の行内レイアウトで揃える。 */
+.typing-stage-label {
+  min-width: 0;
+}
+
+.typing-count {
+  font-size: .8rem;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.typing-count strong {
+  color: var(--ui-gold);
+  font-size: 1.12rem;
+}
+
+.typing-stage {
+  height: 220px;
+  padding: 16px 20px 14px;
+}
+
+.problem-title {
+  margin: 7px 0 5px;
+  font-size: 1rem;
+}
+
+/* 全角12文字までは clamp の値をそのまま使う。これは珊瑚の森までの最長に合わせた調整値。
+   海の洞窟以降は文が長くなるので、12文字を超えた分だけ文字数に反比例して縮める。
+   ただし max() で下限を設け、深海の長文でも読める大きさを保つ。下限を割る長さは
+   2行に折り返し、さらに超える分は ScrollingLine がスクロールで見せる。 */
+.problem-text {
+  max-width: 100%;
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: .08em;
+  max-height: 2.4em;
+  overflow: hidden;
+  font-size: max(2rem, calc(clamp(2.5rem, 6.4vw, 3.9rem) * 12 / max(var(--problem-length, 12), 12)));
+}
+
+/* ローマ字は24文字までを基準にする（珊瑚の森までの最長）。
+   洞窟以降はそれを超えた分だけ縮めて、固定高の箱で折り返さないようにする。 */
+.input-guide {
+  margin-top: 10px;
+  font-size: max(1.5rem, calc(clamp(1.65rem, 4vw, 2.25rem) * 24 / max(var(--guide-length, 24), 24)));
+}
+
+.keyboard-section {
+  margin-top: 18px;
+}
+
+.keyboard-section-label {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 13px;
+  width: min(100%, 760px);
+  margin: 0 auto 11px;
+  color: #8eb7b8;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+/* 中央スロットに進捗（.typing-count）が入るので、罫線はクラスで限定する。 */
+.keyboard-section-label>.section-rule {
+  background: #31566a;
+}
+
+.keyboard-area {
+  width: min(100%, 720px);
+}
+
+.keyboard-guide {
+  padding: 11px 20px 9px;
+}
+
+.keyboard-guide .key-row {
+  margin: 2px 0;
+}
+
+.keyboard-guide .finger-guide {
+  margin-top: 5px;
+  padding-top: 6px;
+}
+
+.shortcut-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .typing-screen {
+      width: min(100% - 24px, 980px);
+    }
+
+    .typing-stage {
+      height: auto;
+      min-height: 220px;
+      padding-inline: 12px;
+    }
+
+    .problem-text {
+      font-size: max(1.75rem, calc(clamp(2.25rem, 12vw, 3.45rem) * 12 / max(var(--problem-length, 12), 12)));
+    }
+
+    .keyboard-section {
+      margin-top: 30px;
+    }
+
+    .keyboard-section-label {
+      margin-bottom: 55px;
+    }
+
+    .guide-companion {
+      top: -45px;
+      left: 4px;
+    }
+}
+
+/* タイピング中の案内役。キーボードの左下へ少し重ね、
+   吹き出しはウミガメの頭上へ置いて「先生の声」として見せる。 */
+.keyboard-area {
+  box-sizing: border-box;
+}
+
+.guide-companion {
+  position: absolute;
+  z-index: 2;
+  top: auto;
+  right: auto;
+  bottom: -5px;
+  left: -100px;
+  width: 280px;
+  height: 210px;
+  display: block;
+  pointer-events: none;
+}
+
+.guide-turtle {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 150px;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 2px #00111d66);
+  animation: guide-turtle-bob 3.2s ease-in-out infinite;
+  transform: translateY(2px);
+}
+
+.typing-screen .guide-companion .speech-bubble {
+  position: absolute;
+  bottom: 122px;
+  left: 0px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 235px;
+  margin: 0;
+  padding: 10px 14px;
+  background: #061b29;
+  color: #eef6e9;
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: .015em;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.speech-bubble::before,
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: auto;
+  left: 78%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  transform: translateX(-50%);
+}
+
+.speech-bubble::before {
+  bottom: -13px;
+  border-width: 13px 10px 0;
+  border-color: #8a7444 transparent transparent;
+}
+
+.speech-bubble::after {
+  bottom: -9px;
+  border-width: 10px 8px 0;
+  border-color: #061b29 transparent transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .guide-turtle {
+      animation: none;
+      transform: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .keyboard-section-label {
+      margin-bottom: 11px;
+    }
+
+    .keyboard-area {
+      padding-top: 72px;
+    }
+
+    .guide-companion {
+      top: 0;
+      right: auto;
+      bottom: -3px;
+      left: -14px;
+      width: 238px;
+      height: auto;
+    }
+
+    .guide-turtle {
+      width: 118px;
+    }
+
+    .speech-bubble {
+      top: 0;
+      bottom: auto;
+      left: 8px;
+      width: max-content;
+      max-width: 210px;
+      padding: 8px 10px;
+      font-size: .72rem;
+      line-height: 1.45;
+    }
+
+    .speech-bubble::before,
+    .speech-bubble::after {
+      left: 64%;
+    }
+}
+
+.shortcut-button kbd,
+.shortcut-button kbd {
+  border: 0;
+  background: var(--ui-tint);
+}
+
+.typing-screen {
+  width: min(100% - 48px, 980px);
+}
+
+.exit-lesson-button {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-tint-weak);
+}
+
+.typing-stage-number {
+  color: #5bc5d0;
+  font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .06em;
+  padding: 3px 8px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-tint-weak);
+}
+
+.keyboard-section-label>.section-rule {
+  height: 0;
+}
+
+.keyboard-guide {
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: var(--region-surface-muted, #071f30);
+  box-shadow: none;
+}
+
+.keycap {
+  border: 0;
+  border-radius: 7px;
+  background: #103649;
+}
+
+.keycap.expected {
+  border: 0;
+  background: #8a671f;
+  box-shadow: none;
+  transform: none;
+}
+
+.finger-guide {
+  border: 0;
+}
+
+.typing-screen .guide-companion .speech-bubble {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  box-shadow: none;
+}
+
+.speech-bubble::before {
+  border-color: #061b29 transparent transparent;
+}
+
+.speech-bubble::after {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .typing-screen {
+      width: min(100% - 28px, 980px);
+    }
+
+    .typing-screen .guide-companion .speech-bubble {
+      top: 0;
+      right: auto;
+      bottom: auto;
+      left: 8px;
+      width: max-content;
+      max-width: 210px;
+      padding: 8px 10px;
+      font-size: .72rem;
+      line-height: 1.45;
+    }
+}

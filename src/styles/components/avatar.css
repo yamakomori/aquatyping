@@ -1,0 +1,74 @@
+.avatar-eye {
+  position: absolute;
+  z-index: 3;
+  width: 5px;
+  height: 7px;
+  background: #31454a;
+  border-radius: 50%;
+}
+
+.avatar-headmark {
+  position: absolute;
+  z-index: 4;
+  top: -5px;
+  width: 100%;
+  text-align: center;
+  color: #d1a341;
+  font-size: 28px;
+  transform: rotate(-12deg);
+}
+
+@media (max-width: 560px) {
+    .avatar {
+      transform: scale(.8);
+      transform-origin: right center;
+      margin-right: -10px;
+    }
+}
+
+/* Brand character: silhouette and color do the work; an extra outline is unnecessary. */
+.avatar {
+  width: 96px;
+  height: 118px;
+  position: relative;
+  flex: 0 0 auto;
+  filter: none;
+}
+
+.avatar-head,
+.avatar-body {
+  border: 0;
+  box-shadow: none;
+}
+
+.avatar-head {
+  position: absolute;
+  z-index: 2;
+  border-radius: 48% 48% 44% 44%;
+  top: 21px;
+  left: 24px;
+  width: 50px;
+  height: 51px;
+}
+
+.avatar-body {
+  position: absolute;
+  z-index: 1;
+  border-radius: 42% 42% 18px 18px;
+  bottom: 7px;
+  left: 18px;
+  width: 62px;
+  height: 54px;
+}
+
+.avatar-eye {
+  top: 43px;
+}
+
+.avatar-eye.left {
+  left: 40px;
+}
+
+.avatar-eye.right {
+  left: 55px;
+}

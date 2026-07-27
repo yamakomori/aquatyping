@@ -18,7 +18,7 @@ import { loadSave, persistSave } from "../../domain/save.js";
 import { playCatchSound, playTypingSound, primeCatchSound } from "../../game/audio/catchSound.js";
 import { createGameState, gameReducer } from "../../game/state/gameReducer.js";
 import { UiIcon, UiText } from "./UiPrimitives.jsx";
-import "../../styles.css";
+import "../../styles/index.css";
 
 const KEY_ROWS = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "-"],

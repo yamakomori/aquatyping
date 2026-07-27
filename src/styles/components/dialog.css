@@ -1,0 +1,355 @@
+.reward-overlay {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+  animation: overlay-in .2s ease-out;
+}
+
+.reward-card {
+  width: min(100%, 420px);
+  text-align: center;
+  animation: card-in .3s cubic-bezier(.2, .9, .3, 1.1);
+}
+
+.reward-card>.avatar {
+  margin: 0 auto -12px;
+  transform: scale(.62);
+  transform-origin: top center;
+  height: 72px;
+}
+
+.reward-card h1 {
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  line-height: 1.25;
+}
+
+.reward-card p:not(.eyebrow) {
+  margin: 9px 0;
+  color: #5b6e6a;
+  font-size: .9rem;
+}
+
+.new-medals {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 10px;
+  font-size: .76rem;
+  font-weight: 700;
+}
+
+.next-route-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 11px 10px 14px;
+  text-align: left;
+}
+
+.next-route-group span,
+.next-route-group strong {
+  display: block;
+}
+
+.next-route-group span {
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.next-route-group strong {
+  margin-top: 2px;
+  font-size: .96rem;
+}
+
+.route-button {
+  flex: 0 0 auto;
+  font-size: .82rem;
+}
+
+.route-button kbd {
+  margin-left: 3px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font: inherit;
+  font-size: .8em;
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-top: 13px;
+}
+
+.intro-screen {
+  animation: screen-rise-in .22s cubic-bezier(.2, .8, .2, 1) both;
+  transform-origin: 50% 35%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-screen {
+      animation: none;
+    }
+}
+
+.reward-overlay {
+  background: #00111caa;
+}
+
+.reward-card p:not(.eyebrow) {
+  color: #bed5d4;
+}
+
+.new-medals {
+  color: #bce1dc;
+}
+
+.next-route-group {
+  color: #c8ebe3;
+}
+
+.route-button kbd {
+  color: #d7f2ed;
+}
+
+.intro-card .avatar {
+  margin: 0 auto 2px;
+}
+
+.intro-card h1 {
+  margin: 4px 0 10px;
+  font-size: clamp(1.75rem, 7vw, 2.3rem);
+  line-height: 1.32;
+}
+
+.intro-card p:not(.eyebrow) {
+  margin: 0;
+  color: #bed5d4;
+  line-height: 1.65;
+}
+
+.intro-start {
+  width: min(100%, 250px);
+  margin: 22px auto 4px;
+}
+
+.intro-skip {
+  margin: 4px auto 0;
+  color: #9bc8ca;
+}
+
+.first-catch-card {
+  padding-top: 34px;
+}
+
+.first-catch-card .reward-fish {
+  position: relative;
+  display: block;
+  left: auto !important;
+  top: auto !important;
+  width: 78px;
+  height: 54px;
+  margin: 4px auto 8px;
+  animation: fish-swim 5s ease-in-out infinite alternate;
+}
+
+.first-catch-card p:not(.eyebrow) {
+  margin: 4px 0 17px;
+}
+
+.first-next-stage-button {
+  width: 100%;
+  min-height: 39px;
+  margin-top: 8px;
+  padding-block: 7px;
+  font-size: .83rem;
+}
+
+.first-next-stage-button small {
+  display: block;
+  margin-top: 2px;
+  color: #92c7c8;
+  font-size: .7rem;
+}
+
+.first-next-stage-button kbd {
+  padding: 1px 4px;
+  border: 1px solid #4d7d88;
+  border-radius: 4px;
+  background: #082438;
+  color: #d7f2ed;
+  font: inherit;
+}
+
+.reward-fish-slot {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.new-fish-badge {
+  position: absolute;
+  z-index: 4;
+  top: -13px;
+  right: -21px;
+  padding: 3px 6px;
+  border: 1px solid #f0c75b;
+  border-radius: 999px;
+  background: #7a5414;
+  color: #fff1b8;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  transform: rotate(8deg);
+}
+
+.first-catch-card .new-fish-badge {
+  top: -14px;
+  right: -23px;
+}
+
+.release-confirm-overlay {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #000e18bb;
+  backdrop-filter: blur(5px);
+}
+
+.release-confirm-card {
+  width: min(100%, 340px);
+  padding: 26px 25px 22px;
+  text-align: center;
+}
+
+.release-confirm-card h2 {
+  margin: 3px 0 9px;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.release-confirm-card p:not(.eyebrow) {
+  margin: 0;
+  color: #bdd4d4;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.release-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.release-confirm-actions .primary-button,
+.release-confirm-actions .secondary-button {
+  min-width: 0;
+  padding-inline: 8px;
+}
+
+.first-catch-card .reward-fish.has-sprite {
+  width: 80px;
+  height: 80px;
+}
+
+.reward-card {
+  position: relative;
+}
+
+.dialog-close:hover {
+  border-color: #6ebfc1;
+  color: #fff;
+}
+
+.first-aquarium-button {
+  width: 100%;
+  margin: 8px 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.intro-card p:not(.eyebrow) {
+  line-height: 2;
+}
+
+/* Intro and overlays: reserve elevation for content that truly floats. */
+.intro-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--ui-canvas);
+}
+
+.intro-card,
+.reward-card,
+.release-confirm-card {
+  border: 0;
+  border-radius: var(--ui-radius-panel);
+  background: var(--ui-surface);
+}
+
+.intro-card {
+  width: min(100%, 430px);
+  padding: 35px 30px 28px;
+  text-align: center;
+  box-shadow: none;
+}
+
+.reward-card,
+.release-confirm-card {
+  box-shadow: 0 24px 64px #00081480;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #c9dfdf;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+}
+
+.dialog-close:hover {
+  border-color: transparent;
+  background: var(--ui-tint);
+}
+
+.new-medals,
+.next-route-group {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+}
+
+.new-medals {
+  background: var(--ui-surface-raised);
+}
+
+.next-route-group {
+  background: #10404b;
+}
+
+.route-button kbd {
+  border: 0;
+  background: var(--ui-tint);
+}

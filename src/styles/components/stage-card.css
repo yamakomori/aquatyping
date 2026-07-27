@@ -1,0 +1,276 @@
+.stage-card {
+  display: grid;
+  align-items: center;
+}
+
+.stage-card h2 {
+  margin: 0;
+  font-size: 1.07rem;
+}
+
+.stage-number {
+  font-weight: 700;
+}
+
+.dev-stage-selector {
+  margin-top: 22px;
+  padding: 12px 14px;
+  border: 1px dashed #b8c8bf;
+  border-radius: 12px;
+  color: #5b7169;
+  font-size: .82rem;
+}
+
+.dev-stage-selector summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.dev-stage-selector div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dev-stage-selector .secondary-button {
+  min-height: 32px;
+  padding: 5px 9px;
+  font-size: .78rem;
+}
+
+@media (max-width: 560px) {
+    .stage-card {
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+    }
+
+    .stage-card .secondary-button {
+      grid-column: 2;
+      justify-self: start;
+    }
+}
+
+.stage-card.locked {
+  background: #071724;
+  color: #6d8591;
+}
+
+.stage-card small {
+  color: #88a6ac;
+}
+
+.map-screen .stage-list {
+  position: relative;
+  display: grid;
+  /* 左右は余白なし。現在位置バーと行の区切り線が、帯の端まで届くようにする。 */
+}
+
+.map-screen .stage-card {
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 18px;
+  /* 左は 10px + バーの 4px で 14px。右も 14px にして帯の端からの入りを揃える。 */
+  /* 現在位置バーの居場所は全行が最初から確保しておく。current のときだけ padding を足すと、
+     その行の中身だけ右にずれて左端が揃わなくなるため。 */
+}
+
+.stage-number {
+  display: grid;
+  place-items: center;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: .78rem;
+}
+
+.stage-copy h3 {
+  margin: 0;
+  font-size: 1.18rem;
+  line-height: 1.45;
+}
+
+.stage-copy>p {
+  max-width: 46em;
+  margin: 6px 0 9px;
+  color: #a7c1c5;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.stage-progress {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+
+.stage-action:hover {
+  border-bottom-color: #7ad7d3;
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .map-screen .stage-card {
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 11px;
+      padding: 20px;
+    }
+
+    .stage-number {
+      width: 34px;
+      height: 34px;
+      font-size: .68rem;
+    }
+
+    .stage-copy h3 {
+      font-size: 1.04rem;
+    }
+
+    .stage-action {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: 3px;
+    }
+}
+
+.stage-action.primary {
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
+  border: 0 !important;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-accent-fill) !important;
+  box-shadow: 0 var(--ui-button-depth) 0 var(--button-shadow, #0f535c) !important;
+  color: #fff !important;
+}
+
+.stage-action.primary:hover {
+  background: var(--ui-accent-fill-hover) !important;
+}
+
+.stage-action {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+}
+
+.stage-copy>p {
+  color: var(--ui-ink-muted);
+}
+
+.map-screen .stage-list {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-screen .stage-card {
+  position: relative;
+  isolation: isolate;
+  min-height: 124px;
+  padding: 25px 28px;
+  border: 0 !important;
+  border-radius: var(--ui-radius-card);
+  background: rgb(0 0 0 / 60%) !important;
+  box-shadow: none !important;
+  transition:
+    background-color var(--ui-motion),
+    transform var(--ui-motion);
+}
+
+.map-screen .stage-card.current {
+  background: rgb(0 0 0 / 68%) !important;
+}
+
+.map-screen .stage-card.locked {
+  background: rgb(0 0 0 / 50%) !important;
+  opacity: .7;
+}
+
+.stage-card-hitbox {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.stage-card-hitbox:focus-visible {
+  outline: 0;
+}
+
+.stage-card> :not(.stage-card-hitbox) {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.map-screen .stage-card:has(.stage-card-hitbox:hover) {
+  background: rgb(0 0 0 / 66%) !important;
+}
+
+.map-screen .stage-card.current:has(.stage-card-hitbox:hover) {
+  background: rgb(0 0 0 / 74%) !important;
+}
+
+.stage-card:has(.stage-card-hitbox:focus-visible) {
+  outline: 3px solid var(--ui-focus-ring);
+  outline-offset: 3px;
+}
+
+.stage-card:has(.stage-card-hitbox:active) {
+  transform: translateY(2px);
+}
+
+.stage-number {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ui-tint-weak);
+}
+
+.stage-action {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  padding: 10px 14px;
+  color: #bce7e7;
+  transition: background-color var(--ui-motion),
+    box-shadow var(--ui-motion),
+    transform var(--ui-motion);
+}
+
+.stage-action:hover {
+  border: 0;
+  background: #ffffff10;
+}
+
+.stage-action.primary {
+  padding: 10px 14px;
+}
+
+.stage-card:has(.stage-card-hitbox:active) .stage-action.primary {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--button-shadow, #0f535c) !important;
+}
+
+.dev-stage-selector {
+  margin-top: 28px;
+  padding: 16px;
+  border: 0;
+  border-radius: var(--ui-radius-card);
+  background: #071f30;
+}
+
+@media (max-width: 760px) {
+  .map-screen .stage-card {
+      padding: 22px 20px;
+    }
+}

@@ -1,0 +1,165 @@
+.medal {
+  font-size: .63rem;
+  font-weight: 700;
+}
+
+.new-medals .medal {
+  font-size: .7rem;
+}
+
+.medal-tooltip {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  outline: none;
+  cursor: help;
+}
+
+.medal-tooltip::before,
+.medal-tooltip::after {
+  position: absolute;
+  z-index: 30;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease, visibility .12s;
+}
+
+.medal-tooltip::before {
+  content: "";
+  right: 8px;
+  bottom: calc(100% + 6px);
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid #75b7b3;
+  border-bottom: 1px solid #75b7b3;
+  background: #eff8f5;
+  transform: translateY(3px) rotate(45deg);
+}
+
+.medal-tooltip::after {
+  content: attr(data-tooltip);
+  right: -4px;
+  bottom: calc(100% + 10px);
+  width: max-content;
+  max-width: min(190px, calc(100vw - 24px));
+  padding: 7px 9px;
+  border: 1px solid #75b7b3;
+  border-radius: 5px 5px 5px 1px;
+  background: #eff8f5;
+  color: #12313b;
+  box-shadow: 3px 3px 0 #00172266;
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: .02em;
+  text-align: left;
+  white-space: normal;
+  transform: translateY(3px);
+}
+
+.medal-tooltip:hover::before,
+.medal-tooltip:hover::after,
+.medal-tooltip:focus-visible::before,
+.medal-tooltip:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) rotate(45deg);
+}
+
+.medal-tooltip:hover::after,
+.medal-tooltip:focus-visible::after {
+  transform: translateY(0);
+}
+
+.medal-tooltip:focus-visible {
+  outline: 2px solid var(--ui-focus-ring);
+  outline-offset: 3px;
+}
+
+.medal {
+  --medal-border: #547783;
+  --medal-face: #0b2636;
+  --medal-ink: #73919a;
+  --medal-detail: #466570;
+  position: relative;
+  isolation: isolate;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: var(--medal-border);
+  color: var(--medal-ink);
+  clip-path: polygon(4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px);
+}
+
+.medal::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 2px;
+  background: var(--medal-face);
+  clip-path: polygon(3px 0, calc(100% - 3px) 0, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 0 calc(100% - 3px), 0 3px);
+}
+
+.medal-pattern {
+  position: relative;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+.medal-pattern-detail {
+  fill: var(--medal-detail);
+}
+
+.medal.earned.careful,
+.medal.earned.speed,
+.medal.earned.gold {
+  border: 0;
+  background: var(--medal-border);
+  color: var(--medal-ink);
+  box-shadow: none;
+}
+
+.medal.earned.careful {
+  --medal-border: #d6a43d;
+  --medal-face: #584720;
+  --medal-ink: #ffe19b;
+  --medal-detail: #f6c956;
+  filter: drop-shadow(2px 2px 0 #241b0c);
+}
+
+.medal.earned.speed {
+  --medal-border: #61b5bc;
+  --medal-face: #174b55;
+  --medal-ink: #c9ffff;
+  --medal-detail: #59d6d8;
+  filter: drop-shadow(2px 2px 0 #08242b);
+}
+
+.medal.earned.gold {
+  --medal-border: #f1c85c;
+  --medal-face: #7b5514;
+  --medal-ink: #fff0aa;
+  --medal-detail: #f7bd32;
+  filter: drop-shadow(2px 2px 0 #342207);
+}
+
+.new-medals .medal {
+  width: 32px;
+  height: 32px;
+}
+
+.new-medals .medal-pattern {
+  width: 21px;
+  height: 21px;
+}
+
+.stage-card .medal-tooltip {
+  pointer-events: auto;
+}

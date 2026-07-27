@@ -1,0 +1,123 @@
+:root {
+  color-scheme: dark;
+  font-family: "M Plus Rounded 1c", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  color: var(--ui-ink-base);
+  background: #031426;
+}
+
+:root {
+  --ui-canvas: #061b2a;
+  --ui-surface: #0a2a3b;
+  --ui-surface-raised: #103649;
+  --ui-surface-active: #164656;
+  --ui-ink: #eef7f4;
+  --ui-ink-muted: #a9c3c3;
+  --ui-accent: #72d3cf;
+  --ui-accent-fill: #197985;
+  --ui-accent-fill-hover: #238b94;
+  --ui-danger: #ffb5ad;
+  --ui-danger-surface: #462b35;
+  --ui-radius-control: 7px;
+  --ui-radius-card: 10px;
+  --ui-radius-panel: 14px;
+  --ui-control-padding-y: 11px;
+  --ui-control-padding-x: 16px;
+  --ui-button-depth: 4px;
+  --ui-motion: 160ms ease;
+
+  /* 基準の文字色。:root の color と、それへ戻したい箇所が共有する。 */
+  --ui-ink-base: #e8f1ed;
+  /* 金色のハイライト。数値・強調テキストとフォーカスリングで同じ色を使う。 */
+  --ui-gold: #f0ca72;
+  --ui-focus-ring: var(--ui-gold);
+  /* 面をわずかに持ち上げる白の重ね。 */
+  --ui-tint: #ffffff12;
+  --ui-tint-weak: #ffffff0d;
+  /* 海域の背景画を上端で海色へ溶かすマスク。5海域で共通。 */
+  --backdrop-mask: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+}
+
+.region-tidepool {
+  --region-surface: #1b5963e8;
+  --region-surface-active: #286f74f2;
+  --region-surface-muted: #174c57d6;
+  --region-action: #2b817c;
+  --region-action-hover: #35958d;
+  --region-action-shadow: #185a57;
+  --region-stripe: linear-gradient(105deg, #1d5d68e8, #14495ae8);
+  --region-number-ink: #b9e7b7;
+  --region-shine: .14;
+  --region-art: url("/backgrounds/tidepool.png");
+}
+
+.region-shallows {
+  --region-surface: #11485ae8;
+  --region-surface-active: #1a6070f2;
+  --region-surface-muted: #0e3c4ed6;
+  --region-action: #167783;
+  --region-action-hover: #218b94;
+  --region-action-shadow: #0b525c;
+  --region-stripe: linear-gradient(105deg, #105064e8, #0b3b50e8);
+  --region-number-ink: #8ce4dc;
+  --region-shine: .18;
+  --region-art: url("/backgrounds/shallows.png");
+}
+
+.region-coral-forest {
+  --region-surface: #3a3143e8;
+  --region-surface-active: #514052f2;
+  --region-surface-muted: #302a3bd6;
+  --region-action: #a25765;
+  --region-action-hover: #b96873;
+  --region-action-shadow: #703945;
+  --region-stripe: linear-gradient(105deg, #1c2438, #173040);
+  --region-number-ink: #f2a183;
+  --region-shine: .11;
+  --region-art: url("/backgrounds/coral-forest.png");
+}
+
+.region-sea-cave {
+  --region-surface: #22343ee8;
+  --region-surface-active: #314a55f2;
+  --region-surface-muted: #1c2c36d6;
+  --region-action: #47788b;
+  --region-action-hover: #568da0;
+  --region-action-shadow: #2d5261;
+  --region-stripe: linear-gradient(105deg, #1a2733, #14202b);
+  --region-number-ink: #93cbe4;
+  --region-shine: .07;
+  --region-art: url("/backgrounds/sea-cave.png");
+}
+
+.region-deep-sea {
+  --region-surface: #1a2538e8;
+  --region-surface-active: #243550f2;
+  --region-surface-muted: #151f31d6;
+  --region-action: #286f78;
+  --region-action-hover: #33838a;
+  --region-action-shadow: #174b52;
+  --region-stripe: linear-gradient(105deg, #131d33, #0d1728);
+  --region-number-ink: #6fe0cc;
+  --region-shine: .035;
+  --region-art: url("/backgrounds/deep-sea.png");
+}
+
+.region-backdrop-tidepool {
+  --region-bubble-ink: #d5fff1;
+}
+
+.region-backdrop-shallows {
+  --region-bubble-ink: #bfefff;
+}
+
+.region-backdrop-coral-forest {
+  --region-bubble-ink: #ffe1d0;
+}
+
+.region-backdrop-sea-cave {
+  --region-bubble-ink: #d1edff;
+}
+
+.region-backdrop-deep-sea {
+  --region-bubble-ink: #83e8dc;
+}

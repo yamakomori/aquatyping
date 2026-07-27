@@ -1,0 +1,15 @@
+/* 読み込み順がカスケードの順番になる。並べ替えると見た目が変わるので動かさないこと。 */
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+@import "./regions.css";
+@import "./components/button.css";
+@import "./components/avatar.css";
+@import "./components/stage-card.css";
+@import "./components/region-nav.css";
+@import "./components/aquarium.css";
+@import "./components/medal.css";
+@import "./components/typing.css";
+@import "./components/dialog.css";
+@import "./components/settings.css";
+@import "./motion.css";

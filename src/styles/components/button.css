@@ -1,0 +1,206 @@
+.coin {
+  font-size: .9rem;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  font-weight: 700;
+}
+
+.primary-button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.danger-button {
+  margin-top: 28px;
+}
+
+@media (max-width: 560px) {
+    .brand {
+      font-size: .84rem;
+    }
+}
+
+/* 海と水槽のMVP。実アセットは後からこの構造に差し替える。 */
+.brand,
+.text-button {
+  color: var(--ui-ink-base);
+}
+
+.coin {
+  color: #ffd36e;
+}
+
+.brand:hover {
+  background: #143348;
+}
+
+.brand,
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  color: var(--ui-ink-base);
+  font-weight: 700;
+}
+
+.brand {
+  font-size: .92rem;
+}
+
+.nav-button {
+  min-width: 58px;
+  flex-direction: column;
+  gap: 1px;
+  color: #c4dad9;
+  font-size: .66rem;
+}
+
+.brand:hover,
+.nav-button:hover {
+  background: #143348;
+  color: #fff;
+}
+
+.coin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.text-button {
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+@media (max-width: 760px) {
+    .brand {
+      padding-inline: 6px;
+    }
+
+    .nav-button {
+      min-width: 48px;
+      padding-inline: 4px;
+    }
+
+    .coin {
+      padding-inline: 7px;
+    }
+}
+
+@media (max-width: 430px) {
+    .coin {
+      display: none;
+    }
+
+    .brand span {
+      font-size: .76rem;
+    }
+
+    .nav-button span {
+      font-size: .6rem;
+    }
+}
+
+.brand,
+.nav-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+  text-shadow: none !important;
+}
+
+.brand,
+.nav-button {
+  padding: 9px 12px;
+}
+
+.brand:hover,
+.nav-button:hover,
+.text-button:hover {
+  border-color: transparent;
+  background: var(--ui-tint);
+  color: #fff;
+}
+
+.coin {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: #e0ad4024;
+}
+
+.primary-button {
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
+  border: 0 !important;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-accent-fill) !important;
+  box-shadow: 0 var(--ui-button-depth) 0 var(--button-shadow, #0f535c) !important;
+  color: #fff !important;
+}
+
+.primary-button:hover {
+  background: var(--ui-accent-fill-hover) !important;
+}
+
+.secondary-button {
+  --button-shadow: #071d2a;
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-surface-raised);
+  box-shadow: 0 var(--ui-button-depth) 0 #071d2a;
+  color: #d7efed;
+}
+
+.secondary-button:hover {
+  background: var(--ui-surface-active);
+  color: #fff;
+}
+
+.danger-button {
+  --button-shadow: #2b1720;
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-danger-surface);
+  box-shadow: 0 var(--ui-button-depth) 0 #2b1720;
+  color: var(--ui-danger);
+}
+
+.danger-button:hover {
+  background: #59343e;
+  color: #ffd9d4;
+}
+
+.primary-button:active:not(:disabled),
+.secondary-button:active:not(:disabled),
+.danger-button:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--button-shadow, #071d2a) !important;
+}
+
+.text-button {
+  border: 0;
+  border-radius: var(--ui-radius-control);
+  background: transparent;
+}
+
+.text-button {
+  padding: 10px 12px;
+}
+
+.back-button {
+  margin-top: 18px;
+  margin-left: -10px;
+}

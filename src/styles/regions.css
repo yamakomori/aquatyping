@@ -1,0 +1,653 @@
+/* 第二海域「浅瀬」。水槽では枠内に、海図とタイピングでは画面下端から海を立ち上げる。 */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+/* ヘッダーを隠すタイピング画面だけ、内容をビューポートの縦中央に置く。
+   キーボードガイドを消してもお題が上に寄らない。safe center により、
+   ガイド表示で内容が画面より高くなったときは上端そろえに退避して切れない。 */
+.app-shell:has(.typing-screen) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+}
+
+.app-shell.screen-aquarium::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background-color: #253f43;
+  background-image: linear-gradient(180deg, #071f2652 0%, #04161d8f 100%), url("/backgrounds/aquarium-room.png");
+  background-position: center, center;
+  background-size: cover, cover;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.app-shell.region-backdrop-tidepool::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: clamp(360px, 42.9vw, 820px);
+  background-color: #76cbc7;
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/tidepool.png");
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
+  pointer-events: none;
+}
+
+.region-backdrop-tidepool .brand,
+.region-backdrop-tidepool .text-button {
+  color: #f4fff9;
+}
+
+.region-backdrop-tidepool .coin {
+  border-color: #7cb5a2;
+  background: #23626bd9;
+  color: #fff0ac;
+}
+
+.region-tidepool .map-hero .eyebrow,
+.region-tidepool .typing-stage-name {
+  color: #bce8c2;
+}
+
+.region-tidepool .map-hero p:not(.eyebrow) {
+  color: #ddf1e8;
+}
+
+.region-tidepool .map-hero .primary-button {
+  background: #2b8b85;
+  box-shadow: 0 3px 0 #17635f;
+}
+
+.region-tidepool .stage-card.current {
+  border-color: #a4d9c5;
+  box-shadow: 0 8px 24px #2b857273;
+}
+
+.region-tidepool .stage-card p {
+  color: #cbe0da;
+}
+
+.region-tidepool .stage-card small {
+  color: #b2cec7;
+}
+
+.region-tidepool .stage-card .secondary-button {
+  border-color: #7db1a9;
+  background: #1c5c68;
+  color: #effff8;
+}
+
+.region-tidepool .aquarium-preview {
+  background-color: #76cbc7;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.region-tidepool .aquarium-preview::before {
+  background: linear-gradient(180deg, #f1fff22b 0%, transparent 34%, #16455224 100%);
+}
+
+.region-tidepool .aquarium-preview p {
+  color: #f4fff9;
+  text-shadow: 0 1px 5px #174756;
+}
+
+.region-tidepool .aquarium-sand {
+  display: none;
+}
+
+.region-tidepool .sea-typing-stage {
+  border-color: #7fb2a9;
+  background-color: #155968;
+  background-image: linear-gradient(180deg, #1b6570bd 0%, #104657d9 100%);
+  box-shadow: 0 14px 34px #03263166;
+}
+
+.region-tidepool .sea-typing-stage .problem-title {
+  color: #d9eee7;
+}
+
+.region-tidepool .keyboard-guide {
+  border-color: #6fa29f;
+  background: #164d5de8;
+  box-shadow: 0 10px 26px #03263155;
+}
+
+.region-tidepool .keycap {
+  border-color: #70a19f;
+  background: #1b5b69;
+  color: #eaf5f0;
+}
+
+.region-tidepool .keycap.expected {
+  border-color: #e1bc68;
+  background: #8a682b;
+  color: #fff5cf;
+}
+
+.region-tidepool .speech-bubble {
+  border-color: #75aaa1;
+  background: #185463e8;
+  color: #e9f5ef;
+}
+
+.app-shell.region-backdrop-shallows::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: clamp(360px, 42.9vw, 820px);
+  background-color: #0a596f;
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/shallows.png");
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
+  pointer-events: none;
+}
+
+.region-backdrop-shallows .brand,
+.region-backdrop-shallows .text-button {
+  color: #effffb;
+}
+
+.region-backdrop-shallows .coin {
+  border-color: #5ca6a5;
+  background: #0c5261d9;
+  color: #fff0ac;
+}
+
+.region-shallows .screen-heading {
+  border-color: #397f83;
+  background: linear-gradient(135deg, #0d4b56, #082c43);
+}
+
+.region-shallows .map-hero p:not(.eyebrow) {
+  color: #d1eeea;
+}
+
+.region-shallows .map-hero .primary-button {
+  background: #168492;
+  box-shadow: 0 3px 0 #0a5d68;
+}
+
+.region-shallows .stage-card.current {
+  border-color: #80d5cf;
+  box-shadow: 0 8px 24px #0b718073;
+}
+
+.region-shallows .stage-card p {
+  color: #c1dddd;
+}
+
+.region-shallows .stage-card small {
+  color: #a9cbca;
+}
+
+.region-shallows .stage-card .secondary-button {
+  border-color: #68aeb1;
+  background: #105064;
+  color: #e7fffb;
+}
+
+.region-shallows .aquarium-preview {
+  background-color: #0a596f;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.region-shallows .aquarium-preview::before {
+  background: linear-gradient(180deg, #d9fff21a 0%, transparent 35%, #02283a1f 100%);
+}
+
+.region-shallows .aquarium-sand {
+  display: none;
+}
+
+.region-shallows .sea-typing-stage {
+  border-color: #6eb9b7;
+  background-color: #0a5264;
+  background-image: linear-gradient(180deg, #0c5b6ab8 0%, #073e52d4 100%);
+  box-shadow: 0 14px 34px #01182266;
+}
+
+.region-shallows .sea-typing-stage .problem-title {
+  color: #c9efea;
+}
+
+.region-shallows .keyboard-guide {
+  border-color: #5b9da5;
+  background: #0b4358e8;
+  box-shadow: 0 10px 26px #02233355;
+}
+
+.region-shallows .keycap {
+  border-color: #5993a0;
+  background: #10536a;
+  color: #e2f3ef;
+}
+
+.region-shallows .keycap.expected {
+  border-color: #e0b557;
+  background: #896421;
+  color: #fff4c8;
+}
+
+.region-shallows .speech-bubble {
+  border-color: #5c9e9f;
+  background: #0d4c5ee8;
+  color: #e0f3ee;
+}
+
+/* 珊瑚の森以降も、海域画面では下端から背景画を立ち上げ、上端を海色へ溶かす。 */
+.app-shell:is(.region-backdrop-coral-forest,
+  .region-backdrop-sea-cave,
+  .region-backdrop-deep-sea)::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: clamp(360px, 42.9vw, 820px);
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
+  pointer-events: none;
+}
+
+.region-backdrop-coral-forest .brand,
+.region-backdrop-coral-forest .text-button,
+.region-backdrop-sea-cave .brand,
+.region-backdrop-sea-cave .text-button,
+.region-backdrop-deep-sea .brand,
+.region-backdrop-deep-sea .text-button {
+  color: #efffff;
+  text-shadow: 0 1px 4px #020d18;
+}
+
+.app-shell.region-backdrop-coral-forest::before {
+  background-color: #16566a;
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/coral-forest.png");
+}
+
+.app-shell.region-backdrop-sea-cave::before {
+  background-color: #0b2c40;
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/sea-cave.png");
+}
+
+.app-shell.region-backdrop-deep-sea::before {
+  background-color: #061226;
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/deep-sea.png");
+}
+
+.region-coral-forest .aquarium-preview {
+  background-color: #16566a;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.region-coral-forest .aquarium-preview::before {
+  background: linear-gradient(110deg, transparent 17%, #fff1c84a 25%, transparent 34%), radial-gradient(ellipse at 50% 0%, #ffdca75c, transparent 60%);
+}
+
+.region-coral-forest .aquarium-sand {
+  display: none;
+}
+
+.region-coral-forest .sea-typing-stage {
+  border-color: #a85f69;
+  background: radial-gradient(ellipse at 82% 16%, #df8b7055, transparent 36%), #173348;
+}
+
+.region-coral-forest .stage-card.current {
+  border-color: #df8d7b;
+  box-shadow: 0 5px 18px #ba5f6b35;
+}
+
+.region-sea-cave .aquarium-preview {
+  background-color: #0b2c40;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.region-sea-cave .aquarium-preview::before {
+  background: linear-gradient(96deg, transparent 38%, #cfe9ff2e 43%, #cfe9ff12 47%, transparent 52%), radial-gradient(ellipse at 44% 0%, #a8d4f03d, transparent 52%);
+}
+
+.region-sea-cave .aquarium-sand {
+  display: none;
+}
+
+.region-sea-cave .sea-typing-stage {
+  border-color: #55707e;
+  background: radial-gradient(ellipse at 26% 8%, #9fd0ea38, transparent 40%), #101f2a;
+}
+
+.region-sea-cave .stage-card.current {
+  border-color: #8fc4dd;
+  box-shadow: 0 5px 18px #5f93aa35;
+}
+
+.region-deep-sea .aquarium-preview {
+  background-color: #061226;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.region-deep-sea .aquarium-preview::before {
+  background: radial-gradient(ellipse at 68% 12%, #4fd8c83a, transparent 46%), radial-gradient(ellipse at 22% 82%, #3a6fd42a, transparent 44%);
+}
+
+.region-deep-sea .aquarium-sand {
+  display: none;
+}
+
+@media (max-width: 560px) {
+    .app-shell.screen-aquarium::before {
+      background-position: center, 22% center;
+    }
+}
+
+.region-backdrop-shallows .nav-button {
+  color: #effffb;
+}
+
+.region-backdrop-tidepool .nav-button {
+  color: #f4fff9;
+}
+
+.map-screen.region-tidepool .region-navigation {
+  border-color: #4f8788;
+}
+
+.map-screen.region-shallows .stage-card,
+.map-screen.region-coral-forest .stage-card {
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 18px;
+  /* 左は 10px + バーの 4px で 14px。右も 14px にして帯の端からの入りを揃える。 */
+  /* 現在位置バーの居場所は全行が最初から確保しておく。current のときだけ padding を足すと、
+     その行の中身だけ右にずれて左端が揃わなくなるため。 */
+}
+
+.map-screen.region-tidepool .stage-card.current {
+  border-left-color: #a4d9c5 !important;
+  background: linear-gradient(90deg, #398f7b4d, transparent 58%) !important;
+}
+
+.map-screen.region-tidepool .stage-action {
+  border-bottom-color: #6b9d98;
+  color: #dff2ec;
+}
+
+.map-screen.region-tidepool .stage-action.primary {
+  border-color: #72b3a8;
+  background: #2b817c;
+  box-shadow: 0 3px 0 #195f5c;
+}
+
+/* 浅瀬の .text-button ルール（明るい文字色＋影）より詳細度を上げ、ピルの見た目を海域によらず揃える。 */
+.region-backdrop-shallows .exit-lesson-button {
+  color: var(--ui-ink-base);
+  text-shadow: none;
+}
+
+.region-backdrop-shallows .exit-lesson-button:hover {
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .map-screen.region-shallows .stage-card,
+  .map-screen.region-coral-forest .stage-card {
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 11px;
+      padding: 20px;
+    }
+}
+
+/* Pixel bubbles: an eight-pixel ring, scaled only by whole numbers to stay crisp. */
+.app-shell::before {
+  z-index: -2 !important;
+}
+
+.pixel-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pixel-bubbles-world {
+  position: fixed;
+  z-index: -1;
+  transition: color .32s ease-out;
+}
+
+.pixel-bubbles-tank {
+  z-index: 0;
+  color: #dcffff;
+}
+
+.region-fade-backdrop {
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  background-color: var(--region-fade-color);
+  pointer-events: none;
+  animation: region-backdrop-fade-out .32s ease-out forwards;
+}
+
+.region-fade-backdrop::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: clamp(360px, 42.9vw, 820px);
+  background-color: var(--region-fade-image-color);
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), var(--region-fade-image);
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
+}
+
+.region-fade-backdrop-tidepool {
+  --region-fade-color: #164958;
+  --region-fade-image-color: #76cbc7;
+  --region-fade-image: url("/backgrounds/tidepool.png");
+}
+
+.region-fade-backdrop-shallows {
+  --region-fade-color: #07384c;
+  --region-fade-image-color: #0a596f;
+  --region-fade-image: url("/backgrounds/shallows.png");
+}
+
+.region-fade-backdrop-coral-forest {
+  --region-fade-color: #16384a;
+  --region-fade-image-color: #16566a;
+  --region-fade-image: url("/backgrounds/coral-forest.png");
+}
+
+.region-fade-backdrop-sea-cave {
+  --region-fade-color: #0d2737;
+  --region-fade-image-color: #0b2c40;
+  --region-fade-image: url("/backgrounds/sea-cave.png");
+}
+
+.region-fade-backdrop-deep-sea {
+  --region-fade-color: #071321;
+  --region-fade-image-color: #061226;
+  --region-fade-image: url("/backgrounds/deep-sea.png");
+}
+
+.pixel-bubble {
+  position: absolute;
+  bottom: -28px;
+  left: var(--bubble-left);
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  animation: pixel-bubble-rise var(--bubble-duration) linear var(--bubble-delay) infinite;
+  will-change: bottom, opacity, transform;
+}
+
+.pixel-bubble-art {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 2px;
+  height: 2px;
+  background: currentColor;
+  box-shadow:
+    2px 0 0 currentColor,
+    -2px 2px 0 currentColor,
+    4px 2px 0 currentColor,
+    -2px 4px 0 currentColor,
+    4px 4px 0 currentColor,
+    0 6px 0 currentColor,
+    2px 6px 0 currentColor;
+  transform: scale(var(--bubble-scale));
+  transform-origin: top left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pixel-bubbles,
+    .region-fade-backdrop {
+      display: none;
+    }
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .stage-card:nth-child(3n + 2) {
+  background: var(--region-stripe);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .stage-number {
+  color: var(--region-number-ink);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .water-shine {
+  opacity: var(--region-shine);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview {
+  background-image: var(--region-art);
+}
+
+:is(.region-backdrop-tidepool, .region-backdrop-shallows, .region-backdrop-coral-forest, .region-backdrop-sea-cave, .region-backdrop-deep-sea) .pixel-bubbles-world {
+  color: var(--region-bubble-ink);
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) :is(.primary-button, .stage-action.primary, .aquarium-attached-button) {
+  --button-shadow: var(--region-action-shadow);
+  background: var(--region-action) !important;
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover {
+  background: var(--region-action-hover) !important;
+}
+
+.map-screen.region-tidepool .region-dot {
+  color: #c8e2dd;
+}
+
+.map-screen.region-tidepool .region-dot.selected {
+  border: 0;
+  background: #ffffff14;
+  color: #fff;
+}
+
+.map-screen.region-tidepool .stage-list {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.map-screen.region-shallows .stage-card,
+.map-screen.region-tidepool .stage-card,
+.map-screen.region-coral-forest .stage-card,
+.map-screen.region-sea-cave .stage-card,
+.map-screen.region-deep-sea .stage-card {
+  position: relative;
+  isolation: isolate;
+  min-height: 124px;
+  padding: 25px 28px;
+  border: 0 !important;
+  border-radius: var(--ui-radius-card);
+  background: rgb(0 0 0 / 60%) !important;
+  box-shadow: none !important;
+  transition:
+    background-color var(--ui-motion),
+    transform var(--ui-motion);
+}
+
+.map-screen.region-shallows .stage-card.current,
+.map-screen.region-tidepool .stage-card.current,
+.map-screen.region-coral-forest .stage-card.current,
+.map-screen.region-sea-cave .stage-card.current,
+.map-screen.region-deep-sea .stage-card.current {
+  background: rgb(0 0 0 / 68%) !important;
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview {
+  border: 0;
+  box-shadow: none;
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .aquarium-preview::before {
+  display: none;
+}
+
+:is(.region-tidepool, .region-shallows, .region-coral-forest, .region-sea-cave, .region-deep-sea) .sea-typing-stage {
+  border: 0;
+  border-radius: var(--ui-radius-panel);
+  background: var(--region-surface, var(--ui-surface)) !important;
+}
+
+.region-tidepool .keycap.expected,
+.region-shallows .keycap.expected {
+  border: 0;
+  background: #8a671f;
+  box-shadow: none;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .map-screen.region-shallows .stage-card,
+  .map-screen.region-tidepool .stage-card,
+  .map-screen.region-coral-forest .stage-card,
+  .map-screen.region-sea-cave .stage-card,
+  .map-screen.region-deep-sea .stage-card {
+      padding: 22px 20px;
+    }
+}

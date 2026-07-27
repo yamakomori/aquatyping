@@ -1,0 +1,91 @@
+button:disabled {
+  cursor: default;
+  opacity: .5;
+}
+
+/* 水槽画面は海域の外。共通の観察室を背景にして、海へ出た画面と区別する。 */
+body:has(.screen-aquarium) {
+  background: #253f43;
+}
+
+/* 第一海域「潮だまり」。浅い水と暖かな岩場で、最初の海域らしい明るさをつくる。 */
+body:has(.region-backdrop-tidepool) {
+  background: radial-gradient(circle at 50% 45%, #176e74 0%, #0d4857 48rem, #062d3d 76rem);
+}
+
+/* 第二海域「浅瀬」。水槽では枠内に、海図とタイピングでは画面下端から海を立ち上げる。 */
+body:has(.region-backdrop-shallows) {
+  background: radial-gradient(circle at 50% 45%, #0d6374 0%, #0a4158 48rem, #05283b 76rem);
+}
+
+body:has(.region-backdrop-coral-forest) {
+  background: radial-gradient(circle at 50% 45%, #21576a 0%, #123d54 48rem, #08283d 76rem);
+}
+
+body:has(.region-backdrop-sea-cave) {
+  background: radial-gradient(circle at 50% 45%, #15394b 0%, #0b2638 48rem, #041521 76rem);
+}
+
+body:has(.region-backdrop-deep-sea) {
+  background: radial-gradient(circle at 50% 45%, #0a1b32 0%, #050e20 48rem, #01050d 76rem);
+}
+
+/* UI foundation refresh: typography, navigation, surfaces, and shared controls. */
+ruby {
+  ruby-align: center;
+  line-height: 1;
+}
+
+rt {
+  color: inherit;
+  font-size: .36em;
+  font-weight: 700;
+  letter-spacing: .02em;
+  line-height: 1;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--ui-canvas);
+}
+
+body:has(.region-backdrop-tidepool) {
+  background: #164958;
+}
+
+body:has(.region-backdrop-shallows) {
+  background: #07384c;
+}
+
+body:has(.region-backdrop-coral-forest) {
+  background: #16384a;
+}
+
+body:has(.region-backdrop-sea-cave) {
+  background: #0d2737;
+}
+
+body:has(.region-backdrop-deep-sea) {
+  background: #071321;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--ui-motion),
+    color var(--ui-motion),
+    box-shadow var(--ui-motion),
+    opacity var(--ui-motion),
+    transform var(--ui-motion);
+}
+
+button:active:not(:disabled) {
+  opacity: .9;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--ui-focus-ring);
+  outline-offset: 3px;
+}
