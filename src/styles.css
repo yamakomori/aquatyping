@@ -37,8 +37,7 @@ button:disabled {
 }
 
 .brand,
-.text-button,
-.icon-button {
+.text-button {
   border: 0;
   background: transparent;
   color: #31454a;
@@ -63,14 +62,6 @@ button:disabled {
   font-size: .9rem;
 }
 
-.icon-button {
-  width: 36px;
-  height: 36px;
-  font-size: 1.2rem;
-  border-radius: 50%;
-}
-
-.icon-button:hover,
 .brand:hover {
   background: #e8e8df;
 }
@@ -78,8 +69,7 @@ button:disabled {
 .map-screen,
 .wardrobe-screen,
 .settings-screen,
-.typing-screen,
-.result-screen {
+.typing-screen {
   width: min(100% - 32px, 920px);
   margin: 28px auto 56px;
 }
@@ -107,7 +97,6 @@ button:disabled {
 
 .map-hero h1,
 .screen-heading h1,
-.result-screen h1,
 .settings-screen h1 {
   margin: 0;
   font-size: clamp(1.7rem, 4vw, 2.45rem);
@@ -177,12 +166,6 @@ button:disabled {
   color: #d1a341;
   font-size: 28px;
   transform: rotate(-12deg);
-}
-
-.path-line {
-  height: 34px;
-  margin-left: 43px;
-  border-left: 3px dashed #a7b79c;
 }
 
 .stage-list {
@@ -646,14 +629,6 @@ button:disabled {
   height: 72px;
 }
 
-.result-glow {
-  height: 27px;
-  color: #d19b2d;
-  font-size: 2.7rem;
-  line-height: .75;
-  animation: float 2s ease-in-out infinite;
-}
-
 .reward-card h1 {
   margin: 6px 0;
   font-size: clamp(1.55rem, 6vw, 2rem);
@@ -664,33 +639,6 @@ button:disabled {
   margin: 9px 0;
   color: #5b6e6a;
   font-size: .9rem;
-}
-
-.found-item {
-  display: grid;
-  grid-template-columns: 35px 1fr auto;
-  align-items: center;
-  gap: 8px;
-  margin: 12px auto 8px;
-  padding: 8px 12px;
-  border: 1px solid #e0cf9a;
-  border-radius: 14px;
-  background: #faf1d6;
-  color: #6c5722;
-  text-align: left;
-}
-
-.found-item span {
-  font-size: 1.45rem;
-  color: #c8952e;
-}
-
-.found-item strong {
-  font-size: .9rem;
-}
-
-.found-item small {
-  font-weight: 700;
 }
 
 .new-medals {
@@ -954,8 +902,7 @@ button:disabled {
   .map-screen,
   .wardrobe-screen,
   .settings-screen,
-  .typing-screen,
-  .result-screen {
+  .typing-screen {
     width: min(100% - 24px, 920px);
     margin-top: 12px;
   }
@@ -1068,8 +1015,7 @@ body {
 }
 
 .brand,
-.text-button,
-.icon-button {
+.text-button {
   color: #e8f1ed;
 }
 
@@ -1079,11 +1025,6 @@ body {
   background: #172335;
 }
 
-.icon-button {
-  border: 1px solid #29485a;
-}
-
-.icon-button:hover,
 .brand:hover {
   background: #143348;
 }
@@ -1092,7 +1033,6 @@ body {
 .wardrobe-screen,
 .settings-screen,
 .typing-screen,
-.result-screen,
 .aquarium-screen {
   color: #e8f1ed;
 }
@@ -1110,13 +1050,6 @@ body {
 .map-hero p:not(.eyebrow),
 .screen-heading p:not(.eyebrow) {
   color: #b9d0d3;
-}
-
-.map-lead {
-  margin: 24px 0 11px;
-  color: #a7c6c5;
-  font-size: .86rem;
-  font-weight: 700;
 }
 
 .stage-card {
@@ -1184,15 +1117,6 @@ body {
   color: #ffc0b7;
   border-color: #9a5753;
   background: #391d27;
-}
-
-.hero-action {
-  margin-top: 18px;
-}
-
-.hero-action small {
-  margin-left: 7px;
-  color: #bde9eb;
 }
 
 .sea-hero {
@@ -1391,8 +1315,7 @@ body {
   background: #071d30;
 }
 
-.fish-card .fish-visual,
-.fish-found-item .fish-visual {
+.fish-card .fish-visual {
   position: relative;
   flex: 0 0 auto;
   left: auto !important;
@@ -1431,16 +1354,6 @@ body {
   display: block;
   margin-top: 5px;
   color: #f0ca72;
-}
-
-.empty-collection {
-  grid-column: 1/-1;
-  margin: 0;
-  padding: 28px;
-  border: 1px dashed #396076;
-  border-radius: 15px;
-  color: #a7c6c5;
-  text-align: center;
 }
 
 .typing-top {
@@ -1520,16 +1433,6 @@ body {
 
 .reward-card p:not(.eyebrow) {
   color: #bed5d4;
-}
-
-.found-item {
-  border-color: #34657a;
-  background: #0b2c40;
-  color: #d9eeea;
-}
-
-.fish-found-item {
-  grid-template-columns: 48px 1fr auto;
 }
 
 .new-medals {
@@ -1647,10 +1550,6 @@ body {
     gap: 4px;
   }
 
-  .icon-button {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 .stage-progress {
@@ -1720,29 +1619,6 @@ body {
 
 .rare-eyebrow {
   color: #ffcf5f !important;
-}
-
-.map-region-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 17px 0 -2px;
-}
-
-.map-region-tab {
-  min-height: 36px;
-  padding: 7px 13px;
-  border: 1px solid #315f73;
-  border-radius: 999px;
-  background: #071d30;
-  color: #b9dadd;
-  font-weight: 700;
-}
-
-.map-region-tab.selected {
-  border-color: #63c8ce;
-  background: #0d4656;
-  color: #efffff;
 }
 
 .intro-screen {
@@ -1838,67 +1714,7 @@ body {
   font: inherit;
 }
 
-.tank-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 17px 0 -2px;
-}
-
-.tank-tab {
-  min-height: 36px;
-  padding: 7px 13px;
-  border: 1px solid #315f73;
-  border-radius: 999px;
-  background: #071d30;
-  color: #b9dadd;
-  font-weight: 700;
-}
-
-.tank-tab.selected {
-  border-color: #63c8ce;
-  background: #0d4656;
-  color: #efffff;
-}
-
-.tank-fish-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-  gap: 12px;
-}
-
-.tank-fish-card {
-  min-height: 104px;
-  display: grid;
-  grid-template-columns: 58px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  padding: 13px;
-  border: 1px solid #2a566b;
-  border-radius: 15px;
-  background: #071d30;
-}
-
-.tank-fish-card .fish-visual {
-  position: relative;
-  left: auto !important;
-  top: auto !important;
-  animation: none;
-}
-
-.tank-fish-card h3 {
-  margin: 0 0 5px;
-  font-size: .92rem;
-}
-
-.tank-fish-card p {
-  margin: 0;
-  color: #a7c6c5;
-  font-size: .76rem;
-}
-
-.release-button,
-.release-result-button {
+.release-button {
   border: 0;
   background: transparent;
   color: #9cc8c9;
@@ -1908,8 +1724,7 @@ body {
   text-underline-offset: 3px;
 }
 
-.release-button:hover,
-.release-result-button:hover {
+.release-button:hover {
   color: #f0ca72;
 }
 
@@ -1940,19 +1755,6 @@ body {
   transform: rotate(8deg);
 }
 
-.fish-found-item {
-  position: relative;
-}
-
-.card-badge {
-  top: -8px;
-  right: 8px;
-}
-
-.release-result-button {
-  margin: 0 auto 5px;
-}
-
 .first-catch-card .new-fish-badge {
   top: -14px;
   right: -23px;
@@ -1970,19 +1772,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .tank-fish-list {
-    grid-template-columns: 1fr;
-  }
-
-  .tank-fish-card {
-    grid-template-columns: 54px 1fr;
-  }
-
-  .tank-fish-card .release-button {
-    grid-column: 2;
-    justify-self: start;
-    padding: 0;
-  }
 }
 
 .release-confirm-overlay {
@@ -2109,8 +1898,7 @@ body:has(.region-backdrop-tidepool) {
 }
 
 .region-backdrop-tidepool .brand,
-.region-backdrop-tidepool .text-button,
-.region-backdrop-tidepool .icon-button {
+.region-backdrop-tidepool .text-button {
   color: #f4fff9;
   text-shadow: 0 1px 4px #073744;
 }
@@ -2119,11 +1907,6 @@ body:has(.region-backdrop-tidepool) {
   border-color: #7cb5a2;
   background: #23626bd9;
   color: #fff0ac;
-}
-
-.region-backdrop-tidepool .icon-button {
-  border-color: #75aaa2;
-  background: #185665a3;
 }
 
 .region-tidepool .map-hero {
@@ -2144,11 +1927,6 @@ body:has(.region-backdrop-tidepool) {
 .region-tidepool .map-hero .primary-button {
   background: #2b8b85;
   box-shadow: 0 3px 0 #17635f;
-}
-
-.region-tidepool .map-lead {
-  color: #ddf4e8;
-  text-shadow: 0 1px 4px #073744;
 }
 
 .region-tidepool .stage-card {
@@ -2182,18 +1960,6 @@ body:has(.region-backdrop-tidepool) {
   border-color: #7db1a9;
   background: #1c5c68;
   color: #effff8;
-}
-
-.region-tidepool .map-region-tab {
-  border-color: #679a99;
-  background: #174b59d9;
-  color: #dff2ec;
-}
-
-.region-tidepool .map-region-tab.selected {
-  border-color: #a7d9c5;
-  background: #2c7e79;
-  color: #fff;
 }
 
 .region-tidepool .aquarium-preview {
@@ -2283,8 +2049,7 @@ body:has(.region-backdrop-shallows) {
 }
 
 .region-backdrop-shallows .brand,
-.region-backdrop-shallows .text-button,
-.region-backdrop-shallows .icon-button {
+.region-backdrop-shallows .text-button {
   color: #effffb;
   text-shadow: 0 1px 4px #063043;
 }
@@ -2293,11 +2058,6 @@ body:has(.region-backdrop-shallows) {
   border-color: #5ca6a5;
   background: #0c5261d9;
   color: #fff0ac;
-}
-
-.region-backdrop-shallows .icon-button {
-  border-color: #5c9ca6;
-  background: #0b4a5aa3;
 }
 
 .region-shallows .map-hero {
@@ -2318,11 +2078,6 @@ body:has(.region-backdrop-shallows) {
 .region-shallows .map-hero .primary-button {
   background: #168492;
   box-shadow: 0 3px 0 #0a5d68;
-}
-
-.region-shallows .map-lead {
-  color: #c5efe8;
-  text-shadow: 0 1px 4px #063043;
 }
 
 .region-shallows .stage-card {
@@ -2356,18 +2111,6 @@ body:has(.region-backdrop-shallows) {
   border-color: #68aeb1;
   background: #105064;
   color: #e7fffb;
-}
-
-.region-shallows .map-region-tab {
-  border-color: #57939e;
-  background: #0b4254d9;
-  color: #d2eeea;
-}
-
-.region-shallows .map-region-tab.selected {
-  border-color: #8adbd3;
-  background: #147381;
-  color: #fff;
 }
 
 .region-shallows .aquarium-preview {
@@ -2449,13 +2192,10 @@ body:has(.region-backdrop-shallows) {
 
 .region-backdrop-coral-forest .brand,
 .region-backdrop-coral-forest .text-button,
-.region-backdrop-coral-forest .icon-button,
 .region-backdrop-sea-cave .brand,
 .region-backdrop-sea-cave .text-button,
-.region-backdrop-sea-cave .icon-button,
 .region-backdrop-deep-sea .brand,
-.region-backdrop-deep-sea .text-button,
-.region-backdrop-deep-sea .icon-button {
+.region-backdrop-deep-sea .text-button {
   color: #efffff;
   text-shadow: 0 1px 4px #020d18;
 }
@@ -2696,15 +2436,9 @@ body:has(.region-backdrop-deep-sea) {
   animation-delay: var(--sprite-delay, 0s);
 }
 
-.fish-card .fish-visual.has-sprite,
-.tank-fish-card .fish-visual.has-sprite {
+.fish-card .fish-visual.has-sprite {
   width: 58px;
   height: 58px;
-}
-
-.fish-found-item .fish-visual.has-sprite {
-  width: 48px;
-  height: 48px;
 }
 
 .first-catch-card .reward-fish.has-sprite,
@@ -3453,27 +3187,8 @@ button:focus-visible {
   font-size: 1.55rem;
 }
 
-.fish-card,
-.tank-fish-card {
+.fish-card {
   border-radius: 4px 14px 4px 4px;
-}
-
-.tank-fish-list {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-
-.tank-fish-card {
-  grid-template-columns: 58px minmax(0, 1fr);
-}
-
-.tank-fish-card .release-button {
-  grid-column: 2;
-  justify-self: start;
-  padding: 0;
-}
-
-.tank-fish-card p {
-  line-height: 1.75;
 }
 
 .fish-card .release-button {
@@ -4343,8 +4058,7 @@ button:focus-visible {
 }
 
 .brand,
-.nav-button,
-.icon-button {
+.nav-button {
   border: 0;
   border-radius: var(--ui-radius-control);
   background: transparent;
@@ -4358,7 +4072,6 @@ button:focus-visible {
 
 .brand:hover,
 .nav-button:hover,
-.icon-button:hover,
 .text-button:hover,
 .region-arrow:hover {
   border-color: transparent;
@@ -4452,16 +4165,14 @@ button:focus-visible {
 
 .text-button,
 .stage-action,
-.release-button,
-.release-result-button {
+.release-button {
   border: 0;
   border-radius: var(--ui-radius-control);
   background: transparent;
 }
 
 .text-button,
-.release-button,
-.release-result-button {
+.release-button {
   padding: 10px 12px;
 }
 
@@ -4539,15 +4250,10 @@ button:focus-visible {
   background: #ffffff12;
 }
 
-.found-item,
 .new-medals,
 .next-route-group {
   border: 0;
   border-radius: var(--ui-radius-control);
-}
-
-.found-item {
-  background: #5a461e;
 }
 
 .new-medals {
@@ -4613,8 +4319,7 @@ button:focus-visible {
 .stage-copy>p,
 .item-card p,
 .fish-card p,
-.fish-card small,
-.tank-fish-card p {
+.fish-card small {
   color: var(--ui-ink-muted);
 }
 
@@ -4982,21 +4687,18 @@ button:focus-visible {
 }
 
 .fish-collection,
-.tank-fish-list,
 .item-grid {
   gap: 12px;
 }
 
 .fish-card,
-.tank-fish-card,
 .item-card {
   border: 0;
   border-radius: var(--ui-radius-card);
   background: var(--ui-surface);
 }
 
-.aquarium-screen .fish-card,
-.aquarium-screen .tank-fish-card {
+.aquarium-screen .fish-card {
   background: rgb(0 0 0 / 60%);
 }
 
