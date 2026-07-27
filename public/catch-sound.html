@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>つれた音 試聴（ぽしゃん）</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { font-family: -apple-system, "Hiragino Sans", sans-serif; margin: 0; padding: 20px; background: #10161d; color: #e8eef5; }
+      h1 { font-size: 19px; margin: 0 0 4px; }
+      .lead { font-size: 13px; color: #9fb0c2; margin: 0 0 18px; line-height: 1.6; }
+      h2 { font-size: 13px; color: #9fb0c2; font-weight: 600; margin: 22px 0 8px; letter-spacing: .04em; }
+      .cards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+      .card { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; font: inherit; cursor: pointer;
+              padding: 12px 14px; border: 1px solid #24313f; border-radius: 12px; background: #16202b; color: inherit; transition: background .12s, transform .08s; }
+      .card:hover { background: #1c2836; }
+      .card:active { transform: scale(.985); }
+      .card .key { flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: #24313f; color: #9fb0c2; font-size: 13px; font-weight: 700; }
+      .card .name { display: inline; font-size: 15px; font-weight: 700; }
+      .card.chosen { border-color: #3d6f8f; background: #17262f; }
+      .card.chosen .key { background: #2f5c74; color: #cfe8f5; }
+      .card .role { display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700;
+                    background: #2f5c74; color: #cfe8f5; vertical-align: 2px; }
+      .card .desc { display: block; font-size: 12px; color: #9fb0c2; margin-top: 2px; line-height: 1.4; }
+      .knobs { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top: 8px; }
+      .knob { border: 1px solid #24313f; border-radius: 12px; background: #131c25; padding: 10px 14px 12px; }
+      .knob label { display: flex; justify-content: space-between; font-size: 12px; color: #9fb0c2; margin-bottom: 6px; }
+      .knob output { color: #7ee0a5; font-variant-numeric: tabular-nums; }
+      input[type="range"] { width: 100%; accent-color: #4f9fd8; }
+      .note { font-size: 12px; color: #6f8296; line-height: 1.7; margin-top: 22px; border-top: 1px solid #24313f; padding-top: 14px; }
+      code { background: #1c2836; padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+    </style>
+  </head>
+  <body>
+    <h1>つれた音 試聴ページ</h1>
+    <p class="lead">
+      お題クリア＝魚がつれた瞬間に鳴らす候補音です。音声ファイルは使わず Web Audio API で合成しています。<br />
+      カードをクリック、または <b>1〜7</b> キーで再生。<b>Enter</b> で選択中の音をもう一度鳴らします（連打して耳障りでないかの確認用）。
+    </p>
+
+    <h2>候補</h2>
+    <div class="cards" id="cards"></div>
+
+    <h2>調整</h2>
+    <div class="knobs">
+      <div class="knob">
+        <label>音量 <output id="volOut"></output></label>
+        <input type="range" id="vol" min="0" max="100" value="55" />
+      </div>
+      <div class="knob">
+        <label>高さ（半音） <output id="pitchOut"></output></label>
+        <input type="range" id="pitch" min="-7" max="7" step="1" value="0" />
+      </div>
+      <div class="knob">
+        <label>残響（水っぽさ） <output id="revOut"></output></label>
+        <input type="range" id="rev" min="0" max="100" value="35" />
+      </div>
+      <div class="knob">
+        <label>着水の強さ（6・7のみ） <output id="punchOut"></output></label>
+        <input type="range" id="punch" min="0" max="100" value="70" />
+      </div>
+    </div>
+
+    <p class="note">
+      毎回わずかに音程と長さがゆらぐようにしてあります（同じ音の繰り返しは疲れるため）。<br />
+      採用：通常＝<b>1 ぽしゃん</b> / レア・初捕獲＝<b>6 バシャーン</b>（着水の強さ 70%）。
+      この合成ロジックを <code>src/game/audio/</code> に切り出し、つれた瞬間の演出から呼び出す形にします。
+    </p>
+
+    <script>
+      // ---------------------------------------------------------------
+      // オーディオ基盤
+      // ---------------------------------------------------------------
+      let ctx = null;
+      let master = null;   // 音量
+      let dry = null;      // 直の音
+      let wet = null;      // 残響へ送る量
+      let reverb = null;
+
+      function ensureContext() {
+        if (ctx) { if (ctx.state === "suspended") ctx.resume(); return; }
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        master = ctx.createGain();
+        master.connect(ctx.destination);
+
+        dry = ctx.createGain();
+        dry.connect(master);
+
+        reverb = ctx.createConvolver();
+        reverb.buffer = makeImpulseResponse(1.1, 3.2);
+        reverb.connect(master);
+
+        wet = ctx.createGain();
+        wet.connect(reverb);
+
+        applyKnobs();
+      }
+
+      // 短い残響用のインパルス応答をノイズから生成する（水面の広がりを出す）
+      function makeImpulseResponse(seconds, decay) {
+        const length = Math.floor(ctx.sampleRate * seconds);
+        const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+        for (let channel = 0; channel < 2; channel += 1) {
+          const data = buffer.getChannelData(channel);
+          for (let i = 0; i < length; i += 1) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+          }
+        }
+        return buffer;
+      }
+
+      function noiseBuffer(seconds) {
+        const length = Math.floor(ctx.sampleRate * seconds);
+        const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < length; i += 1) data[i] = Math.random() * 2 - 1;
+        return buffer;
+      }
+
+      // 音の出口。dry と wet の両方へ送る
+      function connectOut(node) {
+        node.connect(dry);
+        node.connect(wet);
+      }
+
+      const semitone = (n) => Math.pow(2, n / 12);
+      const rand = (min, max) => min + Math.random() * (max - min);
+
+      // ---------------------------------------------------------------
+      // 音の部品
+      // ---------------------------------------------------------------
+
+      // 水滴の芯：サイン波が短く上へ滑る（水滴の「ぽ」の正体はこの上昇）
+      function drop(at, { from, to, duration, gain, type = "sine" }) {
+        const osc = ctx.createOscillator();
+        osc.type = type;
+        osc.frequency.setValueAtTime(from, at);
+        osc.frequency.exponentialRampToValueAtTime(to, at + duration);
+
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, at);
+        env.gain.exponentialRampToValueAtTime(gain, at + 0.006);   // 立ち上がりは丸く
+        env.gain.exponentialRampToValueAtTime(0.0001, at + duration * 2.2);
+
+        osc.connect(env);
+        connectOut(env);
+        osc.start(at);
+        osc.stop(at + duration * 2.4);
+      }
+
+      // しぶき：帯域を絞ったノイズをごく小さく。「しゃん」の余韻
+      function splash(at, { freq, q = 1.2, duration, gain }) {
+        const source = ctx.createBufferSource();
+        source.buffer = noiseBuffer(duration + 0.05);
+
+        const band = ctx.createBiquadFilter();
+        band.type = "bandpass";
+        band.frequency.setValueAtTime(freq, at);
+        band.frequency.exponentialRampToValueAtTime(freq * 0.45, at + duration);
+        band.Q.value = q;
+
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, at);
+        env.gain.exponentialRampToValueAtTime(gain, at + 0.012);
+        env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+
+        source.connect(band).connect(env);
+        connectOut(env);
+        source.start(at);
+        source.stop(at + duration + 0.05);
+      }
+
+      // 着水の炸裂：広い帯域のノイズを一気に鳴らし、ローパスを閉じていく。「バシャ」の本体
+      function crash(at, { from, to, duration, gain, attack = 0.01 }) {
+        const source = ctx.createBufferSource();
+        source.buffer = noiseBuffer(duration + 0.1);
+
+        const lowpass = ctx.createBiquadFilter();
+        lowpass.type = "lowpass";
+        lowpass.frequency.setValueAtTime(from, at);
+        lowpass.frequency.exponentialRampToValueAtTime(to, at + duration);
+        lowpass.Q.value = 0.7;
+
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, at);
+        env.gain.exponentialRampToValueAtTime(gain, at + attack);      // attack を伸ばすと頭の刺さりが和らぐ
+        env.gain.exponentialRampToValueAtTime(gain * 0.25, at + duration * 0.35);
+        env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+
+        source.connect(lowpass).connect(env);
+        connectOut(env);
+        source.start(at);
+        source.stop(at + duration + 0.1);
+      }
+
+      // バケツの胴鳴り：ノイズを高い Q の帯域で締めて濁った「ーン」を残す
+      function bucketRing(at, { freq, duration, gain, q = 7 }) {
+        const source = ctx.createBufferSource();
+        source.buffer = noiseBuffer(duration + 0.05);
+
+        const band = ctx.createBiquadFilter();
+        band.type = "bandpass";
+        band.frequency.setValueAtTime(freq, at);
+        band.frequency.exponentialRampToValueAtTime(freq * 0.8, at + duration);
+        band.Q.value = q;
+
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, at);
+        env.gain.exponentialRampToValueAtTime(gain, at + 0.02);
+        env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+
+        source.connect(band).connect(env);
+        connectOut(env);
+        source.start(at);
+        source.stop(at + duration + 0.05);
+      }
+
+      // 水のかたまりが落ちる重み。ごく低い音を一瞬だけ
+      function thump(at, { from, to, duration, gain, attack = 0.012 }) {
+        const osc = ctx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(from, at);
+        osc.frequency.exponentialRampToValueAtTime(to, at + duration);
+
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, at);
+        env.gain.exponentialRampToValueAtTime(gain, at + attack);
+        env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+
+        osc.connect(env);
+        connectOut(env);
+        osc.start(at);
+        osc.stop(at + duration + 0.05);
+      }
+
+      // 跳ねた水が落ちてくる粒。散らして鳴らす
+      function droplets(at, { count, spread, pitch }) {
+        for (let i = 0; i < count; i += 1) {
+          drop(at + rand(0, spread), {
+            from: rand(500, 900) * pitch,
+            to: rand(1200, 2100) * pitch,
+            duration: rand(0.025, 0.045),
+            gain: rand(0.05, 0.11),
+          });
+        }
+      }
+
+      // やわらかい鐘：倍音を足したサイン。ごほうび感を添える
+      function chime(at, { freq, duration = 0.9, gain = 0.09 }) {
+        [1, 2.01].forEach((ratio, index) => {
+          const osc = ctx.createOscillator();
+          osc.type = "sine";
+          osc.frequency.value = freq * ratio;
+
+          const env = ctx.createGain();
+          const peak = gain * (index === 0 ? 1 : 0.28);
+          env.gain.setValueAtTime(0.0001, at);
+          env.gain.exponentialRampToValueAtTime(peak, at + 0.02);
+          env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+
+          osc.connect(env);
+          connectOut(env);
+          osc.start(at);
+          osc.stop(at + duration + 0.05);
+        });
+      }
+
+      // ---------------------------------------------------------------
+      // 候補音
+      // ---------------------------------------------------------------
+      const VARIANTS = [
+        {
+          id: "poshan",
+          name: "ぽしゃん",
+          desc: "水滴＋細かいしぶき",
+          role: "通常",
+          play(at, p) {
+            drop(at, { from: 430 * p, to: 1180 * p, duration: rand(0.06, 0.075), gain: 0.42 });
+            splash(at + 0.02, { freq: 2600 * p, duration: rand(0.16, 0.2), gain: 0.05 });
+          },
+        },
+        {
+          id: "poton",
+          name: "ぽとん",
+          desc: "しぶき無しの丸い音。いちばん控えめ",
+          play(at, p) {
+            drop(at, { from: 300 * p, to: 760 * p, duration: rand(0.075, 0.09), gain: 0.46 });
+          },
+        },
+        {
+          id: "poshan-kirari",
+          name: "ぽしゃん＋きらり",
+          desc: "水滴のあと、やわらかい2音の余韻",
+          play(at, p) {
+            drop(at, { from: 430 * p, to: 1180 * p, duration: rand(0.06, 0.075), gain: 0.4 });
+            splash(at + 0.02, { freq: 2600 * p, duration: 0.17, gain: 0.045 });
+            chime(at + 0.07, { freq: 1046.5 * p, duration: 0.75, gain: 0.075 });   // C6
+            chime(at + 0.15, { freq: 1568.0 * p, duration: 0.95, gain: 0.055 });   // G6
+          },
+        },
+        {
+          id: "kopon",
+          name: "こぽん",
+          desc: "小さな泡が続けて弾ける。かわいい寄り",
+          play(at, p) {
+            for (let i = 0; i < 3; i += 1) {
+              const scale = 1 + i * 0.28;
+              drop(at + i * rand(0.035, 0.055), {
+                from: 380 * p * scale,
+                to: 900 * p * scale,
+                duration: rand(0.04, 0.055),
+                gain: 0.3 - i * 0.07,
+              });
+            }
+          },
+        },
+        {
+          id: "sharan",
+          name: "しゃらん",
+          desc: "3音の上昇。レア・初めての魚向け",
+          play(at, p) {
+            drop(at, { from: 430 * p, to: 1180 * p, duration: 0.065, gain: 0.36 });
+            splash(at + 0.02, { freq: 2800 * p, duration: 0.2, gain: 0.05 });
+            [880.0, 1318.5, 1760.0].forEach((freq, index) => {   // A5 - E6 - A6
+              chime(at + 0.08 + index * 0.085, { freq: freq * p, duration: 0.9 - index * 0.1, gain: 0.07 });
+            });
+          },
+        },
+        {
+          id: "bashaan",
+          name: "バシャーン",
+          desc: "バケツに飛び込む着水。濁った胴鳴りつき",
+          role: "レア",
+          play(at, p) {
+            // k は「着水の強さ」スライダー。0 で頭を潰し、水の広がりだけを残す
+            // 採用値は k = 0.7（thump gain 0.142 / attack 58ms、crash 5040Hz から gain 0.252 / attack 54ms）
+            const k = punch();
+            thump(at, { from: 95 * p, to: 48 * p, duration: rand(0.16, 0.2), gain: 0.03 + 0.16 * k, attack: 0.1 - 0.06 * k });
+            crash(at, { from: (2800 + 3200 * k) * p, to: 520 * p, duration: rand(0.34, 0.42), gain: 0.14 + 0.16 * k, attack: 0.11 - 0.08 * k });
+            bucketRing(at + 0.04, { freq: 300 * p, duration: rand(0.4, 0.5), gain: 0.16, q: 7 });
+            bucketRing(at + 0.055, { freq: 460 * p, duration: 0.3, gain: 0.08, q: 9 });
+            droplets(at + 0.16, { count: 5, spread: 0.3, pitch: p });
+          },
+        },
+        {
+          id: "bashatto",
+          name: "ばしゃっ",
+          desc: "同じ着水の短い版。連打してもうるさくない",
+          play(at, p) {
+            const k = punch();
+            thump(at, { from: 130 * p, to: 58 * p, duration: 0.1, gain: 0.06 + 0.24 * k, attack: 0.05 - 0.035 * k });
+            crash(at, { from: (3000 + 2600 * k) * p, to: 700 * p, duration: rand(0.17, 0.22), gain: 0.12 + 0.16 * k, attack: 0.06 - 0.045 * k });
+            bucketRing(at + 0.03, { freq: 340 * p, duration: 0.22, gain: 0.1, q: 6 });
+            droplets(at + 0.1, { count: 3, spread: 0.14, pitch: p });
+          },
+        },
+      ];
+
+      // ---------------------------------------------------------------
+      // UI
+      // ---------------------------------------------------------------
+      const vol = document.getElementById("vol");
+      const pitch = document.getElementById("pitch");
+      const rev = document.getElementById("rev");
+      const punchInput = document.getElementById("punch");
+      const punchOut = document.getElementById("punchOut");
+      const punch = () => Number(punchInput.value) / 100;
+      const volOut = document.getElementById("volOut");
+      const pitchOut = document.getElementById("pitchOut");
+      const revOut = document.getElementById("revOut");
+
+      function applyKnobs() {
+        volOut.textContent = `${vol.value}%`;
+        pitchOut.textContent = `${pitch.value > 0 ? "+" : ""}${pitch.value}`;
+        revOut.textContent = `${rev.value}%`;
+        punchOut.textContent = `${punchInput.value}%`;
+        if (!ctx) return;
+        master.gain.value = (vol.value / 100) * 0.9;
+        wet.gain.value = (rev.value / 100) * 0.9;
+      }
+
+      [vol, pitch, rev, punchInput].forEach((input) => input.addEventListener("input", applyKnobs));
+      applyKnobs();
+
+      let lastVariant = VARIANTS[0];
+
+      function play(variant) {
+        ensureContext();
+        lastVariant = variant;
+        // 毎回わずかにゆらす（同じ波形の反復は耳に残りやすいため）
+        const p = semitone(Number(pitch.value)) * rand(0.97, 1.03);
+        variant.play(ctx.currentTime + 0.01, p);
+      }
+
+      const cards = document.getElementById("cards");
+      VARIANTS.forEach((variant, index) => {
+        const button = document.createElement("button");
+        button.className = "card";
+        if (variant.role) button.classList.add("chosen");
+        button.innerHTML =
+          `<span class="key">${index + 1}</span>` +
+          `<span><span class="name"></span>${variant.role ? `<span class="role"></span>` : ""}<span class="desc"></span></span>`;
+        if (variant.role) button.querySelector(".role").textContent = variant.role;
+        button.querySelector(".name").textContent = variant.name;
+        button.querySelector(".desc").textContent = variant.desc;
+        button.addEventListener("click", () => play(variant));
+        cards.appendChild(button);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") { play(lastVariant); return; }
+        const index = Number(event.key) - 1;
+        if (Number.isInteger(index) && VARIANTS[index]) play(VARIANTS[index]);
+      });
+    </script>
+  </body>
+</html>

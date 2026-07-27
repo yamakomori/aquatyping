@@ -16,6 +16,7 @@ import {
 } from "../../domain/fish.js";
 import { getRegion, getRegionForStage, getUnlockedRegions } from "../../domain/regions.js";
 import { loadSave, persistSave } from "../../domain/save.js";
+import { playCatchSound, primeCatchSound } from "../../game/audio/catchSound.js";
 import { createGameState, gameReducer } from "../../game/state/gameReducer.js";
 import { UiIcon, UiText } from "./UiPrimitives.jsx";
 import "../../styles.css";
@@ -71,6 +72,13 @@ export default function GameShell() {
     return () => window.clearTimeout(id);
   }, [state.screen, state.session?.attempt.completed, state.session?.index]);
 
+  // つれた瞬間に一度だけ鳴らす。魚が変わるまで再生しないので、
+  // 逃がすなどで result が作り直されても鳴り直さない。
+  useEffect(() => {
+    if (state.screen !== "result" || !state.result || !state.save.settings.sound) return;
+    playCatchSound(state.result.isRareCatch || state.result.firstCatch ? "rare" : "normal");
+  }, [state.screen, state.result?.caughtFish.id, state.save.settings.sound]);
+
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
@@ -100,6 +108,8 @@ export default function GameShell() {
       }
       if (state.screen !== "typing" || typedKey === null) return;
       event.preventDefault();
+      // ブラウザは操作なしに音を鳴らさない。打鍵のうちに音の準備を済ませておく。
+      if (state.save.settings.sound) primeCatchSound();
       dispatch({ type: "TYPE_KEY", key: typedKey, now: Date.now() });
     };
     window.addEventListener("keydown", onKeyDown);
@@ -111,6 +121,7 @@ export default function GameShell() {
     state.save.unlockedStageIds,
     state.selectedMapRegionId,
     state.selectedTankId,
+    state.save.settings.sound,
   ]);
 
   const navigation = (type) => dispatch({ type });
@@ -224,6 +235,11 @@ function MapScreen({ state, dispatch, isDev }) {
     const plays = state.save.stagePlayCounts[stage.id] ?? 0;
     const discovery = fishDiscovery(state.save.discoveredFishSpeciesIds, [stage.id]);
     return <article key={stage.id} className={`stage-card ${unlocked ? "" : "locked"} ${current ? "current" : ""}`}>
+      {unlocked && <button
+        className="stage-card-hitbox"
+        aria-label={`${stage.name}をはじめる`}
+        onClick={() => dispatch({ type: "START_STAGE", stageId: stage.id })}
+      />}
       <span className="stage-number">{String(index + 1).padStart(2, "0")}</span>
       <div className="stage-copy">
         <h3><UiText>{unlocked ? stage.name : "まだ いけない 海《うみ》"}</UiText></h3>
@@ -234,9 +250,9 @@ function MapScreen({ state, dispatch, isDev }) {
           <StageMedals medals={state.save.stageMedals[stage.id]} />
         </div>}
       </div>
-      <button className={`stage-action ${current ? "primary" : ""}`} disabled={!unlocked} onClick={() => dispatch({ type: "START_STAGE", stageId: stage.id })}>
+      <span className={`stage-action ${current ? "primary" : ""}`}>
         <span>{current ? "ここから" : "はじめる"}</span><UiIcon name="play" />
-      </button>
+      </span>
     </article>;
   })}</div>
     {isDev && <details className="dev-stage-selector"><summary><UiText plain>開発用: 試すステージを選ぶ</UiText></summary><div>{STAGES.map((stage) => <button key={stage.id} className="secondary-button" onClick={() => dispatch({ type: "DEV_START_STAGE", stageId: stage.id })}>{stage.id}</button>)}</div></details>}
@@ -706,6 +722,7 @@ function SettingsScreen({ state, dispatch }) {
     <h1><UiText>｜遊び《あそび》やすくする</UiText></h1>
     <div className="settings-list">
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_GUIDE" })}><span><UiText plain>キーボードガイド</UiText></span><strong><UiText plain>{state.save.settings.keyboardGuide ? "表示中" : "非表示"}</UiText></strong></button>
+      <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_SOUND" })}><span><UiText plain>魚がつれた音</UiText></span><strong>{state.save.settings.sound ? "オン" : "オフ"}</strong></button>
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_MOTION" })}><span><UiText plain>動きをひかえめにする</UiText></span><strong>{state.save.settings.reducedMotion ? "オン" : "オフ"}</strong></button>
     </div>
     <button className="danger-button" onClick={() => window.confirm("冒険のきろくを最初からにしますか？") && dispatch({ type: "RESET" })}><UiText plain>冒険のきろくを最初からにする</UiText></button>

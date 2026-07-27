@@ -215,6 +215,8 @@ export function gameReducer(state, action) {
       return { ...state, screen: "settings", session: null, message: "" };
     case "TOGGLE_GUIDE":
       return { ...state, save: { ...state.save, settings: { ...state.save.settings, keyboardGuide: !state.save.settings.keyboardGuide } } };
+    case "TOGGLE_SOUND":
+      return { ...state, save: { ...state.save, settings: { ...state.save.settings, sound: !state.save.settings.sound } } };
     case "TOGGLE_MOTION":
       return { ...state, save: { ...state.save, settings: { ...state.save.settings, reducedMotion: !state.save.settings.reducedMotion } } };
     case "PURCHASE_OR_EQUIP": {

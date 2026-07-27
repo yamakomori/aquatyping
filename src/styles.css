@@ -4031,10 +4031,58 @@ button:focus-visible {
   --ui-accent-fill-hover: #238b94;
   --ui-danger: #ffb5ad;
   --ui-danger-surface: #462b35;
-  --ui-radius-control: 10px;
-  --ui-radius-card: 18px;
-  --ui-radius-panel: 24px;
+  --ui-radius-control: 7px;
+  --ui-radius-card: 10px;
+  --ui-radius-panel: 14px;
+  --ui-control-padding-y: 11px;
+  --ui-control-padding-x: 16px;
+  --ui-button-depth: 4px;
   --ui-motion: 160ms ease;
+}
+
+.region-tidepool {
+  --region-surface: #1b5963e8;
+  --region-surface-active: #286f74f2;
+  --region-surface-muted: #174c57d6;
+  --region-action: #2b817c;
+  --region-action-hover: #35958d;
+  --region-action-shadow: #185a57;
+}
+
+.region-shallows {
+  --region-surface: #11485ae8;
+  --region-surface-active: #1a6070f2;
+  --region-surface-muted: #0e3c4ed6;
+  --region-action: #167783;
+  --region-action-hover: #218b94;
+  --region-action-shadow: #0b525c;
+}
+
+.region-coral-forest {
+  --region-surface: #3a3143e8;
+  --region-surface-active: #514052f2;
+  --region-surface-muted: #302a3bd6;
+  --region-action: #a25765;
+  --region-action-hover: #b96873;
+  --region-action-shadow: #703945;
+}
+
+.region-sea-cave {
+  --region-surface: #22343ee8;
+  --region-surface-active: #314a55f2;
+  --region-surface-muted: #1c2c36d6;
+  --region-action: #47788b;
+  --region-action-hover: #568da0;
+  --region-action-shadow: #2d5261;
+}
+
+.region-deep-sea {
+  --region-surface: #1a2538e8;
+  --region-surface-active: #243550f2;
+  --region-surface-muted: #151f31d6;
+  --region-action: #286f78;
+  --region-action-hover: #33838a;
+  --region-action-shadow: #174b52;
 }
 
 body {
@@ -4065,12 +4113,13 @@ button {
   transition:
     background-color var(--ui-motion),
     color var(--ui-motion),
-    opacity var(--ui-motion);
+    box-shadow var(--ui-motion),
+    opacity var(--ui-motion),
+    transform var(--ui-motion);
 }
 
 button:active:not(:disabled) {
-  transform: none;
-  opacity: .82;
+  opacity: .9;
 }
 
 button:focus-visible {
@@ -4096,7 +4145,7 @@ button:focus-visible {
 
 .brand,
 .nav-button {
-  padding: 9px 11px;
+  padding: 9px 12px;
 }
 
 .brand:hover,
@@ -4120,10 +4169,12 @@ button:focus-visible {
 .primary-button,
 .stage-action.primary,
 .aquarium-attached-button {
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
   border: 0 !important;
   border-radius: var(--ui-radius-control);
   background: var(--ui-accent-fill) !important;
-  box-shadow: none !important;
+  box-shadow: 0 var(--ui-button-depth) 0 var(--button-shadow, #0f535c) !important;
   color: #fff !important;
 }
 
@@ -4133,10 +4184,31 @@ button:focus-visible {
   background: var(--ui-accent-fill-hover) !important;
 }
 
+.region-tidepool :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
+.region-shallows :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
+.region-coral-forest :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
+.region-sea-cave :is(.primary-button, .stage-action.primary, .aquarium-attached-button),
+.region-deep-sea :is(.primary-button, .stage-action.primary, .aquarium-attached-button) {
+  --button-shadow: var(--region-action-shadow);
+  background: var(--region-action) !important;
+}
+
+.region-tidepool :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
+.region-shallows :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
+.region-coral-forest :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
+.region-sea-cave :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover,
+.region-deep-sea :is(.primary-button, .stage-action.primary, .aquarium-attached-button):hover {
+  background: var(--region-action-hover) !important;
+}
+
 .secondary-button {
+  --button-shadow: #071d2a;
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
   border: 0;
   border-radius: var(--ui-radius-control);
   background: var(--ui-surface-raised);
+  box-shadow: 0 var(--ui-button-depth) 0 #071d2a;
   color: #d7efed;
 }
 
@@ -4146,15 +4218,28 @@ button:focus-visible {
 }
 
 .danger-button {
+  --button-shadow: #2b1720;
+  min-height: 46px;
+  padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
   border: 0;
   border-radius: var(--ui-radius-control);
   background: var(--ui-danger-surface);
+  box-shadow: 0 var(--ui-button-depth) 0 #2b1720;
   color: var(--ui-danger);
 }
 
 .danger-button:hover {
   background: #59343e;
   color: #ffd9d4;
+}
+
+.primary-button:active:not(:disabled),
+.aquarium-attached-button:active:not(:disabled),
+.secondary-button:active:not(:disabled),
+.danger-button:active:not(:disabled),
+.setting-row:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--button-shadow, #071d2a) !important;
 }
 
 .text-button,
@@ -4169,7 +4254,7 @@ button:focus-visible {
 .text-button,
 .release-button,
 .release-result-button {
-  padding: 9px 10px;
+  padding: 10px 12px;
 }
 
 .back-button {
@@ -4283,10 +4368,10 @@ button:focus-visible {
 
 .map-hero {
   min-height: 300px;
-  padding: 42px;
+  padding: 36px 0 42px;
   border: 0 !important;
-  border-radius: var(--ui-radius-panel);
-  background: var(--ui-surface) !important;
+  border-radius: 0;
+  background: transparent !important;
   box-shadow: none !important;
 }
 
@@ -4303,6 +4388,17 @@ button:focus-visible {
 
 .eyebrow {
   color: var(--ui-accent);
+}
+
+.map-hero .eyebrow,
+.aquarium-heading .eyebrow {
+  width: max-content;
+  margin: 0 0 16px;
+  padding: 7px 14px;
+  border-inline: 1px solid currentColor;
+  border-radius: 999px;
+  background: #ffffff0d;
+  line-height: 1;
 }
 
 .map-hero p:not(.eyebrow),
@@ -4323,9 +4419,19 @@ button:focus-visible {
 }
 
 .region-arrow {
+  min-height: 56px;
   padding: 8px;
   border: 0;
   border-radius: var(--ui-radius-control);
+}
+
+.region-arrow strong {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.region-arrow .ui-icon {
+  width: 30px;
+  height: 30px;
 }
 
 .region-dot {
@@ -4364,12 +4470,17 @@ button:focus-visible {
 .map-screen.region-coral-forest .stage-card,
 .map-screen.region-sea-cave .stage-card,
 .map-screen.region-deep-sea .stage-card {
+  position: relative;
+  isolation: isolate;
   min-height: 124px;
   padding: 25px 28px;
   border: 0 !important;
   border-radius: var(--ui-radius-card);
-  background: #08283a !important;
+  background: var(--region-surface, #08283a) !important;
   box-shadow: none !important;
+  transition:
+    background-color var(--ui-motion),
+    transform var(--ui-motion);
 }
 
 .map-screen .stage-card.current,
@@ -4378,12 +4489,55 @@ button:focus-visible {
 .map-screen.region-coral-forest .stage-card.current,
 .map-screen.region-sea-cave .stage-card.current,
 .map-screen.region-deep-sea .stage-card.current {
-  background: #104251 !important;
+  background: var(--region-surface-active, #104251) !important;
 }
 
 .map-screen .stage-card.locked {
-  background: #092333 !important;
-  opacity: .62;
+  background: var(--region-surface-muted, #092333) !important;
+  opacity: .7;
+}
+
+.stage-card-hitbox {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.stage-card-hitbox:focus-visible {
+  outline: 0;
+}
+
+.stage-card > :not(.stage-card-hitbox) {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.stage-card .medal-tooltip {
+  pointer-events: auto;
+}
+
+.map-screen .stage-card:has(.stage-card-hitbox:hover) {
+  background: color-mix(in srgb, var(--region-surface) 88%, white) !important;
+}
+
+.map-screen .stage-card.current:has(.stage-card-hitbox:hover) {
+  background: color-mix(in srgb, var(--region-surface-active) 88%, white) !important;
+}
+
+.stage-card:has(.stage-card-hitbox:focus-visible) {
+  outline: 3px solid #f0ca72;
+  outline-offset: 3px;
+}
+
+.stage-card:has(.stage-card-hitbox:active) {
+  transform: translateY(2px);
 }
 
 .stage-number {
@@ -4395,8 +4549,12 @@ button:focus-visible {
 }
 
 .stage-action {
-  padding: 9px 11px;
+  padding: 10px 14px;
   color: #bce7e7;
+  transition:
+    background-color var(--ui-motion),
+    box-shadow var(--ui-motion),
+    transform var(--ui-motion);
 }
 
 .stage-action:hover {
@@ -4405,7 +4563,12 @@ button:focus-visible {
 }
 
 .stage-action.primary {
-  padding-inline: 15px 10px;
+  padding: 10px 14px;
+}
+
+.stage-card:has(.stage-card-hitbox:active) .stage-action.primary {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--button-shadow, #0f535c) !important;
 }
 
 .dev-stage-selector {
@@ -4426,6 +4589,11 @@ button:focus-visible {
   border: 0;
   border-radius: var(--ui-radius-card);
   box-shadow: none;
+}
+
+.map-screen .aquarium-preview,
+.aquarium-screen .aquarium-preview {
+  border-radius: 8px 8px 24px 24px !important;
 }
 
 .region-tidepool .aquarium-preview {
@@ -4497,10 +4665,15 @@ button:focus-visible {
   background: var(--ui-surface);
 }
 
+.aquarium-screen .fish-card,
+.aquarium-screen .tank-fish-card {
+  background: var(--region-surface, var(--ui-surface));
+}
+
 .fish-card.undiscovered,
 .fish-card.rare.undiscovered {
   border: 0;
-  background: #081f2f;
+  background: var(--region-surface-muted, #081f2f);
 }
 
 .fish-card.rare {
@@ -4530,7 +4703,7 @@ button:focus-visible {
 /* Settings rows are independent surfaces with space between them. */
 .settings-list {
   display: grid;
-  gap: 10px;
+  gap: 14px;
   margin-top: 28px;
   border: 0;
   border-radius: 0;
@@ -4538,10 +4711,12 @@ button:focus-visible {
 }
 
 .setting-row {
+  --button-shadow: #061a26;
   padding: 20px;
   border: 0;
   border-radius: var(--ui-radius-card);
   background: var(--ui-surface);
+  box-shadow: 0 var(--ui-button-depth) 0 var(--button-shadow);
 }
 
 .setting-row:hover {
@@ -4561,7 +4736,7 @@ button:focus-visible {
 .region-deep-sea .sea-typing-stage {
   border: 0;
   border-radius: var(--ui-radius-panel);
-  background: var(--ui-surface) !important;
+  background: var(--region-surface, var(--ui-surface)) !important;
 }
 
 .exit-lesson-button {
@@ -4585,7 +4760,7 @@ button:focus-visible {
 .keyboard-guide {
   border: 0;
   border-radius: var(--ui-radius-card);
-  background: #071f30;
+  background: var(--region-surface-muted, #071f30);
   box-shadow: none;
 }
 
@@ -4645,7 +4820,40 @@ button:focus-visible {
   }
 
   .map-hero {
-    padding: 32px 24px 36px;
+    padding: 28px 0 36px;
+  }
+
+  .region-navigation {
+    gap: 5px;
+  }
+
+  .region-dots {
+    gap: 0;
+  }
+
+  .region-dot {
+    width: 30px;
+    min-width: 30px;
+    padding-inline: 2px;
+    font-size: 0;
+  }
+
+  .region-dot span {
+    font-size: .58rem;
+  }
+
+  .region-arrow {
+    gap: 4px;
+  }
+
+  .region-arrow strong {
+    max-width: 86px;
+    font-size: 1rem;
+  }
+
+  .region-arrow .ui-icon {
+    width: 24px;
+    height: 24px;
   }
 
   .map-screen .stage-card,

@@ -145,6 +145,35 @@ test("old saves receive an empty concept learning profile", () => {
   assert.deepEqual(loadSave(storage).conceptSkills, {});
 });
 
+test("saves from before the sound toggle start with the catch sound on", () => {
+  const storage = {
+    getItem: () => JSON.stringify({
+      schemaVersion: 1,
+      medalRulesVersion: 4,
+      settings: { keyboardGuide: false, sound: false, reducedMotion: true },
+    }),
+  };
+  const save = loadSave(storage);
+  assert.equal(save.settings.sound, true);
+  // 遊ぶ人が選んでいた設定はそのまま引き継ぐ
+  assert.equal(save.settings.keyboardGuide, false);
+  assert.equal(save.settings.reducedMotion, true);
+});
+
+test("a chosen sound setting survives reloading", () => {
+  const storage = {
+    getItem: () => JSON.stringify({ ...createSave(), settings: { ...createSave().settings, sound: false } }),
+  };
+  assert.equal(loadSave(storage).settings.sound, false);
+});
+
+test("the settings screen can switch the catch sound off and on", () => {
+  const state = createGameState(createSave());
+  const muted = gameReducer(state, { type: "TOGGLE_SOUND" });
+  assert.equal(muted.save.settings.sound, false);
+  assert.equal(gameReducer(muted, { type: "TOGGLE_SOUND" }).save.settings.sound, true);
+});
+
 test("a new adventure begins with the optional first typing guide only once", () => {
   const fresh = createSave();
   assert.equal(createGameState(fresh).screen, "intro");

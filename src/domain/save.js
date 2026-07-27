@@ -76,7 +76,8 @@ export function createSave() {
     xp: 0,
     ownedItemIds: STARTER_ITEMS,
     equipped: STARTER_EQUIPPED,
-    settings: { keyboardGuide: true, sound: false, reducedMotion: false },
+    settingsVersion: 1,
+    settings: { keyboardGuide: true, sound: true, reducedMotion: false },
   };
 }
 
@@ -95,7 +96,12 @@ export function loadSave(storage = localStorage) {
       releasedFishCounts: { ...defaults.releasedFishCounts, ...migrated.releasedFishCounts },
       rareDrySpells: { ...defaults.rareDrySpells, ...migrated.rareDrySpells },
       conceptSkills: { ...defaults.conceptSkills, ...migrated.conceptSkills },
-      settings: { ...defaults.settings, ...migrated.settings },
+      // settingsVersion より前の保存には、UI から切り替えられなかった頃の設定値が残っている。
+      // 使われていなかった値を引き継ぐと機能が無効なままになるので、その世代だけ既定へ戻す。
+      settings: migrated.settingsVersion === defaults.settingsVersion
+        ? { ...defaults.settings, ...migrated.settings }
+        : { ...defaults.settings, ...migrated.settings, sound: defaults.settings.sound },
+      settingsVersion: defaults.settingsVersion,
     };
     return migrated.medalRulesVersion === defaults.medalRulesVersion
       ? merged
