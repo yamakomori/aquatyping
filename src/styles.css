@@ -1,8 +1,8 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: "M Plus Rounded 1c", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
-  color: #263238;
-  background: #f6f3ec;
+  color: var(--ui-ink-base);
+  background: #031426;
 }
 
 * {
@@ -673,15 +673,9 @@ button:disabled {
 }
 
 /* 海と水槽のMVP。実アセットは後からこの構造に差し替える。 */
-:root {
-  color-scheme: dark;
-  color: #e8f1ed;
-  background: #031426;
-}
-
 .brand,
 .text-button {
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
 }
 
 .coin {
@@ -697,7 +691,7 @@ button:disabled {
 .settings-screen,
 .typing-screen,
 .aquarium-screen {
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
 }
 
 .map-hero p:not(.eyebrow),
@@ -889,7 +883,7 @@ button:disabled {
 .fish-card small {
   display: block;
   margin-top: 5px;
-  color: #f0ca72;
+  color: var(--ui-gold);
 }
 
 .typing-top {
@@ -909,7 +903,7 @@ button:disabled {
 }
 
 .input-guide-rest {
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
 }
 
 .keycap {
@@ -959,7 +953,7 @@ button:disabled {
 }
 
 .setting-row {
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
 }
 
 @keyframes fish-swim {
@@ -1148,7 +1142,7 @@ button:disabled {
 }
 
 .release-button:hover {
-  color: #f0ca72;
+  color: var(--ui-gold);
 }
 
 .reward-fish-slot {
@@ -1303,8 +1297,8 @@ body:has(.region-backdrop-tidepool) {
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
   pointer-events: none;
 }
 
@@ -1426,8 +1420,8 @@ body:has(.region-backdrop-shallows) {
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
   pointer-events: none;
 }
 
@@ -1540,8 +1534,8 @@ body:has(.region-backdrop-shallows) {
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
   pointer-events: none;
 }
 
@@ -1919,7 +1913,7 @@ rt {
 }
 
 .medal-tooltip:focus-visible {
-  outline: 2px solid #f0ca72;
+  outline: 2px solid var(--ui-focus-ring);
   outline-offset: 3px;
 }
 
@@ -2018,7 +2012,7 @@ rt {
   justify-content: center;
   gap: 7px;
   min-height: 42px;
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
   font-weight: 700;
 }
 
@@ -2354,7 +2348,7 @@ rt {
 
 /* 浅瀬の .text-button ルール（明るい文字色＋影）より詳細度を上げ、ピルの見た目を海域によらず揃える。 */
 .region-backdrop-shallows .exit-lesson-button {
-  color: #e8f1ed;
+  color: var(--ui-ink-base);
   text-shadow: none;
 }
 
@@ -2388,7 +2382,7 @@ rt {
 }
 
 .typing-count strong {
-  color: #f0ca72;
+  color: var(--ui-gold);
   font-size: 1.12rem;
 }
 
@@ -2713,8 +2707,8 @@ rt {
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  -webkit-mask-image: var(--backdrop-mask);
+  mask-image: var(--backdrop-mask);
 }
 
 .region-fade-backdrop-tidepool {
@@ -3026,6 +3020,17 @@ rt {
   --ui-control-padding-x: 16px;
   --ui-button-depth: 4px;
   --ui-motion: 160ms ease;
+
+  /* 基準の文字色。:root の color と、それへ戻したい箇所が共有する。 */
+  --ui-ink-base: #e8f1ed;
+  /* 金色のハイライト。数値・強調テキストとフォーカスリングで同じ色を使う。 */
+  --ui-gold: #f0ca72;
+  --ui-focus-ring: var(--ui-gold);
+  /* 面をわずかに持ち上げる白の重ね。 */
+  --ui-tint: #ffffff12;
+  --ui-tint-weak: #ffffff0d;
+  /* 海域の背景画を上端で海色へ溶かすマスク。5海域で共通。 */
+  --backdrop-mask: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
 }
 
 .region-tidepool {
@@ -3175,7 +3180,7 @@ button:active:not(:disabled) {
 }
 
 button:focus-visible {
-  outline: 3px solid #f0ca72;
+  outline: 3px solid var(--ui-focus-ring);
   outline-offset: 3px;
 }
 
@@ -3204,7 +3209,7 @@ button:focus-visible {
 .text-button:hover,
 .region-arrow:hover {
   border-color: transparent;
-  background: #ffffff12;
+  background: var(--ui-tint);
   color: #fff;
 }
 
@@ -3395,7 +3400,7 @@ button:focus-visible {
 
 .dialog-close:hover {
   border-color: transparent;
-  background: #ffffff12;
+  background: var(--ui-tint);
 }
 
 .new-medals,
@@ -3416,7 +3421,7 @@ button:focus-visible {
 .shortcut-button kbd,
 .shortcut-button kbd {
   border: 0;
-  background: #ffffff12;
+  background: var(--ui-tint);
 }
 
 /* Page rhythm: headings sit in space; feature panels use a single solid fill. */
@@ -3562,7 +3567,7 @@ button:focus-visible {
 }
 
 .region-dot:hover {
-  background: #ffffff0d;
+  background: var(--ui-tint-weak);
   color: #d8eeee;
 }
 
@@ -3665,7 +3670,7 @@ button:focus-visible {
 }
 
 .stage-card:has(.stage-card-hitbox:focus-visible) {
-  outline: 3px solid #f0ca72;
+  outline: 3px solid var(--ui-focus-ring);
   outline-offset: 3px;
 }
 
@@ -3678,7 +3683,7 @@ button:focus-visible {
   height: 42px;
   border: 0;
   border-radius: 50%;
-  background: #ffffff0d;
+  background: var(--ui-tint-weak);
 }
 
 .stage-action {
@@ -3911,7 +3916,7 @@ button:focus-visible {
   padding: 9px 12px;
   border: 0;
   border-radius: var(--ui-radius-control);
-  background: #ffffff0d;
+  background: var(--ui-tint-weak);
 }
 
 .typing-stage-number {
@@ -3921,7 +3926,7 @@ button:focus-visible {
   padding: 3px 8px;
   border: 0;
   border-radius: var(--ui-radius-control);
-  background: #ffffff0d;
+  background: var(--ui-tint-weak);
 }
 
 .keyboard-section-label>.section-rule {
