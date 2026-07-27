@@ -41,7 +41,6 @@ export const FISH_SPECIES = [
     accent: "#ffe8d6",
     shape: "long",
     depth: "bottom",
-    scale: 1.2,
     sprite: {
       src: "/sprites/iso-suji-shrimp-strip.png",
       frames: 4,
