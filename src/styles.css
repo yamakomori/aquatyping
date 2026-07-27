@@ -761,19 +761,20 @@ button:disabled {
 }
 
 .result-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  width: 100%;
   margin-top: 13px;
 }
 
 .shortcut-button {
-  min-width: 104px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
+  width: 100%;
+  min-width: 0;
 }
 
 .shortcut-button small {
@@ -890,6 +891,54 @@ button:disabled {
   from {
     opacity: 0;
     transform: translateY(14px) scale(.96);
+  }
+}
+
+/* 画面遷移は短く、少し浮かんで定位置へ収まる水中らしい動きに統一する。 */
+.intro-screen,
+.map-screen,
+.typing-screen,
+.aquarium-screen,
+.wardrobe-screen,
+.settings-screen {
+  animation: screen-rise-in .22s cubic-bezier(.2, .8, .2, 1) both;
+  transform-origin: 50% 35%;
+}
+
+@keyframes screen-rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(.995);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reduce-motion .intro-screen,
+.reduce-motion .map-screen,
+.reduce-motion .typing-screen,
+.reduce-motion .aquarium-screen,
+.reduce-motion .wardrobe-screen,
+.reduce-motion .settings-screen {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-screen,
+  .map-screen,
+  .typing-screen,
+  .aquarium-screen,
+  .wardrobe-screen,
+  .settings-screen {
+    animation: none;
   }
 }
 
@@ -1665,8 +1714,8 @@ body {
 }
 
 .reward-card.fish-reward.rare {
-  border-color: #e6b23c;
-  box-shadow: 0 18px 55px #7a5510aa, 0 0 0 1px #ffd66b55;
+  border: 3px solid #e6b23c;
+  box-shadow: 0 24px 64px #00081480;
 }
 
 .rare-eyebrow {
@@ -3618,11 +3667,11 @@ button:focus-visible {
 }
 
 .fish-reward h1 {
-  margin: 2px 0 9px;
+  margin: -14px 0 9px;
 }
 
-.fish-reward .result-message {
-  margin: 0 0 17px;
+.reward-card.fish-reward .result-message {
+  margin: 0 0 30px;
 }
 
 .fish-reward .new-medals {
@@ -3661,7 +3710,8 @@ button:focus-visible {
 }
 
 .shortcut-button {
-  min-width: 132px;
+  width: 100%;
+  min-width: 0;
   border-radius: 6px;
 }
 
@@ -3827,6 +3877,7 @@ button:focus-visible {
 .pixel-bubbles-world {
   position: fixed;
   z-index: -1;
+  transition: color .32s ease-out;
 }
 
 .pixel-bubbles-tank {
@@ -3852,6 +3903,67 @@ button:focus-visible {
 
 .region-backdrop-deep-sea .pixel-bubbles-world {
   color: #83e8dc;
+}
+
+.region-fade-backdrop {
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  background-color: var(--region-fade-color);
+  pointer-events: none;
+  animation: region-backdrop-fade-out .32s ease-out forwards;
+}
+
+.region-fade-backdrop::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: clamp(360px, 42.9vw, 820px);
+  background-color: var(--region-fade-image-color);
+  background-image: var(--region-fade-image);
+  background-position: center bottom;
+  background-size: cover;
+  image-rendering: pixelated;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #0003 18%, #000b 42%, #000 62%, #000 100%);
+}
+
+.region-fade-backdrop-tidepool {
+  --region-fade-color: #164958;
+  --region-fade-image-color: #76cbc7;
+  --region-fade-image: url("/backgrounds/tidepool.png");
+}
+
+.region-fade-backdrop-shallows {
+  --region-fade-color: #07384c;
+  --region-fade-image-color: #0a596f;
+  --region-fade-image: url("/backgrounds/shallows.png");
+}
+
+.region-fade-backdrop-coral-forest {
+  --region-fade-color: #16384a;
+  --region-fade-image-color: #16566a;
+  --region-fade-image: url("/backgrounds/coral-forest.png");
+}
+
+.region-fade-backdrop-sea-cave {
+  --region-fade-color: #0d2737;
+  --region-fade-image-color: #0b2c40;
+  --region-fade-image: url("/backgrounds/sea-cave.png");
+}
+
+.region-fade-backdrop-deep-sea {
+  --region-fade-color: #071321;
+  --region-fade-image-color: #061226;
+  --region-fade-image: url("/backgrounds/deep-sea.png");
+}
+
+@keyframes region-backdrop-fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 .pixel-bubble {
@@ -3918,8 +4030,13 @@ button:focus-visible {
   display: none;
 }
 
+.reduce-motion .region-fade-backdrop {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pixel-bubbles {
+  .pixel-bubbles,
+  .region-fade-backdrop {
     display: none;
   }
 }
@@ -4501,12 +4618,15 @@ button:focus-visible {
 .region-navigation {
   min-height: 76px;
   margin: 24px 0 0;
+  padding: 10px 12px;
   border: 0;
+  border-radius: var(--ui-radius-card);
+  background: var(--region-surface, #0b3440e8);
 }
 
 .region-arrow {
   min-height: 56px;
-  padding: 8px;
+  padding: 8px 16px;
   border: 0;
   border-radius: var(--ui-radius-control);
 }
@@ -4531,6 +4651,10 @@ button:focus-visible {
 .region-dot:hover {
   background: #ffffff0d;
   color: #d8eeee;
+}
+
+.map-screen.region-tidepool .region-dot {
+  color: #c8e2dd;
 }
 
 .region-dot.selected,
@@ -4922,6 +5046,7 @@ button:focus-visible {
 
   .region-arrow {
     gap: 4px;
+    padding-inline: 8px;
   }
 
   .region-arrow strong {

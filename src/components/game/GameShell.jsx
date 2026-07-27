@@ -148,6 +148,10 @@ export default function GameShell() {
         : null;
 
   return <div className={`app-shell screen-${state.screen} ${backdropRegionId ? `region-backdrop-${backdropRegionId}` : ""} ${state.save.settings.reducedMotion ? "reduce-motion" : ""}`}>
+    <RegionBackdropTransition
+      regionId={state.screen === "map" ? state.selectedMapRegionId : null}
+      reducedMotion={state.save.settings.reducedMotion}
+    />
     {backdropRegionId && <BubbleField variant="world" />}
     {/* タイピング中はヘッダーを隠す。高さを問題に回せるし、練習中に誤って別画面へ飛ばない。 */}
     {state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
@@ -155,6 +159,30 @@ export default function GameShell() {
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
     {state.releaseCandidateId && <ReleaseConfirmDialog state={state} dispatch={dispatch} />}
   </div>;
+}
+
+function RegionBackdropTransition({ regionId, reducedMotion }) {
+  const previousRegionRef = useRef(regionId);
+  const timerRef = useRef(0);
+  const [leavingRegionId, setLeavingRegionId] = useState(null);
+
+  useLayoutEffect(() => {
+    const previousRegionId = previousRegionRef.current;
+    previousRegionRef.current = regionId;
+    window.clearTimeout(timerRef.current);
+    if (reducedMotion || !previousRegionId || !regionId || previousRegionId === regionId) {
+      setLeavingRegionId(null);
+      return;
+    }
+    setLeavingRegionId(previousRegionId);
+    timerRef.current = window.setTimeout(() => setLeavingRegionId(null), 340);
+  }, [regionId, reducedMotion]);
+
+  useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+  return leavingRegionId
+    ? <div key={`${leavingRegionId}-${regionId}`} className={`region-fade-backdrop region-fade-backdrop-${leavingRegionId}`} aria-hidden="true" />
+    : null;
 }
 
 function BubbleField({ variant }) {
