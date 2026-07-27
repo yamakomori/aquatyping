@@ -895,6 +895,12 @@ export const FISH_SPECIES = [
     shape: "round",
     movement: "drift",
     depth: "mid",
+    sprite: {
+      src: "/sprites/deep-dumbo-strip.png",
+      frames: 4,
+      frameMs: 340,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-oarfish",
@@ -908,6 +914,12 @@ export const FISH_SPECIES = [
     movement: "drift",
     depth: "top",
     scale: 1.8,
+    sprite: {
+      src: "/sprites/deep-oarfish-strip.png",
+      frames: 4,
+      frameMs: 320,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-anglerfish",
@@ -920,6 +932,12 @@ export const FISH_SPECIES = [
     shape: "round",
     depth: "bottom",
     scale: 1.4,
+    sprite: {
+      src: "/sprites/deep-anglerfish-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-isopod",
@@ -932,6 +950,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "floor",
     scale: 1.2,
+    sprite: {
+      src: "/sprites/deep-isopod-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-barreleye",
@@ -943,6 +967,12 @@ export const FISH_SPECIES = [
     accent: "#a8f0d8",
     shape: "round",
     depth: "mid",
+    sprite: {
+      src: "/sprites/deep-barreleye-strip.png",
+      frames: 4,
+      frameMs: 340,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-frilled-shark",
@@ -955,6 +985,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "bottom",
     scale: 1.5,
+    sprite: {
+      src: "/sprites/deep-frilled-shark-strip.png",
+      frames: 4,
+      frameMs: 340,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-coelacanth",
@@ -967,6 +1003,12 @@ export const FISH_SPECIES = [
     shape: "long",
     depth: "mid",
     scale: 1.6,
+    sprite: {
+      src: "/sprites/deep-coelacanth-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-sea-pig",
@@ -978,6 +1020,12 @@ export const FISH_SPECIES = [
     accent: "#ffe0dc",
     shape: "long",
     depth: "floor",
+    sprite: {
+      src: "/sprites/deep-sea-pig-strip.png",
+      frames: 4,
+      frameMs: 380,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-basket-star",
@@ -990,6 +1038,12 @@ export const FISH_SPECIES = [
     shape: "tall",
     movement: "anchor",
     depth: "floor",
+    sprite: {
+      src: "/sprites/deep-basket-star-strip.png",
+      frames: 4,
+      frameMs: 400,
+      sourceFacing: "right",
+    },
   },
   {
     id: "deep-vampire-squid",
@@ -1002,6 +1056,12 @@ export const FISH_SPECIES = [
     shape: "round",
     movement: "drift",
     depth: "mid",
+    sprite: {
+      src: "/sprites/deep-vampire-squid-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
   // ── 深海（レア2種）──
   {
@@ -1035,6 +1095,12 @@ export const FISH_SPECIES = [
     rarity: "rare",
     movement: "drift",
     depth: "top",
+    sprite: {
+      src: "/sprites/deep-tab-jelly-strip.png",
+      frames: 4,
+      frameMs: 360,
+      sourceFacing: "right",
+    },
   },
 ];
 
