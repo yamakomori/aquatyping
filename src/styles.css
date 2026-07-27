@@ -16,7 +16,6 @@ button:disabled {
 
 .topbar {
   max-width: 1040px;
-  height: 72px;
   margin: auto;
   padding: 0 24px;
   display: flex;
@@ -24,29 +23,12 @@ button:disabled {
   justify-content: space-between;
 }
 
-.brand,
-.text-button {
-  border: 0;
-  background: transparent;
-  color: #31454a;
-}
-
-.brand {
-  font-weight: 700;
-  font-size: 1rem;
-}
-
 .topbar-actions {
   display: flex;
-  gap: 8px;
   align-items: center;
 }
 
 .coin {
-  padding: 7px 10px;
-  color: #826629;
-  background: #f1e4bf;
-  border-radius: 999px;
   font-size: .9rem;
 }
 
@@ -54,26 +36,20 @@ button:disabled {
 .wardrobe-screen,
 .settings-screen,
 .typing-screen {
-  width: min(100% - 32px, 920px);
   margin: 28px auto 56px;
 }
 
 .map-hero,
 .screen-heading {
-  min-height: 190px;
-  padding: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 28px;
-  background: #dce8e0;
   overflow: hidden;
 }
 
 .eyebrow {
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: #52766b;
   font-size: .78rem;
   font-weight: 700;
   margin: 0 0 8px;
@@ -93,44 +69,13 @@ button:disabled {
   color: #516366;
 }
 
-.avatar-head {
-  position: absolute;
-  z-index: 2;
-  top: 18px;
-  left: 21px;
-  width: 56px;
-  height: 55px;
-  border: 3px solid #31454a;
-  border-radius: 48% 48% 44% 44%;
-}
-
-.avatar-body {
-  position: absolute;
-  z-index: 1;
-  bottom: 5px;
-  left: 15px;
-  width: 68px;
-  height: 58px;
-  border: 3px solid #31454a;
-  border-radius: 42% 42% 18px 18px;
-}
-
 .avatar-eye {
   position: absolute;
   z-index: 3;
-  top: 42px;
   width: 5px;
   height: 7px;
   background: #31454a;
   border-radius: 50%;
-}
-
-.avatar-eye.left {
-  left: 40px;
-}
-
-.avatar-eye.right {
-  left: 58px;
 }
 
 .avatar-headmark {
@@ -144,20 +89,9 @@ button:disabled {
   transform: rotate(-12deg);
 }
 
-.stage-list {
-  display: grid;
-  gap: 14px;
-}
-
 .stage-card {
   display: grid;
-  grid-template-columns: 48px 1fr auto;
-  gap: 16px;
   align-items: center;
-  padding: 20px 22px;
-  border: 1px solid #d8d5ca;
-  border-radius: 18px;
-  background: #fffdf8;
 }
 
 .stage-card h2 {
@@ -166,42 +100,12 @@ button:disabled {
 }
 
 .stage-number {
-  color: #6c958a;
   font-weight: 700;
 }
 
 .medal {
-  display: grid;
-  place-items: center;
-  width: 21px;
-  height: 21px;
-  border: 1.5px solid #b9c4bd;
-  border-radius: 50%;
-  background: #f5f4ef;
-  color: #9aa7a0;
   font-size: .63rem;
   font-weight: 700;
-}
-
-.medal.earned.careful {
-  border-color: #c29535;
-  background: #f4df9d;
-  color: #725113;
-  box-shadow: 0 1px 3px #b6882544;
-}
-
-.medal.earned.speed {
-  border-color: #57938b;
-  background: #bfe0d5;
-  color: #255f58;
-  box-shadow: 0 1px 3px #43877e44;
-}
-
-.medal.earned.gold {
-  border-color: #b78119;
-  background: #e9bd48;
-  color: #5e4107;
-  box-shadow: 0 1px 4px #b6882566;
 }
 
 .dev-stage-selector {
@@ -234,17 +138,7 @@ button:disabled {
 .primary-button,
 .secondary-button,
 .danger-button {
-  min-height: 44px;
-  padding: 10px 17px;
-  border-radius: 12px;
   font-weight: 700;
-  border: 1px solid transparent;
-}
-
-.primary-button {
-  background: #406f69;
-  color: #fff;
-  box-shadow: 0 3px 0 #2e5651;
 }
 
 .primary-button:active {
@@ -252,39 +146,17 @@ button:disabled {
   box-shadow: none;
 }
 
-.secondary-button {
-  background: #f7f4ec;
-  color: #365a57;
-  border-color: #c8d7cf;
-}
-
-.text-button {
-  padding: 10px 0;
-  font-weight: 700;
-}
-
 .danger-button {
   margin-top: 28px;
-  color: #914b46;
-  border-color: #dfaaa3;
-  background: #fff6f4;
-}
-
-.typing-screen {
-  margin-top: 10px;
-  margin-bottom: 24px;
 }
 
 .typing-top {
-  display: flex;
   justify-content: space-between;
-  color: #657473;
   font-size: .9rem;
 }
 
 .typing-stage {
   min-height: 270px;
-  padding: 22px 16px 12px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -293,8 +165,6 @@ button:disabled {
 }
 
 .problem-title {
-  margin: 10px 0 7px;
-  color: #59736d;
   font-weight: 700;
 }
 
@@ -303,11 +173,9 @@ button:disabled {
   min-height: 42px;
   margin: 12px 0 0;
   font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: clamp(1.4rem, 4vw, 2rem);
   line-height: 1.3;
   letter-spacing: .08em;
   white-space: pre-wrap;
-  overflow-wrap: anywhere;
   max-height: 2.6em;
   overflow: hidden;
 }
@@ -332,22 +200,14 @@ button:disabled {
   text-underline-offset: 8px;
 }
 
-.input-guide-rest {
-  color: #31454a;
-}
-
 .shortcut-button kbd {
   padding: 1px 4px;
-  border: 1px solid #aec0b6;
-  border-bottom-width: 2px;
   border-radius: 4px;
-  background: #fff;
   font: inherit;
   font-size: .9em;
 }
 
 .keyboard-area {
-  width: min(100%, 650px);
   min-height: 174px;
   margin: 0 auto;
   position: relative;
@@ -356,38 +216,21 @@ button:disabled {
 .keyboard-guide {
   width: 100%;
   margin: 0 auto;
-  padding: 13px 16px 12px;
-  border-radius: 20px;
-  background: #e8ebe4;
 }
 
 .key-row {
   display: flex;
   justify-content: center;
   gap: 5px;
-  margin: 4px 0;
 }
 
 .keycap {
   min-width: 34px;
   padding: 7px 5px;
-  border: 1px solid #c4cbc4;
-  border-bottom-width: 3px;
-  border-radius: 7px;
-  background: #fbfaf6;
-  color: #61716e;
   font-family: "Roboto Mono", ui-monospace, monospace;
   font-size: .8rem;
   font-weight: 700;
   text-align: center;
-}
-
-.keycap.expected {
-  color: #634b14;
-  border-color: #c8952e;
-  background: #f6dfa4;
-  transform: translateY(-2px);
-  box-shadow: 0 3px 7px #c8952e44;
 }
 
 .keycap.space {
@@ -395,15 +238,8 @@ button:disabled {
 }
 
 .guide-companion {
-  position: absolute;
-  z-index: 2;
-  top: -8px;
-  left: -108px;
-  width: 178px;
-  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  pointer-events: none;
 }
 
 .guide-companion .avatar {
@@ -412,20 +248,6 @@ button:disabled {
   transform: scale(.72);
   transform-origin: top left;
   margin: 0 0 -20px 10px;
-}
-
-.speech-bubble {
-  width: 172px;
-  margin: 0;
-  padding: 8px 10px;
-  border: 1px solid #b8c9bf;
-  border-radius: 12px;
-  background: #fffdf8;
-  color: #46685f;
-  font-size: .77rem;
-  font-weight: 700;
-  line-height: 1.45;
-  box-shadow: 0 3px 10px #30463b12;
 }
 
 .speech-bubble::before {
@@ -439,9 +261,6 @@ button:disabled {
 }
 
 .finger-guide {
-  margin-top: 9px;
-  padding-top: 8px;
-  border-top: 1px solid #ced7cf;
   display: flex;
   justify-content: center;
   gap: 28px;
@@ -454,7 +273,6 @@ button:disabled {
 }
 
 .hand-label {
-  color: #6b7d78;
   font-size: .7rem;
   font-weight: 700;
 }
@@ -473,7 +291,6 @@ button:disabled {
   height: 18px;
   border: 1.5px solid #9caea5;
   border-radius: 8px 8px 4px 4px;
-  background: #f9faf6;
 }
 
 .hand .finger {
@@ -483,7 +300,6 @@ button:disabled {
   border: 1.5px solid #9caea5;
   border-bottom: 0;
   border-radius: 7px 7px 0 0;
-  background: #f9faf6;
 }
 
 .hand .pinky {
@@ -537,18 +353,12 @@ button:disabled {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: #26363a66;
   backdrop-filter: blur(4px);
   animation: overlay-in .2s ease-out;
 }
 
 .reward-card {
   width: min(100%, 420px);
-  padding: 23px 28px 22px;
-  border: 1px solid #d5dfd5;
-  border-radius: 26px;
-  background: #fffdf8;
-  box-shadow: 0 18px 55px #20333755;
   text-align: center;
   animation: card-in .3s cubic-bezier(.2, .9, .3, 1.1);
 }
@@ -561,7 +371,6 @@ button:disabled {
 }
 
 .reward-card h1 {
-  margin: 6px 0;
   font-size: clamp(1.55rem, 6vw, 2rem);
   line-height: 1.25;
 }
@@ -577,18 +386,12 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 10px auto 7px;
   padding: 7px 10px;
-  border-radius: 10px;
-  background: #f0f4ed;
-  color: #527068;
   font-size: .76rem;
   font-weight: 700;
 }
 
 .new-medals .medal {
-  width: 25px;
-  height: 25px;
   font-size: .7rem;
 }
 
@@ -597,12 +400,7 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin: 13px 0 8px;
   padding: 10px 11px 10px 14px;
-  border: 1px solid #bcd4c8;
-  border-radius: 14px;
-  background: #eaf3ed;
-  color: #41685f;
   text-align: left;
 }
 
@@ -623,18 +421,13 @@ button:disabled {
 
 .route-button {
   flex: 0 0 auto;
-  min-height: 36px;
-  padding: 7px 10px;
   font-size: .82rem;
 }
 
 .route-button kbd {
   margin-left: 3px;
   padding: 1px 4px;
-  border: 1px solid #b3c9be;
   border-radius: 4px;
-  background: #f7fcf8;
-  color: #335c54;
   font: inherit;
   font-size: .8em;
 }
@@ -645,15 +438,6 @@ button:disabled {
   gap: 10px;
   width: 100%;
   margin-top: 13px;
-}
-
-.shortcut-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  width: 100%;
-  min-width: 0;
 }
 
 .shortcut-button small {
@@ -673,21 +457,7 @@ button:disabled {
 .item-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 14px;
   margin-top: 22px;
-}
-
-.item-card {
-  padding: 16px;
-  text-align: center;
-  border: 1px solid #dbd7cb;
-  border-radius: 18px;
-  background: #fffdf8;
-}
-
-.item-card.equipped {
-  border-color: #769e8f;
-  background: #f2f8f3;
 }
 
 .item-card h2 {
@@ -705,7 +475,6 @@ button:disabled {
   background: var(--item-color, #e4d6a4);
   color: #735b20;
   font-size: 28px;
-  border: 2px solid #455e5a;
 }
 
 .settings-screen {
@@ -714,13 +483,8 @@ button:disabled {
 
 .setting-row {
   width: 100%;
-  padding: 18px;
   display: flex;
   justify-content: space-between;
-  border: 0;
-  border-bottom: 1px solid #e5e2d9;
-  background: #fffdf8;
-  color: #31454a;
   text-align: left;
 }
 
@@ -922,8 +686,6 @@ button:disabled {
 
 .coin {
   color: #ffd36e;
-  border: 1px solid #9b7225;
-  background: #172335;
 }
 
 .brand:hover {
@@ -938,29 +700,9 @@ button:disabled {
   color: #e8f1ed;
 }
 
-.map-hero,
-.screen-heading {
-  border: 1px solid #245169;
-  background: linear-gradient(135deg, #09243a, #051a2c);
-}
-
-.eyebrow {
-  color: #6ec5cf;
-}
-
 .map-hero p:not(.eyebrow),
 .screen-heading p:not(.eyebrow) {
   color: #b9d0d3;
-}
-
-.stage-card {
-  border-color: #254b61;
-  background: #071d30;
-}
-
-.stage-card.current {
-  border-color: #48a6ad;
-  box-shadow: 0 5px 18px #0c7d8a35;
 }
 
 .stage-card.locked {
@@ -968,85 +710,18 @@ button:disabled {
   color: #6d8591;
 }
 
-.stage-card p {
-  margin: 6px 0;
-  font-size: .91rem;
-  color: #a7c1c5;
-}
-
 .stage-card small {
   color: #88a6ac;
 }
 
-.stage-number {
-  color: #5bc5d0;
-}
-
-.medal {
-  border-color: #547783;
-  background: #0b2636;
-  color: #73919a;
-}
-
-.medal.earned.careful {
-  background: #584720;
-  color: #ffe19b;
-}
-
-.medal.earned.speed {
-  border-color: #579fa9;
-  background: #174b55;
-  color: #bdeff0;
-}
-
-.medal.earned.gold {
-  background: #7b5514;
-  color: #fff0aa;
-}
-
-.primary-button {
-  background: #126c7a;
-  color: #efffff;
-  box-shadow: 0 3px 0 #084653;
-}
-
-.secondary-button {
-  background: #0b2a3c;
-  color: #c6edf0;
-  border-color: #31647a;
-}
-
-.danger-button {
-  color: #ffc0b7;
-  border-color: #9a5753;
-  background: #391d27;
-}
-
 .sea-hero {
   position: relative;
-  min-height: 250px;
 }
 
 .sea-hero>div:first-child {
   position: relative;
   z-index: 1;
   max-width: 48%;
-}
-
-.aquarium-preview {
-  position: relative;
-  isolation: isolate;
-  min-height: 230px;
-  overflow: hidden;
-  border: 1px solid #34758d;
-  border-radius: 22px;
-  background: linear-gradient(155deg, #0c4160 0%, #062a45 52%, #04192e 100%);
-  box-shadow: inset 0 0 48px #02111f, 0 12px 28px #01101e55;
-}
-
-.sea-hero .aquarium-preview {
-  width: 46%;
-  min-width: 310px;
 }
 
 .aquarium-preview::before {
@@ -1073,16 +748,12 @@ button:disabled {
   position: absolute;
   inset: 0 0 auto;
   height: 24%;
-  opacity: .58;
   background: repeating-linear-gradient(100deg, transparent 0 18px, #b2f1fa1a 19px 25px, transparent 26px 45px);
 }
 
 .fish-visual {
   position: absolute;
   display: block;
-  width: 52px;
-  height: 34px;
-  animation: fish-swim var(--swim-duration, 5s) ease-in-out var(--swim-delay, 0s) infinite alternate;
 }
 
 .fish-visual.roaming {
@@ -1145,15 +816,6 @@ button:disabled {
   background: #082030;
 }
 
-.fish-visual.long {
-  width: 64px;
-}
-
-.fish-visual.tall {
-  width: 44px;
-  height: 48px;
-}
-
 .fish-visual.tall .fish-body {
   border-radius: 45% 45% 55% 55%;
 }
@@ -1164,7 +826,6 @@ button:disabled {
 }
 
 .aquarium-screen {
-  width: min(100% - 32px, 920px);
   margin: 28px auto 56px;
 }
 
@@ -1188,7 +849,6 @@ button:disabled {
 .fish-collection {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 12px;
 }
 
 .fish-card .fish-visual {
@@ -1252,31 +912,12 @@ button:disabled {
   color: #e8f1ed;
 }
 
-.keyboard-guide {
-  border: 1px solid #34576a;
-  background: #092539;
-}
-
 .keycap {
-  border-color: #416778;
-  background: #0d3045;
   color: #d1e2df;
 }
 
 .keycap.expected {
   color: #fff2c3;
-  border-color: #d6a93e;
-  background: #7b5818;
-}
-
-.speech-bubble {
-  border-color: #3a6676;
-  background: #082237;
-  color: #d0e5df;
-}
-
-.finger-guide {
-  border-color: #31576a;
 }
 
 .hand .palm,
@@ -1293,46 +934,21 @@ button:disabled {
   background: #00111caa;
 }
 
-.reward-card {
-  border-color: #2b6074;
-  background: #061d30;
-  box-shadow: 0 18px 55px #000b14bb;
-}
-
 .reward-card p:not(.eyebrow) {
   color: #bed5d4;
 }
 
 .new-medals {
-  background: #0d3040;
   color: #bce1dc;
 }
 
 .next-route-group {
-  border-color: #2c6975;
-  background: #0b3440;
   color: #c8ebe3;
 }
 
 .route-button kbd,
 .shortcut-button kbd {
-  border-color: #4d7d88;
-  background: #082438;
   color: #d7f2ed;
-}
-
-.wardrobe-screen .screen-heading {
-  background: linear-gradient(135deg, #09243a, #051a2c);
-}
-
-.item-card {
-  border-color: #254b61;
-  background: #071d30;
-}
-
-.item-card.equipped {
-  border-color: #3d8990;
-  background: #093540;
 }
 
 .item-card p {
@@ -1343,8 +959,6 @@ button:disabled {
 }
 
 .setting-row {
-  border-color: #254b61;
-  background: #071d30;
   color: #e8f1ed;
 }
 
@@ -1424,11 +1038,6 @@ button:disabled {
   background: #061827;
 }
 
-.fish-card.rare {
-  border-color: #e6b23c;
-  background: linear-gradient(160deg, #241b06, #0a1c2c 60%);
-}
-
 .fish-card.rare.undiscovered {
   border-style: dashed;
 }
@@ -1461,16 +1070,6 @@ button:disabled {
   color: #ffcf5f !important;
 }
 
-.intro-card {
-  width: min(100%, 430px);
-  padding: 35px 30px 28px;
-  border: 1px solid #2d667b;
-  border-radius: 28px;
-  background: #071f34;
-  box-shadow: 0 20px 60px #000b14aa;
-  text-align: center;
-}
-
 .intro-card .avatar {
   margin: 0 auto 2px;
 }
@@ -1493,7 +1092,6 @@ button:disabled {
 }
 
 .intro-skip {
-  display: block;
   margin: 4px auto 0;
   color: #9bc8ca;
 }
@@ -1542,8 +1140,6 @@ button:disabled {
 }
 
 .release-button {
-  border: 0;
-  background: transparent;
   color: #9cc8c9;
   font-size: .73rem;
   font-weight: 700;
@@ -1553,10 +1149,6 @@ button:disabled {
 
 .release-button:hover {
   color: #f0ca72;
-}
-
-.fish-book-heading {
-  margin-top: 30px;
 }
 
 .reward-fish-slot {
@@ -1592,8 +1184,6 @@ button:disabled {
   display: block;
   left: auto !important;
   top: auto !important;
-  width: 72px;
-  height: 48px;
   margin: 0 auto 7px;
   animation: fish-swim 5s ease-in-out infinite alternate;
 }
@@ -1615,10 +1205,6 @@ button:disabled {
 .release-confirm-card {
   width: min(100%, 340px);
   padding: 26px 25px 22px;
-  border: 1px solid #3a6d80;
-  border-radius: 22px;
-  background: #08243a;
-  box-shadow: 0 20px 60px #000a13cc;
   text-align: center;
 }
 
@@ -1627,8 +1213,6 @@ button:disabled {
   display: block;
   left: auto !important;
   top: auto !important;
-  width: 66px;
-  height: 44px;
   margin: 0 auto 8px;
   animation: fish-swim 5s ease-in-out infinite alternate;
 }
@@ -1727,19 +1311,12 @@ body:has(.region-backdrop-tidepool) {
 .region-backdrop-tidepool .brand,
 .region-backdrop-tidepool .text-button {
   color: #f4fff9;
-  text-shadow: 0 1px 4px #073744;
 }
 
 .region-backdrop-tidepool .coin {
   border-color: #7cb5a2;
   background: #23626bd9;
   color: #fff0ac;
-}
-
-.region-tidepool .map-hero {
-  border-color: #8fc6b4;
-  background: linear-gradient(135deg, #277681d6, #144d60ca);
-  box-shadow: 0 14px 34px #03263166;
 }
 
 .region-tidepool .map-hero .eyebrow,
@@ -1754,12 +1331,6 @@ body:has(.region-backdrop-tidepool) {
 .region-tidepool .map-hero .primary-button {
   background: #2b8b85;
   box-shadow: 0 3px 0 #17635f;
-}
-
-.region-tidepool .stage-card {
-  border-color: #63969a;
-  background: linear-gradient(105deg, #185160e8, #103d4fe8);
-  box-shadow: 0 8px 22px #0326314f;
 }
 
 .region-tidepool .stage-card.current {
@@ -1790,12 +1361,9 @@ body:has(.region-backdrop-tidepool) {
 }
 
 .region-tidepool .aquarium-preview {
-  border-color: #9bcfbc;
   background-color: #76cbc7;
-  background-image: linear-gradient(180deg, #f0fff01f 0%, #17475638 100%), url("/backgrounds/tidepool.png");
   background-position: center;
   background-size: cover;
-  box-shadow: inset 0 0 30px #17475652, 0 12px 28px #03263155;
   image-rendering: pixelated;
 }
 
@@ -1878,19 +1446,12 @@ body:has(.region-backdrop-shallows) {
 .region-backdrop-shallows .brand,
 .region-backdrop-shallows .text-button {
   color: #effffb;
-  text-shadow: 0 1px 4px #063043;
 }
 
 .region-backdrop-shallows .coin {
   border-color: #5ca6a5;
   background: #0c5261d9;
   color: #fff0ac;
-}
-
-.region-shallows .map-hero {
-  border-color: #74bbb7;
-  background: linear-gradient(135deg, #0b6070d4, #0a4055c7);
-  box-shadow: 0 14px 34px #01182266;
 }
 
 .region-shallows .screen-heading {
@@ -1905,12 +1466,6 @@ body:has(.region-backdrop-shallows) {
 .region-shallows .map-hero .primary-button {
   background: #168492;
   box-shadow: 0 3px 0 #0a5d68;
-}
-
-.region-shallows .stage-card {
-  border-color: #4f8995;
-  background: linear-gradient(105deg, #0c4357e8, #0a354ae8);
-  box-shadow: 0 8px 22px #0323344f;
 }
 
 .region-shallows .stage-card.current {
@@ -1941,12 +1496,9 @@ body:has(.region-backdrop-shallows) {
 }
 
 .region-shallows .aquarium-preview {
-  border-color: #72c8bd;
   background-color: #0a596f;
-  background-image: linear-gradient(180deg, #06334808 0%, #03283a2e 100%), url("/backgrounds/shallows.png");
   background-position: center;
   background-size: cover;
-  box-shadow: inset 0 0 32px #03243566, 0 12px 28px #01101e55;
   image-rendering: pixelated;
 }
 
@@ -2054,20 +1606,10 @@ body:has(.region-backdrop-deep-sea) {
   background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/deep-sea.png");
 }
 
-/* 第三海域「珊瑚の森」。暖色の珊瑚と木漏れ日のような光で浅瀬と区別する。 */
-.region-coral-forest .map-hero,
-.region-coral-forest .screen-heading {
-  border-color: #9a5f68;
-  background: linear-gradient(135deg, #5b3045, #17374a);
-}
-
 .region-coral-forest .aquarium-preview {
-  border-color: #c77a72;
   background-color: #16566a;
-  background-image: linear-gradient(180deg, #ffd9b814 0%, #32192c35 100%), url("/backgrounds/coral-forest.png");
   background-position: center;
   background-size: cover;
-  box-shadow: inset 0 0 48px #32192c99, 0 12px 28px #01101e55;
   image-rendering: pixelated;
 }
 
@@ -2088,11 +1630,6 @@ body:has(.region-backdrop-deep-sea) {
   background: radial-gradient(ellipse at 82% 16%, #df8b7055, transparent 36%), #173348;
 }
 
-.region-coral-forest .stage-card {
-  border-color: #65475b;
-  background: linear-gradient(105deg, #151f35, #10283a);
-}
-
 .region-coral-forest .stage-card.current {
   border-color: #df8d7b;
   box-shadow: 0 5px 18px #ba5f6b35;
@@ -2106,20 +1643,10 @@ body:has(.region-backdrop-deep-sea) {
   background: linear-gradient(105deg, #1c2438, #173040);
 }
 
-/* 第四海域「海の洞窟」。岩肌の灰緑と、割れ目から差す一条の光で暗さを見せる。 */
-.region-sea-cave .map-hero,
-.region-sea-cave .screen-heading {
-  border-color: #4c6470;
-  background: linear-gradient(135deg, #23323c, #101d2b);
-}
-
 .region-sea-cave .aquarium-preview {
-  border-color: #5d7684;
   background-color: #0b2c40;
-  background-image: linear-gradient(180deg, #b9e8ff0a 0%, #01070d30 100%), url("/backgrounds/sea-cave.png");
   background-position: center;
   background-size: cover;
-  box-shadow: inset 0 0 60px #01070d, 0 12px 28px #00060c66;
   image-rendering: pixelated;
 }
 
@@ -2140,11 +1667,6 @@ body:has(.region-backdrop-deep-sea) {
   background: radial-gradient(ellipse at 26% 8%, #9fd0ea38, transparent 40%), #101f2a;
 }
 
-.region-sea-cave .stage-card {
-  border-color: #3d5461;
-  background: linear-gradient(105deg, #16222c, #101c26);
-}
-
 .region-sea-cave .stage-card.current {
   border-color: #8fc4dd;
   box-shadow: 0 5px 18px #5f93aa35;
@@ -2158,20 +1680,10 @@ body:has(.region-backdrop-deep-sea) {
   background: linear-gradient(105deg, #1a2733, #14202b);
 }
 
-/* 第五海域「深海」。光の届かない濃紺と、発光生物のような一点の青緑で最も暗い海を見せる。 */
-.region-deep-sea .map-hero,
-.region-deep-sea .screen-heading {
-  border-color: #2f4a63;
-  background: linear-gradient(135deg, #141d33, #070c18);
-}
-
 .region-deep-sea .aquarium-preview {
-  border-color: #3a5578;
   background-color: #061226;
-  background-image: linear-gradient(180deg, #4fd8c808 0%, #01040a30 100%), url("/backgrounds/deep-sea.png");
   background-position: center;
   background-size: cover;
-  box-shadow: inset 0 0 72px #01040a, 0 12px 28px #00030966;
   image-rendering: pixelated;
 }
 
@@ -2185,21 +1697,6 @@ body:has(.region-backdrop-deep-sea) {
 
 .region-deep-sea .water-shine {
   opacity: .035;
-}
-
-.region-deep-sea .sea-typing-stage {
-  border-color: #37527a;
-  background: radial-gradient(ellipse at 74% 12%, #3fd8c033, transparent 38%), #0a1122;
-}
-
-.region-deep-sea .stage-card {
-  border-color: #2c4262;
-  background: linear-gradient(105deg, #111a2e, #0b1526);
-}
-
-.region-deep-sea .stage-card.current {
-  border-color: #5fd6c4;
-  box-shadow: 0 5px 18px #3f9fa035;
 }
 
 .region-deep-sea .stage-number {
@@ -2574,11 +2071,6 @@ rt {
   flex: 0 0 auto;
 }
 
-.topbar {
-  height: 78px;
-  border-bottom: 1px solid #1c4257;
-}
-
 .brand,
 .nav-button {
   display: inline-flex;
@@ -2586,10 +2078,6 @@ rt {
   justify-content: center;
   gap: 7px;
   min-height: 42px;
-  padding: 7px 10px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
   color: #e8f1ed;
   font-weight: 700;
 }
@@ -2620,44 +2108,22 @@ rt {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border-radius: 7px;
   font-weight: 700;
 }
 
 .region-backdrop-shallows .nav-button {
   color: #effffb;
-  text-shadow: 0 1px 4px #063043;
 }
 
 .region-backdrop-tidepool .nav-button {
   color: #f4fff9;
-  text-shadow: 0 1px 4px #073744;
-}
-
-.primary-button,
-.secondary-button,
-.danger-button {
-  border-radius: 7px;
 }
 
 .text-button {
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 3px;
-}
-
-.map-screen,
-.wardrobe-screen,
-.settings-screen,
-.typing-screen,
-.aquarium-screen {
-  width: min(100% - 40px, 980px);
-}
-
-.map-hero {
-  min-height: 290px;
-  padding: 38px;
-  border-radius: 4px 4px 32px 4px;
 }
 
 .map-hero-copy {
@@ -2696,18 +2162,9 @@ rt {
 .aquarium-attached-button {
   position: absolute;
   z-index: 5;
-  right: 18px;
-  bottom: 0;
-  min-height: 47px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 13px 9px 12px;
-  border: 1px solid #67aeba;
-  border-radius: 5px;
-  background: #0d4055;
-  color: #efffff;
-  box-shadow: 0 8px 20px #00172299;
 }
 
 .aquarium-attached-button strong {
@@ -2715,14 +2172,10 @@ rt {
 }
 
 .region-navigation {
-  min-height: 73px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 18px;
-  margin: 18px 0 8px;
-  border-top: 1px solid #21495d;
-  border-bottom: 1px solid #21495d;
 }
 
 .region-arrow-slot {
@@ -2736,13 +2189,9 @@ rt {
 }
 
 .region-arrow {
-  min-height: 48px;
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 5px 2px;
-  border: 0;
-  border-bottom: 2px solid transparent;
   background: transparent;
   color: #d8efec;
   text-align: left;
@@ -2763,7 +2212,6 @@ rt {
 
 .region-arrow strong {
   margin-top: 2px;
-  font-size: 1.2rem;
 }
 
 .region-dots {
@@ -2774,11 +2222,6 @@ rt {
 }
 
 .region-dot {
-  min-width: 74px;
-  min-height: 40px;
-  padding: 5px 9px;
-  border: 0;
-  border-bottom: 2px solid transparent;
   background: transparent;
   color: #78989e;
   font-size: .9rem;
@@ -2787,23 +2230,10 @@ rt {
 
 .region-dot-number {
   display: block;
-  font-family: "Roboto Mono", ui-monospace, monospace;
-  font-size: .58rem;
-  letter-spacing: .08em;
-}
-
-.region-dot.selected {
-  border-bottom-color: #68c4c5;
-  color: #efffff;
 }
 
 .map-screen.region-tidepool .region-navigation {
   border-color: #4f8788;
-}
-
-.map-screen.region-tidepool .region-dot.selected {
-  border-bottom-color: #a7d9c5;
-  color: #f4fff9;
 }
 
 .section-intro .eyebrow {
@@ -2819,46 +2249,17 @@ rt {
 .map-screen .stage-list {
   position: relative;
   display: grid;
-  gap: 0;
   /* 左右は余白なし。現在位置バーと行の区切り線が、帯の端まで届くようにする。 */
-  padding-inline: 0;
-  border-top: 1px solid #3a6475;
-  border-bottom: 1px solid #244b60;
-  background: linear-gradient(100deg, #06283edb, #0a3b4fc4);
-  box-shadow: 0 18px 42px #00162344;
 }
 
 .map-screen .stage-card,
 .map-screen.region-shallows .stage-card,
 .map-screen.region-coral-forest .stage-card {
-  min-height: 124px;
   grid-template-columns: 58px minmax(0, 1fr) auto;
   gap: 18px;
   /* 左は 10px + バーの 4px で 14px。右も 14px にして帯の端からの入りを揃える。 */
-  padding: 24px 28px;
-  border: 0 !important;
   /* 現在位置バーの居場所は全行が最初から確保しておく。current のときだけ padding を足すと、
      その行の中身だけ右にずれて左端が揃わなくなるため。 */
-  border-left: 4px solid transparent !important;
-  border-bottom: 1px solid #294e61 !important;
-  border-radius: 0;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-.map-screen .stage-card.current {
-  border-left-color: #6bc8c7 !important;
-  background: linear-gradient(90deg, #0c536044, transparent 58%) !important;
-}
-
-.map-screen.region-tidepool .stage-list {
-  border-color: #55898d;
-  background: linear-gradient(100deg, #164b59e6, #103f50d9);
-  box-shadow: 0 18px 42px #0326314d;
-}
-
-.map-screen.region-tidepool .stage-card {
-  border-bottom-color: #46757b !important;
 }
 
 .map-screen.region-tidepool .stage-card.current {
@@ -2867,12 +2268,8 @@ rt {
 }
 
 .stage-number {
-  width: 42px;
-  height: 42px;
   display: grid;
   place-items: center;
-  border: 1px solid #3c6978;
-  border-radius: 50%;
   font-family: "Roboto Mono", ui-monospace, monospace;
   font-size: .78rem;
 }
@@ -2899,30 +2296,8 @@ rt {
   row-gap: 6px;
 }
 
-.stage-action {
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 5px 7px 12px;
-  border: 0;
-  border-bottom: 1px solid #487688;
-  background: transparent;
-  color: #bce7e7;
-  font-weight: 700;
-}
-
 .stage-action:hover {
   border-bottom-color: #7ad7d3;
-  color: #fff;
-}
-
-.stage-action.primary {
-  padding-inline: 14px 9px;
-  border: 1px solid #39929b;
-  border-radius: 6px;
-  background: #126c7a;
-  box-shadow: 0 3px 0 #084653;
   color: #fff;
 }
 
@@ -2938,12 +2313,7 @@ rt {
 }
 
 .screen-heading {
-  min-height: 180px;
-  padding: 24px 0 28px;
-  border: 0 !important;
-  border-bottom: 1px solid #285064 !important;
   border-radius: 0;
-  background: transparent !important;
 }
 
 .screen-heading h1 {
@@ -2958,10 +2328,6 @@ rt {
   line-height: 1.75;
 }
 
-.item-card {
-  border-radius: 4px 18px 4px 4px;
-}
-
 .aquarium-main {
   position: relative;
   margin-top: 24px;
@@ -2971,7 +2337,6 @@ rt {
 .aquarium-screen>.aquarium-main .aquarium-preview {
   min-height: 410px;
   margin: 0;
-  border-radius: 4px 4px 26px 4px;
 }
 
 .aquarium-depart-button {
@@ -2984,12 +2349,6 @@ rt {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  box-shadow: 0 9px 22px #00131eaa, 0 3px 0 #084653;
-}
-
-.collection-heading {
-  padding-bottom: 9px;
-  border-bottom: 1px solid #2c5366;
 }
 
 .collection-heading h2 {
@@ -3003,11 +2362,8 @@ rt {
   align-items: center;
   gap: 12px;
   padding: 14px;
-  border: 1px solid #254b61;
-  background: #071d30;
   position: relative;
   overflow: hidden;
-  border-radius: 4px 14px 4px 4px;
 }
 
 .fish-card .release-button {
@@ -3043,11 +2399,6 @@ rt {
 /* ヘッダーが無いぶん、唯一の離脱口である「やめる」をボタンらしく見せる。 */
 .exit-lesson-button {
   gap: 4px;
-  padding: 9px 16px 9px 11px;
-  border: 1px solid #2f6b83;
-  border-radius: 999px;
-  background: #0b2b40cc;
-  color: #e8f1ed;
   font-size: .92rem;
 }
 
@@ -3113,9 +2464,6 @@ rt {
 .sea-typing-stage {
   position: relative;
   overflow: hidden;
-  border: 1px solid #16465d;
-  background: radial-gradient(ellipse at 82% 16%, #12617a55, transparent 34%), #04182b;
-  border-radius: 4px 4px 30px 4px;
 }
 
 .problem-title {
@@ -3164,7 +2512,6 @@ rt {
 
 /* 中央スロットに進捗（.typing-count）が入るので、罫線はクラスで限定する。 */
 .keyboard-section-label>.section-rule {
-  height: 1px;
   background: #31566a;
 }
 
@@ -3174,9 +2521,6 @@ rt {
 
 .keyboard-guide {
   padding: 11px 20px 9px;
-  border-radius: 7px;
-  background: #071e31;
-  box-shadow: 0 16px 36px #00111d66;
 }
 
 .keyboard-guide .key-row {
@@ -3188,14 +2532,8 @@ rt {
   padding-top: 6px;
 }
 
-.guide-companion {
-  top: -12px;
-  left: -96px;
-}
-
 .reward-card {
   position: relative;
-  border-radius: 8px 8px 28px 8px;
 }
 
 .fish-reward {
@@ -3237,9 +2575,12 @@ rt {
 }
 
 .shortcut-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
   width: 100%;
   min-width: 0;
-  border-radius: 6px;
 }
 
 .intro-card p:not(.eyebrow) {
@@ -3397,7 +2738,6 @@ rt {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  color: #c9f8f1;
   pointer-events: none;
 }
 
@@ -3646,8 +2986,6 @@ rt {
   max-width: 235px;
   margin: 0;
   padding: 10px 14px;
-  border: 2px solid #8a7444;
-  border-radius: 12px 12px 12px 4px;
   background: #061b29;
   color: #eef6e9;
   font-size: .82rem;
@@ -3656,7 +2994,6 @@ rt {
   letter-spacing: .015em;
   white-space: pre-line;
   overflow-wrap: anywhere;
-  box-shadow: 0 4px 0 #00111dcc, 0 9px 22px #00111d66;
 }
 
 .speech-bubble::before,
@@ -4009,6 +3346,9 @@ button:focus-visible {
 }
 
 .avatar-head {
+  position: absolute;
+  z-index: 2;
+  border-radius: 48% 48% 44% 44%;
   top: 21px;
   left: 24px;
   width: 50px;
@@ -4016,6 +3356,9 @@ button:focus-visible {
 }
 
 .avatar-body {
+  position: absolute;
+  z-index: 1;
+  border-radius: 42% 42% 18px 18px;
   bottom: 7px;
   left: 18px;
   width: 62px;
@@ -4052,6 +3395,9 @@ button:focus-visible {
 }
 
 .intro-card {
+  width: min(100%, 430px);
+  padding: 35px 30px 28px;
+  text-align: center;
   box-shadow: none;
 }
 
@@ -4364,10 +3710,14 @@ button:focus-visible {
 }
 
 .stage-action {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
   padding: 10px 14px;
   color: #bce7e7;
-  transition:
-    background-color var(--ui-motion),
+  transition: background-color var(--ui-motion),
     box-shadow var(--ui-motion),
     transform var(--ui-motion);
 }
@@ -4402,7 +3752,6 @@ button:focus-visible {
 .region-sea-cave .aquarium-preview,
 .region-deep-sea .aquarium-preview {
   border: 0;
-  border-radius: var(--ui-radius-card);
   box-shadow: none;
 }
 
@@ -4442,6 +3791,10 @@ button:focus-visible {
 }
 
 .aquarium-preview {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(155deg, #0c4160 0%, #062a45 52%, #04192e 100%);
   cursor: zoom-in;
   touch-action: pan-y;
 }
@@ -4479,7 +3832,6 @@ button:focus-visible {
 
 .aquarium-magnifier-content.aquarium-preview {
   position: absolute;
-  min-height: 0;
   margin: 0;
   overflow: hidden;
   border: 0 !important;
@@ -4512,10 +3864,6 @@ button:focus-visible {
   padding-left: 0;
   border: 0;
   color: #d3efed;
-}
-
-.aquarium-depart-button {
-  box-shadow: none;
 }
 
 .collection-heading {
@@ -4567,6 +3915,7 @@ button:focus-visible {
 }
 
 .item-card {
+  text-align: center;
   padding: 20px;
 }
 
