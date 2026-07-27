@@ -326,8 +326,11 @@ function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
       const hPct = (((entity.h ?? 34) * scale) / ch) * 100;
       const xMin = 1.5;
       const xMax = Math.max(xMin, 98.5 - wPct);
-      // Anchored burrow-dwellers may sink their tail into the sand, so they can sit lower than swimmers.
-      const frameYMax = entity.anchored ? Math.max(4, 90 - hPct * 0.4) : Math.max(4, 84 - hPct);
+      // Seabed dwellers (anchored burrowers and the "floor" band) may sink into the sand, so they can
+      // sit lower than open-water swimmers. Reserving the full sprite height would otherwise push a
+      // large floor species (エイやヒラメ) up into the mid-water.
+      const seabed = entity.anchored || entity.depth === "floor";
+      const frameYMax = seabed ? Math.max(4, 90 - hPct * 0.4) : Math.max(4, 84 - hPct);
       const band = DEPTH_BANDS[entity.depth] ?? DEPTH_BANDS.mid;
       const yMin = Math.min(band[0], frameYMax);
       const yMax = Math.min(Math.max(band[1], yMin + 1), frameYMax);
