@@ -354,7 +354,7 @@ function makeFishRandom(seed) {
 
 // Each fish roams to random waypoints inside the tank, clamped to the frame, and
 // only turns to face a new target when it lies clearly to its other side (throttled).
-function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
+function useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, signature) {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
@@ -370,6 +370,7 @@ function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
       const anchored = info.anchored === true;      // burrow-dwellers (garden eels) hold their spot in the sand
       const school = info.school === true && !anchored;
       return {
+        index: i,
         node,
         random,
         sourceFacing: info.sourceFacing,
@@ -429,13 +430,22 @@ function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
     const applyTransform = (fish, xPct, yPct) => {
       const dx = ((xPct - fish.baseX) / 100) * cw;
       const dy = ((yPct - fish.baseY) / 100) * ch;
-      fish.node.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${fish.scale})`;
+      const transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${fish.scale})`;
+      fish.node.style.transform = transform;
+      const magnifierNode = magnifierNodesRef.current[fish.index];
+      if (magnifierNode) magnifierNode.style.transform = transform;
+    };
+
+    const applyFacing = (fish) => {
+      const flipped = (fish.facing === -1 ? "left" : "right") !== fish.sourceFacing;
+      fish.node.classList.toggle("is-flipped", flipped);
+      magnifierNodesRef.current[fish.index]?.classList.toggle("is-flipped", flipped);
     };
 
     const place = (fish) => {
       if (fish.node) {
         applyTransform(fish, fish.x, fish.y);
-        fish.node.classList.toggle("is-flipped", (fish.facing === -1 ? "left" : "right") !== fish.sourceFacing);
+        applyFacing(fish);
       }
     };
 
@@ -545,7 +555,7 @@ function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
           const swayY = Math.sin(t * fish.bobFreq + fish.phase) * fish.bobAmp;
           const swayX = Math.sin(t * fish.bobFreq * 0.7 + fish.phase) * fish.swayAmp;
           applyTransform(fish, fish.x + swayX, fish.y + swayY);
-          fish.node.classList.toggle("is-flipped", (fish.facing === -1 ? "left" : "right") !== fish.sourceFacing);
+          applyFacing(fish);
           continue;
         }
         if (fish.center) {
@@ -565,7 +575,7 @@ function useAquariumRoaming(containerRef, nodesRef, metaRef, signature) {
         }
         const bob = Math.sin((now / 1000) * fish.bobFreq + fish.phase) * fish.bobAmp;
         applyTransform(fish, fish.x, fish.y + bob);
-        fish.node.classList.toggle("is-flipped", (fish.facing === -1 ? "left" : "right") !== fish.sourceFacing);
+        applyFacing(fish);
       }
       raf = requestAnimationFrame(frame);
     };
@@ -582,6 +592,10 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
     : `水槽。つかまえた魚 ${fish.length} 匹`;
   const containerRef = useRef(null);
   const nodesRef = useRef([]);
+  const magnifierNodesRef = useRef([]);
+  const magnifierRef = useRef(null);
+  const magnifierContentRef = useRef(null);
+  const pressedPointerRef = useRef(null);
   const metaRef = useRef([]);
   metaRef.current = visibleFish.map((caughtFish, index) => {
     const species = getFishSpecies(caughtFish.speciesId);
@@ -600,8 +614,89 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
       base: aquariumPosition(index, seed, seedSalt),
     };
   });
-  useAquariumRoaming(containerRef, nodesRef, metaRef, `${seedSalt}:${visibleFish.map((f) => f.id).join(",")}`);
-  return <div ref={containerRef} className="aquarium-preview" aria-label={ariaLabel}><div className="water-shine" /><BubbleField variant="tank" />{visibleFish.length > 0 ? visibleFish.map((caughtFish, index) => <FishVisual key={caughtFish.id} caughtFish={caughtFish} index={index} roaming position={metaRef.current[index].base} nodeRef={(el) => { nodesRef.current[index] = el; }} />) : <p><span><UiText>{emptyMessage}</UiText></span></p>}<span className="aquarium-sand" /></div>;
+  useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, `${seedSalt}:${visibleFish.map((f) => f.id).join(",")}`);
+
+  const setMagnifierVisible = (visible) => {
+    containerRef.current?.classList.toggle("is-magnifying", visible);
+  };
+
+  const moveMagnifier = (event) => {
+    const container = containerRef.current;
+    const magnifier = magnifierRef.current;
+    const content = magnifierContentRef.current;
+    if (!container || !magnifier || !content) return;
+    const bounds = container.getBoundingClientRect();
+    const x = Math.min(bounds.width, Math.max(0, event.clientX - bounds.left));
+    const y = Math.min(bounds.height, Math.max(0, event.clientY - bounds.top));
+    const lensSize = magnifier.offsetWidth;
+    const radius = lensSize / 2;
+    const lensX = Math.min(Math.max(radius, x), Math.max(radius, bounds.width - radius));
+    const lensY = Math.min(Math.max(radius, y), Math.max(radius, bounds.height - radius));
+    const zoom = Number.parseFloat(getComputedStyle(magnifier).getPropertyValue("--magnifier-zoom")) || 2;
+    magnifier.style.left = `${lensX - radius}px`;
+    magnifier.style.top = `${lensY - radius}px`;
+    content.style.width = `${bounds.width}px`;
+    content.style.height = `${bounds.height}px`;
+    content.style.left = `${radius - (x * zoom)}px`;
+    content.style.top = `${radius - (y * zoom)}px`;
+  };
+
+  const onPointerEnter = (event) => {
+    if (event.pointerType !== "mouse") return;
+    moveMagnifier(event);
+    setMagnifierVisible(true);
+  };
+  const onPointerMove = (event) => {
+    if (event.pointerType !== "mouse" && pressedPointerRef.current !== event.pointerId) return;
+    moveMagnifier(event);
+  };
+  const onPointerDown = (event) => {
+    if (!event.isPrimary) return;
+    pressedPointerRef.current = event.pointerId;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    moveMagnifier(event);
+    setMagnifierVisible(true);
+  };
+  const onPointerEnd = (event) => {
+    if (pressedPointerRef.current !== event.pointerId) return;
+    pressedPointerRef.current = null;
+    if (event.pointerType !== "mouse") {
+      setMagnifierVisible(false);
+      return;
+    }
+    const bounds = containerRef.current?.getBoundingClientRect();
+    if (!bounds || event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      setMagnifierVisible(false);
+    }
+  };
+  const onPointerLeave = (event) => {
+    if (event.pointerType === "mouse" && pressedPointerRef.current === null) setMagnifierVisible(false);
+  };
+
+  return <div
+    ref={containerRef}
+    className="aquarium-preview"
+    aria-label={ariaLabel}
+    onPointerEnter={onPointerEnter}
+    onPointerMove={onPointerMove}
+    onPointerDown={onPointerDown}
+    onPointerUp={onPointerEnd}
+    onPointerCancel={onPointerEnd}
+    onPointerLeave={onPointerLeave}
+  >
+    <div className="water-shine" />
+    <BubbleField variant="tank" />
+    {visibleFish.length > 0 ? visibleFish.map((caughtFish, index) => <FishVisual key={caughtFish.id} caughtFish={caughtFish} index={index} roaming position={metaRef.current[index].base} nodeRef={(el) => { nodesRef.current[index] = el; }} />) : <p><span><UiText>{emptyMessage}</UiText></span></p>}
+    <span className="aquarium-sand" />
+    <span ref={magnifierRef} className="aquarium-magnifier" aria-hidden="true">
+      <span ref={magnifierContentRef} className="aquarium-magnifier-content aquarium-preview">
+        <div className="water-shine" />
+        <BubbleField variant="tank" />
+        {visibleFish.length > 0 ? visibleFish.map((caughtFish, index) => <FishVisual key={`magnifier-${caughtFish.id}`} caughtFish={caughtFish} index={index} roaming position={metaRef.current[index].base} nodeRef={(el) => { magnifierNodesRef.current[index] = el; }} />) : <p><span><UiText>{emptyMessage}</UiText></span></p>}
+        <span className="aquarium-sand" />
+      </span>
+    </span>
+  </div>;
 }
 
 function UnknownFishVisual({ rare = false }) {

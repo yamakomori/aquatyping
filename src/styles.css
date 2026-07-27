@@ -2812,6 +2812,10 @@ body:has(.region-backdrop-deep-sea) {
     animation: none !important;
   }
 
+  .aquarium-magnifier {
+    transition: none !important;
+  }
+
   .keyboard-guide .keycap.pressed,
   .keyboard-guide .keycap.wrong {
     animation: none !important;
@@ -4902,6 +4906,56 @@ button:focus-visible {
   display: none;
 }
 
+.aquarium-preview {
+  cursor: zoom-in;
+  touch-action: pan-y;
+}
+
+.aquarium-magnifier {
+  --magnifier-zoom: 2.25;
+  position: absolute;
+  z-index: 20;
+  width: clamp(136px, 19vw, 180px);
+  aspect-ratio: 1;
+  display: block;
+  overflow: hidden;
+  border: 5px solid #d8fbf4;
+  border-radius: 50%;
+  background: #082f42;
+  box-shadow: 0 8px 28px rgb(0 10 20 / 55%), inset 0 0 0 2px rgb(7 47 62 / 55%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.82);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.aquarium-preview.is-magnifying {
+  cursor: none;
+}
+
+.aquarium-preview.is-magnifying>.aquarium-magnifier {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reduce-motion .aquarium-magnifier {
+  transition: none;
+}
+
+.aquarium-magnifier-content.aquarium-preview {
+  position: absolute;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+  cursor: inherit;
+  pointer-events: none;
+  transform: scale(var(--magnifier-zoom));
+  transform-origin: top left;
+}
+
 .aquarium-sand {
   background: #123f4c;
 }
@@ -5081,6 +5135,12 @@ button:focus-visible {
   .typing-screen,
   .aquarium-screen {
     width: min(100% - 28px, 980px);
+  }
+
+  .aquarium-magnifier {
+    --magnifier-zoom: 2;
+    width: clamp(124px, 38vw, 154px);
+    border-width: 4px;
   }
 
   .topbar {
