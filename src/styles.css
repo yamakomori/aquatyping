@@ -2099,7 +2099,7 @@ body:has(.region-backdrop-tidepool) {
   width: 100%;
   height: clamp(360px, 42.9vw, 820px);
   background-color: #76cbc7;
-  background-image: url("/backgrounds/tidepool.png");
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/tidepool.png");
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
@@ -2273,7 +2273,7 @@ body:has(.region-backdrop-shallows) {
   width: 100%;
   height: clamp(360px, 42.9vw, 820px);
   background-color: #0a596f;
-  background-image: url("/backgrounds/shallows.png");
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/shallows.png");
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
@@ -2466,7 +2466,7 @@ body:has(.region-backdrop-coral-forest) {
 
 .app-shell.region-backdrop-coral-forest::before {
   background-color: #16566a;
-  background-image: url("/backgrounds/coral-forest.png");
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/coral-forest.png");
 }
 
 body:has(.region-backdrop-sea-cave) {
@@ -2475,7 +2475,7 @@ body:has(.region-backdrop-sea-cave) {
 
 .app-shell.region-backdrop-sea-cave::before {
   background-color: #0b2c40;
-  background-image: url("/backgrounds/sea-cave.png");
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/sea-cave.png");
 }
 
 body:has(.region-backdrop-deep-sea) {
@@ -2484,7 +2484,7 @@ body:has(.region-backdrop-deep-sea) {
 
 .app-shell.region-backdrop-deep-sea::before {
   background-color: #061226;
-  background-image: url("/backgrounds/deep-sea.png");
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), url("/backgrounds/deep-sea.png");
 }
 
 /* 第三海域「珊瑚の森」。暖色の珊瑚と木漏れ日のような光で浅瀬と区別する。 */
@@ -3230,7 +3230,7 @@ button:focus-visible {
   font-weight: 700;
 }
 
-.region-dot span {
+.region-dot-number {
   display: block;
   font-family: "Roboto Mono", ui-monospace, monospace;
   font-size: .58rem;
@@ -3790,7 +3790,7 @@ button:focus-visible {
     font-size: 0;
   }
 
-  .region-dot span {
+  .region-dot-number {
     font-size: .58rem;
   }
 
@@ -3922,7 +3922,7 @@ button:focus-visible {
   left: 0;
   height: clamp(360px, 42.9vw, 820px);
   background-color: var(--region-fade-image-color);
-  background-image: var(--region-fade-image);
+  background-image: linear-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%)), var(--region-fade-image);
   background-position: center bottom;
   background-size: cover;
   image-rendering: pixelated;
@@ -4621,7 +4621,7 @@ button:focus-visible {
   padding: 10px 12px;
   border: 0;
   border-radius: var(--ui-radius-card);
-  background: var(--region-surface, #0b3440e8);
+  background: rgb(0 0 0 / 60%);
 }
 
 .region-arrow {
@@ -4641,16 +4641,77 @@ button:focus-visible {
 }
 
 .region-dot {
-  min-width: 78px;
-  min-height: 44px;
+  min-width: 84px;
+  min-height: 82px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   padding: 6px 10px;
   border: 0;
   border-radius: var(--ui-radius-control);
 }
 
+.region-thumbnail {
+  width: 58px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+  opacity: .58;
+  filter: saturate(.72) brightness(.82);
+  transition: opacity var(--ui-motion), filter var(--ui-motion);
+}
+
+.region-dot-tidepool .region-thumbnail {
+  background-image: url("/backgrounds/tidepool.png");
+}
+
+.region-dot-shallows .region-thumbnail {
+  background-image: url("/backgrounds/shallows.png");
+}
+
+.region-dot-coral-forest .region-thumbnail {
+  background-image: url("/backgrounds/coral-forest.png");
+}
+
+.region-dot-sea-cave .region-thumbnail {
+  background-image: url("/backgrounds/sea-cave.png");
+}
+
+.region-dot-deep-sea .region-thumbnail {
+  background-image: url("/backgrounds/deep-sea.png");
+}
+
+.region-dot-copy {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.region-dot-number {
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: .55rem;
+  letter-spacing: .06em;
+}
+
+.region-dot-name {
+  font-size: .78rem;
+}
+
 .region-dot:hover {
   background: #ffffff0d;
   color: #d8eeee;
+}
+
+.region-dot:hover .region-thumbnail {
+  opacity: .82;
+  filter: saturate(.9) brightness(.94);
 }
 
 .map-screen.region-tidepool .region-dot {
@@ -4662,6 +4723,11 @@ button:focus-visible {
   border: 0;
   background: #ffffff14;
   color: #fff;
+}
+
+.region-dot.selected .region-thumbnail {
+  opacity: 1;
+  filter: none;
 }
 
 /* Lesson list: cards are separated by breathing room instead of rules. */
@@ -4686,7 +4752,7 @@ button:focus-visible {
   padding: 25px 28px;
   border: 0 !important;
   border-radius: var(--ui-radius-card);
-  background: var(--region-surface, #08283a) !important;
+  background: rgb(0 0 0 / 60%) !important;
   box-shadow: none !important;
   transition:
     background-color var(--ui-motion),
@@ -4699,11 +4765,11 @@ button:focus-visible {
 .map-screen.region-coral-forest .stage-card.current,
 .map-screen.region-sea-cave .stage-card.current,
 .map-screen.region-deep-sea .stage-card.current {
-  background: var(--region-surface-active, #104251) !important;
+  background: rgb(0 0 0 / 68%) !important;
 }
 
 .map-screen .stage-card.locked {
-  background: var(--region-surface-muted, #092333) !important;
+  background: rgb(0 0 0 / 50%) !important;
   opacity: .7;
 }
 
@@ -4734,11 +4800,11 @@ button:focus-visible {
 }
 
 .map-screen .stage-card:has(.stage-card-hitbox:hover) {
-  background: color-mix(in srgb, var(--region-surface) 88%, white) !important;
+  background: rgb(0 0 0 / 66%) !important;
 }
 
 .map-screen .stage-card.current:has(.stage-card-hitbox:hover) {
-  background: color-mix(in srgb, var(--region-surface-active) 88%, white) !important;
+  background: rgb(0 0 0 / 74%) !important;
 }
 
 .stage-card:has(.stage-card-hitbox:focus-visible) {
@@ -4877,18 +4943,18 @@ button:focus-visible {
 
 .aquarium-screen .fish-card,
 .aquarium-screen .tank-fish-card {
-  background: var(--region-surface, var(--ui-surface));
+  background: rgb(0 0 0 / 60%);
 }
 
 .fish-card.undiscovered,
 .fish-card.rare.undiscovered {
   border: 0;
-  background: var(--region-surface-muted, #081f2f);
+  background: rgb(0 0 0 / 60%);
 }
 
 .fish-card.rare {
-  border: 0;
-  background: #3f351c;
+  border: 3px solid #e9b84d;
+  background: rgb(0 0 0 / 60%);
 }
 
 .rare-ribbon {
@@ -5036,11 +5102,21 @@ button:focus-visible {
   .region-dot {
     width: 30px;
     min-width: 30px;
+    min-height: 44px;
     padding-inline: 2px;
     font-size: 0;
   }
 
-  .region-dot span {
+  .region-thumbnail,
+  .region-dot-name {
+    display: none;
+  }
+
+  .region-dot-copy {
+    display: block;
+  }
+
+  .region-dot-number {
     font-size: .58rem;
   }
 

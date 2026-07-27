@@ -253,9 +253,15 @@ function RegionNavigator({ regions, selectedId, onSelect, label }) {
         role="tab"
         aria-label={`${region.name}へ`}
         aria-selected={region.id === selectedId}
-        className={`region-dot ${region.id === selectedId ? "selected" : ""}`}
+        className={`region-dot region-dot-${region.id} ${region.id === selectedId ? "selected" : ""}`}
         onClick={() => onSelect(region.id)}
-      ><span>{String(index + 1).padStart(2, "0")}</span><UiText plain>{region.name}</UiText></button>)}
+      >
+        <span className="region-thumbnail" aria-hidden="true" />
+        <span className="region-dot-copy">
+          <span className="region-dot-number">{String(index + 1).padStart(2, "0")}</span>
+          <span className="region-dot-name"><UiText plain>{region.name}</UiText></span>
+        </span>
+      </button>)}
     </div>
     <div className="region-arrow-slot next-slot">
       {next && <button className="region-arrow next" onClick={() => onSelect(next.id)} aria-label={`次の海、${next.name}へ`}>
