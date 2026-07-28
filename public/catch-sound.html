@@ -57,13 +57,13 @@
       </div>
       <div class="knob">
         <label>着水の強さ（6・7のみ） <output id="punchOut"></output></label>
-        <input type="range" id="punch" min="0" max="100" value="70" />
+        <input type="range" id="punch" min="0" max="100" value="20" />
       </div>
     </div>
 
     <p class="note">
       毎回わずかに音程と長さがゆらぐようにしてあります（同じ音の繰り返しは疲れるため）。<br />
-      採用：通常＝<b>1 ぽしゃん</b> / レア・初捕獲＝<b>6 バシャーン</b>（着水の強さ 70%）。
+      採用：通常＝<b>1 ぽしゃん</b> / レア・初捕獲＝<b>6 バシャーン</b>（着水の強さ 20%）。
       この合成ロジックを <code>src/game/audio/</code> に切り出し、つれた瞬間の演出から呼び出す形にします。
     </p>
 
@@ -334,7 +334,7 @@
           role: "レア",
           play(at, p) {
             // k は「着水の強さ」スライダー。0 で頭を潰し、水の広がりだけを残す
-            // 採用値は k = 0.7（thump gain 0.142 / attack 58ms、crash 5040Hz から gain 0.252 / attack 54ms）
+            // 採用値は k = 0.2（thump gain 0.062 / attack 88ms、crash 3440Hz から gain 0.172 / attack 94ms）
             const k = punch();
             thump(at, { from: 95 * p, to: 48 * p, duration: rand(0.16, 0.2), gain: 0.03 + 0.16 * k, attack: 0.1 - 0.06 * k });
             crash(at, { from: (2800 + 3200 * k) * p, to: 520 * p, duration: rand(0.34, 0.42), gain: 0.14 + 0.16 * k, attack: 0.11 - 0.08 * k });

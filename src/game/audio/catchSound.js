@@ -206,8 +206,8 @@ function playPlop(at, pitch) {
 
 // レア・初捕獲の「バシャーン」。バケツに飛び込む着水と、濁った胴鳴り。
 function playSplashdown(at, pitch) {
-  thump(at, { from: 95 * pitch, to: 48 * pitch, duration: rand(0.16, 0.2), gain: 0.142, attack: 0.058 });
-  crash(at, { from: 5040 * pitch, to: 520 * pitch, duration: rand(0.34, 0.42), gain: 0.252, attack: 0.054 });
+  thump(at, { from: 95 * pitch, to: 48 * pitch, duration: rand(0.16, 0.2), gain: 0.062, attack: 0.088 });
+  crash(at, { from: 3440 * pitch, to: 520 * pitch, duration: rand(0.34, 0.42), gain: 0.172, attack: 0.094 });
   bucketRing(at + 0.04, { freq: 300 * pitch, duration: rand(0.4, 0.5), gain: 0.16, q: 7 });
   bucketRing(at + 0.055, { freq: 460 * pitch, duration: 0.3, gain: 0.08, q: 9 });
   droplets(at + 0.16, { count: 5, spread: 0.3, pitch });

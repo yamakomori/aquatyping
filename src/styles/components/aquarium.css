@@ -509,7 +509,11 @@
   overflow: hidden;
   background: linear-gradient(155deg, #0c4160 0%, #062a45 52%, #04192e 100%);
   cursor: zoom-in;
-  touch-action: pan-y;
+  /* No touch-action override: the tank must stay scrollable and pinch-zoomable. A long press
+     turns the lens on, and only then does the pointer handler block scrolling. */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .aquarium-magnifier {
@@ -532,6 +536,7 @@
 
 .aquarium-preview.is-magnifying {
   cursor: none;
+  touch-action: none;
 }
 
 .aquarium-preview.is-magnifying>.aquarium-magnifier {

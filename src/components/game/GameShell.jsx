@@ -341,6 +341,11 @@ function FishVisual({ caughtFish, className = "", index = 0, muted = false, posi
   return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
 }
 
+// Touch summons the magnifier only after holding still, so a swipe over the tank still scrolls.
+const MAGNIFIER_HOLD_MS = 320;
+const MAGNIFIER_HOLD_SLOP_PX = 12;
+const MAGNIFIER_TOUCH_GAP_PX = 16;
+
 // Deterministic PRNG (mulberry32) so each fish wanders the same way across renders.
 function makeFishRandom(seed) {
   let state = seed >>> 0;
@@ -596,6 +601,7 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
   const magnifierRef = useRef(null);
   const magnifierContentRef = useRef(null);
   const pressedPointerRef = useRef(null);
+  const holdRef = useRef({ timer: null, active: false, x: 0, y: 0 });
   const metaRef = useRef([]);
   metaRef.current = visibleFish.map((caughtFish, index) => {
     const species = getFishSpecies(caughtFish.speciesId);
@@ -616,22 +622,45 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
   });
   useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, `${seedSalt}:${visibleFish.map((f) => f.id).join(",")}`);
 
+  // Scrolling is only blocked once the lens is up, and only through a non-passive listener:
+  // touch-action stays untouched so swipe and pinch keep working on the tank.
+  useEffect(() => {
+    const container = containerRef.current;
+    const hold = holdRef.current;
+    if (!container) return undefined;
+    const blockScroll = (event) => {
+      if (hold.active) event.preventDefault();
+    };
+    container.addEventListener("touchmove", blockScroll, { passive: false });
+    return () => {
+      container.removeEventListener("touchmove", blockScroll);
+      if (hold.timer !== null) clearTimeout(hold.timer);
+      hold.timer = null;
+      hold.active = false;
+    };
+  }, []);
+
   const setMagnifierVisible = (visible) => {
     containerRef.current?.classList.toggle("is-magnifying", visible);
   };
 
-  const moveMagnifier = (event) => {
+  // Sit the lens above the fingertip so the hand does not cover what it magnifies.
+  const magnifierLift = () => (magnifierRef.current ? magnifierRef.current.offsetWidth / 2 + MAGNIFIER_TOUCH_GAP_PX : 0);
+
+  const moveMagnifier = (point, lift = 0) => {
     const container = containerRef.current;
     const magnifier = magnifierRef.current;
     const content = magnifierContentRef.current;
     if (!container || !magnifier || !content) return;
     const bounds = container.getBoundingClientRect();
-    const x = Math.min(bounds.width, Math.max(0, event.clientX - bounds.left));
-    const y = Math.min(bounds.height, Math.max(0, event.clientY - bounds.top));
+    const x = Math.min(bounds.width, Math.max(0, point.clientX - bounds.left));
+    const y = Math.min(bounds.height, Math.max(0, point.clientY - bounds.top));
     const lensSize = magnifier.offsetWidth;
     const radius = lensSize / 2;
+    // The lens keeps the touched point at its centre, so lifting it clear of the fingertip
+    // changes where the lens sits without changing what it shows.
     const lensX = Math.min(Math.max(radius, x), Math.max(radius, bounds.width - radius));
-    const lensY = Math.min(Math.max(radius, y), Math.max(radius, bounds.height - radius));
+    const lensY = Math.min(Math.max(radius, y - lift), Math.max(radius, bounds.height - radius));
     const zoom = Number.parseFloat(getComputedStyle(magnifier).getPropertyValue("--magnifier-zoom")) || 2;
     magnifier.style.left = `${lensX - radius}px`;
     magnifier.style.top = `${lensY - radius}px`;
@@ -641,23 +670,59 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
     content.style.top = `${radius - (y * zoom)}px`;
   };
 
+  const cancelHold = () => {
+    const hold = holdRef.current;
+    if (hold.timer !== null) clearTimeout(hold.timer);
+    hold.timer = null;
+    hold.active = false;
+  };
+
   const onPointerEnter = (event) => {
     if (event.pointerType !== "mouse") return;
     moveMagnifier(event);
     setMagnifierVisible(true);
   };
   const onPointerMove = (event) => {
+    const hold = holdRef.current;
+    if (hold.timer !== null) {
+      // Still deciding: a finger that travels is scrolling, not asking for the lens.
+      const moved = Math.abs(event.clientX - hold.x) > MAGNIFIER_HOLD_SLOP_PX || Math.abs(event.clientY - hold.y) > MAGNIFIER_HOLD_SLOP_PX;
+      if (moved) cancelHold();
+      return;
+    }
     if (event.pointerType !== "mouse" && pressedPointerRef.current !== event.pointerId) return;
-    moveMagnifier(event);
+    moveMagnifier(event, hold.active ? magnifierLift() : 0);
   };
   const onPointerDown = (event) => {
     if (!event.isPrimary) return;
+    cancelHold();
+    if (event.pointerType !== "mouse") {
+      // Touch keeps native scrolling and pinch-zoom; only a deliberate hold summons the lens.
+      const hold = holdRef.current;
+      const { pointerId, clientX, clientY } = event;
+      hold.x = clientX;
+      hold.y = clientY;
+      hold.timer = setTimeout(() => {
+        hold.timer = null;
+        hold.active = true;
+        pressedPointerRef.current = pointerId;
+        try {
+          containerRef.current?.setPointerCapture?.(pointerId);
+        } catch {
+          // The finger may have left between the press and the timer; the lens still tracks it.
+        }
+        moveMagnifier({ clientX, clientY }, magnifierLift());
+        setMagnifierVisible(true);
+      }, MAGNIFIER_HOLD_MS);
+      return;
+    }
     pressedPointerRef.current = event.pointerId;
     event.currentTarget.setPointerCapture?.(event.pointerId);
     moveMagnifier(event);
     setMagnifierVisible(true);
   };
   const onPointerEnd = (event) => {
+    cancelHold();
     if (pressedPointerRef.current !== event.pointerId) return;
     pressedPointerRef.current = null;
     if (event.pointerType !== "mouse") {
