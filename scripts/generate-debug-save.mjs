@@ -12,23 +12,30 @@ const DEBUG_XP = 99_999;
 
 function usage() {
   return [
-    "使い方: npm run debug:save -- [--region <regionId>[,<regionId>...]] [--format console|json]",
+    "使い方: npm run debug:save -- [--region <regionId>[,<regionId>...]] [--complete] [--format console|json]",
     "",
     `海域ID: ${REGIONS.map((region) => region.id).join(", ")}`,
     "--region は繰り返しやカンマ区切りで複数指定でき、いちばん先の海域まで解放します。",
     "指定した海域は到着の演出が未再生の状態になります。",
+    "--complete は解放済みステージのメダル3種をすべて獲得済みにします。",
+    "全海域制覇は npm run debug:save:complete でも生成できます。",
     "既定の形式は console です。",
   ].join("\n");
 }
 
 export function parseArgs(argv) {
-  const options = { format: "console", regionIds: [], help: false };
+  const options = { format: "console", regionIds: [], complete: false, help: false };
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
 
     if (argument === "--help" || argument === "-h") {
       options.help = true;
+      continue;
+    }
+
+    if (argument === "--complete") {
+      options.complete = true;
       continue;
     }
 
@@ -98,7 +105,9 @@ function createDebugCatch(species) {
   };
 }
 
-export function generateDebugSave({ regionIds = [] } = {}) {
+const ALL_MEDALS = { careful: true, speed: true, gold: true };
+
+export function generateDebugSave({ regionIds = [], complete = false } = {}) {
   for (const regionId of regionIds) {
     if (!REGIONS.some((region) => region.id === regionId)) {
       throw new Error(`存在しない海域IDです: ${regionId}`);
@@ -122,6 +131,10 @@ export function generateDebugSave({ regionIds = [] } = {}) {
     stagePlayCounts: Object.fromEntries(
       progressStages.map((stage) => [stage.id, Math.max(stage.minCompletedPlays ?? 1, 1)]),
     ),
+    // 制覇の証はメダル。解放したステージぶんだけ、ていねいさ・スピード・ゴールドを立てる。
+    stageMedals: complete
+      ? Object.fromEntries(progressStages.map((stage) => [stage.id, { ...ALL_MEDALS }]))
+      : {},
     caughtFish: species.map(createDebugCatch),
     discoveredFishSpeciesIds: species.map((item) => item.id),
     // 選んだ海域だけ到着演出を残す。デバッグ保存を読み込めばその海域の登場から確認できる。
@@ -160,7 +173,7 @@ export function run(argv = process.argv.slice(2)) {
     return;
   }
 
-  const save = generateDebugSave({ regionIds: options.regionIds });
+  const save = generateDebugSave({ regionIds: options.regionIds, complete: options.complete });
   process.stdout.write(`${formatDebugSave(save, options.format)}\n`);
 }
 

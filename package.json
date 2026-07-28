@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "test": "npm run validate-content && node --test",
     "debug:save": "node scripts/generate-debug-save.mjs",
+    "debug:save:complete": "node scripts/generate-debug-save.mjs --complete",
     "validate-content": "node scripts/validate-content.js",
     "serve": "astro dev"
   },

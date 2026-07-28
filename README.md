@@ -31,6 +31,17 @@ npm run --silent debug:save
 現在地は最終ステージ、イントロは閲覧済み、コインと経験値はそれぞれ `99,999` になる。
 出力された `localStorage.setItem(...); location.reload();` を、対象ページのブラウザ開発者コンソールへ貼り付けて使用する。
 
+### 全海域制覇
+
+```bash
+npm run --silent debug:save:complete
+```
+
+全ステージの解放・プレイ済みと全魚種の捕獲に加えて、全ステージのメダル3種（ていねいさ・スピード・ゴールド）を獲得済みにする。
+`npm run --silent debug:save -- --complete` と同じ。`--complete` は `--region` と併用でき、その場合は解放した海域までのメダルだけを立てる。
+
+既定の `npm run --silent debug:save` はメダル未獲得のままなので、メダル獲得の演出を試す用途はそちらを使う。
+
 ### 海域を指定する
 
 ```bash

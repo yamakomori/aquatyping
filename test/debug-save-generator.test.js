@@ -69,6 +69,24 @@ test("複数の海域を指定すると、いちばん先まで解放して指�
   assert.deepEqual(generateDebugSave({ regionIds: ["deep-sea", "coral-forest"] }), save);
 });
 
+test("全海域制覇の保存は、全ステージのメダルを3種とも獲得済みにする", () => {
+  const save = generateDebugSave({ complete: true });
+
+  assert.deepEqual(Object.keys(save.stageMedals).sort(), STAGES.map((stage) => stage.id).sort());
+  assert.ok(Object.values(save.stageMedals).every((medals) => medals.careful && medals.speed && medals.gold));
+  assert.deepEqual(save.revealedRegionIds, REGIONS.map((region) => region.id));
+  assert.deepEqual(save.unlockedStageIds, STAGES.map((stage) => stage.id));
+  // 既定の保存はメダル未獲得のまま。メダル獲得の演出を確かめる余地を残す。
+  assert.deepEqual(generateDebugSave().stageMedals, {});
+});
+
+test("海域を指定した制覇は、その海域までのメダルだけを立てる", () => {
+  const save = generateDebugSave({ regionIds: ["shallows"], complete: true });
+  const expectedStageIds = REGIONS.slice(0, 2).flatMap((region) => region.stageIds);
+
+  assert.deepEqual(Object.keys(save.stageMedals).sort(), expectedStageIds.sort());
+});
+
 test("console format is a pasteable localStorage command", () => {
   const save = generateDebugSave({ regionIds: ["tidepool"] });
   const output = formatDebugSave(save, "console");
@@ -86,8 +104,9 @@ test("json format emits the generated save as JSON", () => {
 test("argument parser rejects unknown regions, formats, and flags", () => {
   assert.deepEqual(
     parseArgs(["--region", "shallows", "--format=json"]),
-    { format: "json", regionIds: ["shallows"], help: false },
+    { format: "json", regionIds: ["shallows"], complete: false, help: false },
   );
+  assert.equal(parseArgs(["--complete"]).complete, true);
   assert.deepEqual(
     parseArgs(["--region", "coral-forest,deep-sea"]).regionIds,
     ["coral-forest", "deep-sea"],
