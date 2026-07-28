@@ -18,3 +18,16 @@ export function getUnlockedRegions(unlockedStageIds = []) {
 export function getUnrevealedRegion(unlockedStageIds = [], revealedRegionIds = []) {
   return getUnlockedRegions(unlockedStageIds).find((region) => !revealedRegionIds.includes(region.id)) ?? null;
 }
+
+// タイトル画面の背景に敷く「最後に遊んだ海」。記録のない古い保存では今いる海で代用する。
+// どちらの場合も、到着の演出をまだ見せていない海域は選ばない。初対面はタイトルではなく、
+// たどり着いた瞬間の演出で見せたい。
+export function getLastPlayedRegionId(save) {
+  const revealed = (regionId) => (save.revealedRegionIds ?? []).includes(regionId);
+  const remembered = REGIONS.find((region) => region.id === save.lastPlayedRegionId);
+  if (remembered && revealed(remembered.id)) return remembered.id;
+  const current = getRegionForStage(save.currentStageId);
+  if (revealed(current.id)) return current.id;
+  const seen = getUnlockedRegions(save.unlockedStageIds).filter((region) => revealed(region.id));
+  return seen.at(-1)?.id ?? REGIONS[0].id;
+}

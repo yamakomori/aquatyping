@@ -44,6 +44,10 @@ const ICON_PATHS = {
     <circle cx="8" cy="7" r="2" />
     <circle cx="16" cy="17" r="2" />
   </>,
+  keyboard: <>
+    <path d="M3 6.5h18v11H3z" />
+    <path d="M6.8 10h.4M10.3 10h.4M13.8 10h.4M17.3 10h.4M8.5 14h7" />
+  </>,
   chevronLeft: <path d="m15 5-7 7 7 7" />,
   chevronRight: <path d="m9 5 7 7-7 7" />,
   close: <>

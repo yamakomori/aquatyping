@@ -4,7 +4,7 @@ import { purchase } from "../src/domain/economy.js";
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, summarizePlay, updateConceptSkills, updateSkills } from "../src/domain/learning.js";
 import { chooseProblems, getProblemsForStage } from "../src/domain/problems.js";
 import { createSave, loadSave } from "../src/domain/save.js";
-import { AQUARIUM_VISIBLE_FISH_LIMIT, FISH_SPECIES, fishCollectionStats, fishCountsBySpecies, fishDiscovery, fishForCatch, getFishSpecies, isRegionCleared, RARE_PITY_THRESHOLD, rareChanceForStage, rareFishForRegion, releaseFish, rollRareCatch, selectAquariumFish } from "../src/domain/fish.js";
+import { AQUARIUM_VISIBLE_FISH_LIMIT, FISH_SPECIES, fishCollectionStats, fishCountsBySpecies, fishDiscovery, fishForCatch, getFishSpecies, isRegionCleared, RARE_PITY_THRESHOLD, rareChanceForStage, rareFishForRegion, releaseFish, rollRareCatch, selectAquariumFish, showcaseFishSpecies } from "../src/domain/fish.js";
 import { getRegion } from "../src/domain/regions.js";
 import { completedAttempt, startAttempt, submitKey } from "../src/domain/session.js";
 import { createGameState, gameReducer } from "../src/game/state/gameReducer.js";
@@ -284,9 +284,91 @@ test("the settings screen can switch the catch sound off and on", () => {
 
 test("a new adventure begins with the optional first typing guide only once", () => {
   const fresh = createSave();
-  assert.equal(createGameState(fresh).screen, "intro");
+  const start = (save) => gameReducer(createGameState(save), { type: "START_ADVENTURE" });
+  assert.equal(start(fresh).screen, "intro");
   const existing = { ...fresh, hasSeenIntro: true };
-  assert.equal(createGameState(existing).screen, "map");
+  assert.equal(start(existing).screen, "map");
+});
+
+test("どの保存でも、起動時はタイトル画面から始まる", () => {
+  const fresh = createSave();
+  assert.equal(createGameState(fresh).screen, "title");
+  assert.equal(createGameState({ ...fresh, hasSeenIntro: true }).screen, "title");
+  // タイトル以外の画面から誤って呼ばれても、進行中の画面を巻き戻さない。
+  const playing = { ...createGameState(fresh), screen: "map" };
+  assert.equal(gameReducer(playing, { type: "START_ADVENTURE" }).screen, "map");
+});
+
+test("タイトルの背景は、最後にレッスンを始めた海域を敷く", () => {
+  const save = {
+    ...createSave(),
+    unlockedStageIds: [...createSave().unlockedStageIds, "SH01", "CO01"],
+    currentStageId: "CO01",
+    revealedRegionIds: ["tidepool", "shallows", "coral-forest"],
+  };
+  // 進行度は珊瑚の森だが、最後に遊んだのは浅瀬。タイトルは遊んでいた海を出す。
+  const played = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "SH01" });
+  assert.equal(played.save.lastPlayedRegionId, "shallows");
+  assert.equal(createGameState(played.save).lastPlayedRegionId, "shallows");
+});
+
+test("タイトルに泳ぐのは、図鑑に載った生き物だけ", () => {
+  const ids = (species) => species.map((fish) => fish.id);
+  // まだ1匹も釣っていない人には、最初のレッスンで必ず出会う2種だけを見せる。
+  assert.deepEqual(
+    ids(showcaseFishSpecies({ discoveredFishSpeciesIds: [], regionId: "tidepool" })),
+    ["tide-goby", "tide-shrimp"],
+  );
+  // 未発見の種は、たどり着いている海のものでも出さない。
+  const shown = showcaseFishSpecies({
+    discoveredFishSpeciesIds: ["tide-goby", "left-damselfish"],
+    regionId: "tidepool",
+  });
+  assert.deepEqual(ids(shown), ["tide-goby", "left-damselfish"]);
+  // 発見済みのレアは出す。釣り上げた本人にとってはネタバレではなく、自分の記録。
+  const withRare = showcaseFishSpecies({
+    discoveredFishSpeciesIds: ["tide-goby", "tide-keycap-barnacle"],
+    regionId: "tidepool",
+  });
+  assert.ok(ids(withRare).includes("tide-keycap-barnacle"));
+});
+
+test("タイトルの顔ぶれは、今いる海の生き物を先に並べて起動ごとに変わる", () => {
+  const ids = (species) => species.map((fish) => fish.id);
+  const discoveredFishSpeciesIds = [
+    "tide-goby", "tide-shrimp", "left-damselfish", "shellfish", "coral-fish", "sea-glassfish",
+    "shallow-puffer",
+  ];
+  // 珊瑚の森を開いていても、潮だまりの生き物が先に来る。水と生き物を揃える。
+  const shown = showcaseFishSpecies({ discoveredFishSpeciesIds, regionId: "tidepool", limit: 5 });
+  assert.equal(shown.length, 5);
+  assert.ok(shown.every((fish) => fish.regionId === "tidepool"));
+  // 候補が上限より多いときだけ、rotation で顔ぶれが入れ替わる。
+  assert.notDeepEqual(
+    ids(shown),
+    ids(showcaseFishSpecies({ discoveredFishSpeciesIds, regionId: "tidepool", limit: 5, rotation: 2 })),
+  );
+  // 今いる海だけでは足りなければ、他の海の発見済みで補う。
+  const fewHere = showcaseFishSpecies({
+    discoveredFishSpeciesIds,
+    regionId: "deep-sea",
+    limit: 5,
+  });
+  assert.equal(fewHere.length, 5);
+  assert.ok(fewHere.every((fish) => discoveredFishSpeciesIds.includes(fish.id)));
+});
+
+test("タイトルは、到着の演出をまだ見せていない海域を先に見せない", () => {
+  const save = {
+    ...createSave(),
+    unlockedStageIds: [...createSave().unlockedStageIds, "SH01"],
+    currentStageId: "SH01",
+    lastPlayedRegionId: "shallows",
+    revealedRegionIds: ["tidepool"],
+  };
+  const state = createGameState(save);
+  assert.equal(state.regionReveal, "shallows");
+  assert.equal(state.lastPlayedRegionId, "tidepool");
 });
 
 test("every completed play produces one deterministic fish, with medals changing only its variant", () => {

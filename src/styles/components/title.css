@@ -1,0 +1,173 @@
+/* タイトル画面。背景は .app-shell.region-backdrop-* が敷く最後に遊んだ海で、
+   ここは中央のひと組（ロゴ・キャッチ・はじめる・できること）だけを組む。 */
+.title-screen {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px 56px;
+}
+
+.title-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 620px);
+  text-align: center;
+  animation: screen-rise-in .34s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+/* 図鑑に載った生き物が、カードの裏をゆっくり横切る帯。
+   説明の3点は暗い面を持っているので、裏を通る魚は自然に沈んで文字を邪魔しない。 */
+.title-fish-field {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 進む向きと逆側の画面外から入り、反対の外へ抜けて、また入り直す。 */
+.title-fish-field .fish-visual.title-fish {
+  left: calc(50% - (var(--lane-direction, 1) * 70vw));
+  opacity: var(--lane-opacity, .8);
+  /* .roaming ではないので --fish-scale は効かない。遠近はレーンごとにここで与える。 */
+  transform: scale(var(--lane-scale, 1));
+  animation: title-fish-cross var(--lane-duration, 50s) linear var(--lane-delay, 0s) infinite;
+}
+
+@keyframes title-fish-cross {
+  from {
+    transform: translateX(0) scale(var(--lane-scale, 1));
+  }
+
+  to {
+    transform: translateX(calc(var(--lane-direction, 1) * 140vw)) scale(var(--lane-scale, 1));
+  }
+}
+
+/* 動きを止めたときは、画面外に隠れず中に散らばって止まる。泡やウミガメと違って、
+   この魚は飾りではなく見せたいもの本体なので、消さずに止める。 */
+.reduce-motion .title-fish-field .fish-visual.title-fish {
+  left: var(--lane-rest, 30%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-fish-field .fish-visual.title-fish {
+    left: var(--lane-rest, 30%);
+  }
+}
+
+.title-logo {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.3rem, 10vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: .03em;
+  line-height: 1.1;
+  /* 明るい潮だまりから暗い深海まで、どの海の上でも読めるよう影で厚みをつける。 */
+  text-shadow:
+    0 2px 0 #02161fb3,
+    0 12px 34px #010c14e6;
+}
+
+.title-logo-aqua {
+  color: var(--region-number-ink, var(--ui-accent));
+}
+
+/* ロゴの下に光の帯を一本。到着の演出と同じ合図で、ここが冒険の入口だとわかる。 */
+.title-logo::after {
+  content: "";
+  display: block;
+  width: 76px;
+  height: 3px;
+  margin: 18px auto 0;
+  border-radius: 2px;
+  background: var(--region-number-ink, var(--ui-accent));
+  opacity: .8;
+}
+
+.title-tagline {
+  margin: 18px auto 0;
+  max-width: 22em;
+  color: #e2f2f0;
+  font-size: clamp(.95rem, 3.6vw, 1.12rem);
+  line-height: 1.8;
+  text-shadow: 0 2px 10px #02090fd9;
+}
+
+.title-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  min-width: 216px;
+  justify-content: center;
+  font-size: 1.08rem;
+}
+
+.title-points {
+  display: grid;
+  gap: 10px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.title-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 14px 17px;
+  border-radius: var(--ui-radius-card);
+  /* 海の絵の上に置くので、面は色を持たず暗さだけで持ち上げる。海域が変わっても崩れない。 */
+  background: rgb(0 0 0 / 46%);
+}
+
+.title-point-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--ui-radius-control);
+  background: var(--ui-tint);
+  color: var(--region-number-ink, var(--ui-accent));
+}
+
+.title-point-copy {
+  display: block;
+  min-width: 0;
+}
+
+.title-point-copy strong {
+  display: block;
+  color: #f1fbf9;
+  font-size: .96rem;
+  line-height: 1.5;
+}
+
+.title-point-copy small {
+  display: block;
+  margin-top: 3px;
+  color: #b9d0d3;
+  font-size: .82rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 560px) {
+  .title-screen {
+    padding: 28px 18px 44px;
+  }
+
+  .title-points {
+    margin-top: 26px;
+  }
+
+  .title-points li {
+    padding: 12px 14px;
+  }
+}

@@ -61,6 +61,8 @@ export function createSave() {
     medalRulesVersion: 4,
     currentStageId: "S00",
     unlockedStageIds: ["S00"],
+    // 最後にレッスンを始めた海域。タイトル画面の背景と、戻り先の初期値に使う。
+    lastPlayedRegionId: null,
     completedProblemIds: [],
     attempts: [],
     recentProblemIds: [],

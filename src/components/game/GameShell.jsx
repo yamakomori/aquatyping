@@ -9,12 +9,15 @@ import {
   fishCollectionStats,
   fishCountsBySpecies,
   fishDiscovery,
+  FISH_SPECIES,
   fishSpeciesForRegion,
   getFishSpecies,
   selectAquariumFish,
+  showcaseFishSpecies,
 } from "../../domain/fish.js";
-import { getRegion, getRegionForStage, getUnlockedRegions } from "../../domain/regions.js";
+import { REGIONS, getRegion, getRegionForStage, getUnlockedRegions } from "../../domain/regions.js";
 import { loadSave, persistSave } from "../../domain/save.js";
+import { preloadImagesWhenIdle, startupImageSources } from "../../game/assets/preload.js";
 import { playCatchSound, playTypingSound, primeCatchSound } from "../../game/audio/catchSound.js";
 import { createGameState, gameReducer } from "../../game/state/gameReducer.js";
 import { UiIcon, UiText } from "./UiPrimitives.jsx";
@@ -76,6 +79,13 @@ export default function GameShell() {
 
   useEffect(() => { persistSave(state.save); }, [state.save]);
 
+  // タイトルを読んでいるあいだに、この先で要る絵を裏で集めておく。
+  // 進捗は出さないし、「はじめる」を待たせもしない。
+  useEffect(
+    () => preloadImagesWhenIdle(startupImageSources(state.save.unlockedStageIds, state.lastPlayedRegionId)),
+    [state.save.unlockedStageIds, state.lastPlayedRegionId],
+  );
+
   useEffect(() => {
     if (state.screen !== "typing" || !state.session?.attempt.completed) return undefined;
     const id = window.setTimeout(() => dispatch({ type: "AUTO_ADVANCE" }), 650);
@@ -108,6 +118,15 @@ export default function GameShell() {
       if (revealingRegionId) {
         event.preventDefault();
         dismissRegionReveal();
+        return;
+      }
+      // タイトルは Enter か Space でも始められる。preventDefault で「はじめる」の
+      // ボタン操作を止めるので、ボタンに焦点があっても二重に始まらない。
+      if (state.screen === "title") {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          dispatch({ type: "START_ADVENTURE" });
+        }
         return;
       }
       // キーの取り出しは物理キー優先の共通処理へ寄せる。端末や入力ソースで key が揺れても同じ結果になる。
@@ -154,13 +173,17 @@ export default function GameShell() {
   ]);
 
   const navigation = (type) => dispatch({ type });
-  const content = state.screen === "intro" ? <IntroScreen state={state} dispatch={dispatch} />
+  const content = state.screen === "title" ? <TitleScreen state={state} dispatch={dispatch} />
+    : state.screen === "intro" ? <IntroScreen state={state} dispatch={dispatch} />
     : state.screen === "typing" ? <TypingScreen state={state} dispatch={dispatch} />
     : state.screen === "aquarium" ? <AquariumScreen state={state} dispatch={dispatch} />
       : state.screen === "wardrobe" ? <WardrobeScreen state={state} dispatch={dispatch} />
       : state.screen === "settings" ? <SettingsScreen state={state} dispatch={dispatch} />
         : <MapScreen state={state} dispatch={dispatch} isDev={import.meta.env.DEV} />;
-  const backdropRegionId = state.screen === "typing" ? state.session?.stage.regionId
+  // タイトルは「まだ紹介していない海」を避けた最後の海を敷く。selectedMapRegionId は
+  // 到着演出のために未紹介の海を指していることがあり、そこを使うと初対面が先にばれる。
+  const backdropRegionId = state.screen === "title" ? state.lastPlayedRegionId
+    : state.screen === "typing" ? state.session?.stage.regionId
     : state.screen === "map" ? state.selectedMapRegionId
       : state.screen === "result" ? state.result?.stage.regionId
         : null;
@@ -171,8 +194,9 @@ export default function GameShell() {
       reducedMotion={state.save.settings.reducedMotion}
     />
     {backdropRegionId && <BubbleField variant="world" />}
-    {/* タイピング中はヘッダーを隠す。高さを問題に回せるし、練習中に誤って別画面へ飛ばない。 */}
-    {state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
+    {/* タイトルとタイピング中はヘッダーを隠す。タイトルはまだ冒険前で行き先がなく、
+        タイピング中は高さを問題に回せるうえ、練習中に誤って別画面へ飛ばない。 */}
+    {state.screen !== "title" && state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
     {content}
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
     {/* はじめての海域に着いた瞬間だけ、海の絵に名前を重ねて見せてから引く。 */}
@@ -269,6 +293,99 @@ function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
       <button className="nav-button" onClick={onSettings}><UiIcon name="settings" /><span><UiText plain>設定</UiText></span></button>
     </div>
   </header>;
+}
+
+// できることの説明。数は中身から数えるので、海域や生き物が増えても書き換え漏れが起きない。
+const TITLE_POINTS = [
+  {
+    icon: "keyboard",
+    heading: "はじめてのローマ｜字《じ》｜入力《にゅうりょく》",
+    body: "キーの｜場所《ばしょ》と｜指《ゆび》づかいを、ひとつずつ。",
+  },
+  {
+    icon: "aquarium",
+    heading: "｜打つ《うつ》ほど、｜生き物《いきもの》がふえる",
+    body: `${FISH_SPECIES.length}｜種類《しゅるい》の｜海《うみ》の｜生き物《いきもの》を、じぶんの｜水槽《すいそう》に。`,
+  },
+  {
+    icon: "map",
+    heading: `${REGIONS.length}つの｜海《うみ》をめぐる`,
+    body: "｜潮だまり《しおだまり》から｜深海《しんかい》まで、｜少し《すこし》ずつ｜長い《ながい》｜文《ぶん》へ。",
+  },
+];
+
+// タイトルを泳ぐ生き物のレーン。高さと速さと大きさをばらして、同じ列に重ならないようにする。
+// direction が -1 のレーンは左へ泳ぐ。delay は負の値で、開いた瞬間から途中の位置に散っている。
+// rest は動きを止めたときの静止位置（画面外に隠れないための逃がし先）。
+// カードの上下（文字のない水）には大きく濃い魚を、カードの裏を通るレーンは
+// 小さく薄くする。読みやすさを削らずに、生き物をいちばん目立たせられる。
+const TITLE_FISH_LANES = [
+  { top: "12%", direction: 1, duration: 46, delay: -7, scale: 1.2, opacity: .9, rest: "14%" },
+  { top: "31%", direction: -1, duration: 59, delay: -31, scale: .8, opacity: .5, rest: "63%" },
+  { top: "57%", direction: 1, duration: 52, delay: -15, scale: .85, opacity: .55, rest: "27%" },
+  { top: "74%", direction: -1, duration: 41, delay: -34, scale: .95, opacity: .6, rest: "78%" },
+  { top: "88%", direction: 1, duration: 64, delay: -21, scale: 1.3, opacity: .95, rest: "45%" },
+];
+
+// 匹数が少ないときは上から詰めず、レーンを等間隔に取る。はじめての人の2匹でも、
+// 上と下に1匹ずつ離れて泳ぎ、海の広さが出る。
+function titleFishLane(index, count) {
+  if (count >= TITLE_FISH_LANES.length) return TITLE_FISH_LANES[index];
+  const step = (TITLE_FISH_LANES.length - 1) / Math.max(1, count - 1);
+  return TITLE_FISH_LANES[Math.round(index * step)];
+}
+
+// 図鑑に載った生き物だけが、タイトルの海をゆっくり横切る。
+// 水槽のJS遊泳ループは使わず、CSS だけで流す（タイトルは軽く保ちたい）。
+function TitleFishField({ save, regionId }) {
+  // 顔ぶれは開いているあいだ固定で、次に起動すると変わる。水槽の並べ替えと同じ手口。
+  const rotationRef = useRef(null);
+  if (rotationRef.current === null) rotationRef.current = (Math.random() * 0x7fffffff) | 0;
+  const species = showcaseFishSpecies({
+    discoveredFishSpeciesIds: save.discoveredFishSpeciesIds,
+    regionId,
+    limit: TITLE_FISH_LANES.length,
+    rotation: rotationRef.current,
+  });
+  if (species.length === 0) return null;
+  return <div className="title-fish-field" aria-hidden="true">{species.map((fish, index) => {
+    const lane = titleFishLane(index, species.length);
+    return <FishVisual
+      key={fish.id}
+      caughtFish={{ speciesId: fish.id }}
+      className={`title-fish ${lane.direction < 0 ? "is-flipped" : ""}`}
+      position={{ top: lane.top }}
+      style={{
+        "--lane-duration": `${lane.duration}s`,
+        "--lane-delay": `${lane.delay}s`,
+        "--lane-scale": lane.scale,
+        "--lane-opacity": lane.opacity,
+        "--lane-rest": lane.rest,
+        "--lane-direction": lane.direction,
+      }}
+    />;
+  })}</div>;
+}
+
+function TitleScreen({ state, dispatch }) {
+  const region = getRegion(state.lastPlayedRegionId);
+  return <main className={`title-screen region-${region.id}`}>
+    <TitleFishField save={state.save} regionId={region.id} />
+    <div className="title-card">
+      <h1 className="title-logo"><span className="title-logo-aqua">アクア</span>タイピング</h1>
+      <p className="title-tagline"><UiText>はじめての｜一文字《ひともじ》から、｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText></p>
+      <button className="primary-button title-start" onClick={() => dispatch({ type: "START_ADVENTURE" })}>
+        はじめる<UiIcon name="play" />
+      </button>
+      <ul className="title-points">{TITLE_POINTS.map((point) => <li key={point.icon}>
+        <span className="title-point-icon" aria-hidden="true"><UiIcon name={point.icon} size={22} /></span>
+        <span className="title-point-copy">
+          <strong><UiText>{point.heading}</UiText></strong>
+          <small><UiText>{point.body}</UiText></small>
+        </span>
+      </li>)}</ul>
+    </div>
+  </main>;
 }
 
 function IntroScreen({ state, dispatch }) {
@@ -376,7 +493,8 @@ function MapScreen({ state, dispatch, isDev }) {
   </section>;
 }
 
-function FishVisual({ caughtFish, className = "", index = 0, muted = false, position: requestedPosition, roaming = false, nodeRef }) {
+// style は position のあとに重ねる。呼び出し側が置き場所とは別に、動きや大きさの変数を足せる。
+function FishVisual({ caughtFish, className = "", index = 0, muted = false, position: requestedPosition, roaming = false, nodeRef, style }) {
   const species = getFishSpecies(caughtFish?.speciesId);
   const position = requestedPosition ?? { left: `${9 + ((index * 19) % 76)}%`, top: `${20 + ((index * 23) % 54)}%` };
   const spriteDuration = species.sprite ? species.sprite.frames * species.sprite.frameMs : 0;
@@ -386,7 +504,7 @@ function FishVisual({ caughtFish, className = "", index = 0, muted = false, posi
     // Offset each individual's frame cycle so they don't all blow bubbles in unison.
     "--sprite-delay": `-${stableFishNumber(caughtFish) % spriteDuration}ms`,
   } : {};
-  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
+  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position, ...style }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
 }
 
 // Touch summons the magnifier only after holding still, so a swipe over the tank still scrolls.
@@ -987,7 +1105,7 @@ function AquariumScreen({ state, dispatch }) {
       <AquariumPreview fish={tankFish} emptyMessage="まだ魚《さかな》はいないよ。最初《さいしょ》の海《うみ》へ出《で》かけよう。" seedSalt={tankSaltRef.current.salt} />
       <button className="aquarium-depart-button primary-button" onClick={() => dispatch({ type: "SHOW_MAP", regionId: region.id })}><strong><UiText plain>{region.name}へ出かける</UiText></strong><UiIcon name="play" /></button>
     </div>
-    <div className="collection-heading fish-book-heading"><div><h2><UiText>｜出会った魚《であったさかな》</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
+    <div className="collection-heading fish-book-heading"><div><h2><UiText>｜出会った生き物《であったいきもの》</UiText> {discovery.discovered} / {discovery.total}</h2></div></div>
     <div className="fish-collection">{species.map((item) => {
       const count = counts[item.id] ?? 0;
       const discovered = state.save.discoveredFishSpeciesIds.includes(item.id);

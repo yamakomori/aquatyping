@@ -4,15 +4,15 @@ import { equip, getItem, purchase, rewardForPlay, rewardForProblem } from "../..
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, stageAccuracy, summarizePlay, updateConceptSkills, updateSkills } from "../../domain/learning.js";
 import { createSave } from "../../domain/save.js";
 import { fishForCatch, getFishSpecies, isRegionCleared, releaseFish } from "../../domain/fish.js";
-import { getRegionForStage, getUnrevealedRegion } from "../../domain/regions.js";
+import { getLastPlayedRegionId, getRegionForStage, getUnrevealedRegion } from "../../domain/regions.js";
 import { completedAttempt, startAttempt, submitKey } from "../../domain/session.js";
 
 export function createGameState(save) {
-  const isNewAdventure = save.completedProblemIds.length === 0 && save.caughtFish.length === 0;
-  const currentRegionId = getRegionForStage(save.currentStageId).id;
+  // 前回いた海。タイトルの背景に敷き、海図と水槽の初期位置にもする。
+  const lastPlayedRegionId = getLastPlayedRegionId(save);
   // 演出待ちは保存から引き直す。解放直後に再読み込みしても、はじめての海域は必ず紹介できる。
   const regionReveal = getUnrevealedRegion(save.unlockedStageIds, save.revealedRegionIds)?.id ?? null;
-  return { screen: !save.hasSeenIntro && isNewAdventure ? "intro" : "map", save, session: null, result: null, selectedMapRegionId: regionReveal ?? currentRegionId, selectedTankId: currentRegionId, releaseCandidateId: null, regionReveal, message: "" };
+  return { screen: "title", save, session: null, result: null, lastPlayedRegionId, selectedMapRegionId: regionReveal ?? lastPlayedRegionId, selectedTankId: lastPlayedRegionId, releaseCandidateId: null, regionReveal, message: "" };
 }
 
 function startStage(state, stageId, allowLocked = false) {
@@ -39,6 +39,8 @@ function startStage(state, stageId, allowLocked = false) {
     ...state,
     screen: "typing",
     message: "",
+    // 遊びはじめた海を覚えておく。次にタイトルを開いたとき、この海の絵が出迎える。
+    save: { ...state.save, lastPlayedRegionId: getRegionForStage(stageId).id },
     session: {
       stage,
       problems,
@@ -170,6 +172,12 @@ function finishPlay(state) {
 
 export function gameReducer(state, action) {
   switch (action.type) {
+    case "START_ADVENTURE": {
+      if (state.screen !== "title") return state;
+      // はじめての冒険だけ F と J の案内から始める。続きから遊ぶ人は海図へ戻す。
+      const isNewAdventure = state.save.completedProblemIds.length === 0 && state.save.caughtFish.length === 0;
+      return { ...state, screen: !state.save.hasSeenIntro && isNewAdventure ? "intro" : "map", message: "" };
+    }
     case "BEGIN_INTRO":
       return startStage({ ...state, save: { ...state.save, hasSeenIntro: true } }, "S00");
     case "SKIP_INTRO":

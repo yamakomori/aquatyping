@@ -1120,6 +1120,33 @@ export function fishSpeciesForRegion(regionId) {
   return FISH_SPECIES.filter((fish) => fish.regionId === regionId);
 }
 
+export const TITLE_SHOWCASE_LIMIT = 5;
+
+// タイトル画面に泳がせる生き物。図鑑に載った種だけを候補にするので、まだ会っていない
+// 生き物をタイトルで先に見せてしまうことがない（レアも「発見済みなら出る」で成立する）。
+// まず今いる海の生き物から並べ、足りない分だけ他の海の発見済みで補う。タイトルにはその海の
+// 水を敷いているので、まずは水と生き物を揃えたい。
+// `rotation` をずらすと顔ぶれが変わる。起動のたびに違う生き物が出迎える。
+export function showcaseFishSpecies({
+  discoveredFishSpeciesIds = [],
+  regionId,
+  limit = TITLE_SHOWCASE_LIMIT,
+  rotation = 0,
+} = {}) {
+  const discovered = FISH_SPECIES.filter((fish) => discoveredFishSpeciesIds.includes(fish.id));
+  // まだ1匹も釣っていない人には、最初のレッスンで必ず出会う2種を見せる。
+  // 「これから会える」の約束であって、まだ見ぬ海のネタバレにはならない。
+  const pool = discovered.length > 0
+    ? [
+      ...discovered.filter((fish) => fish.regionId === regionId),
+      ...discovered.filter((fish) => fish.regionId !== regionId),
+    ]
+    : fishSpeciesForStages(["S00"]);
+  if (pool.length <= limit) return pool;
+  const start = ((rotation % pool.length) + pool.length) % pool.length;
+  return Array.from({ length: limit }, (_, index) => pool[(start + index) % pool.length]);
+}
+
 // レア出現の調整値。難易度が高いステージほど基礎確率が上がり、
 // メダル獲得で倍率が乗り、一定回数外れると救済で必ず出す。
 export const RARE_MIN_CHANCE = 0.08;
