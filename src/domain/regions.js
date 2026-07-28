@@ -13,3 +13,8 @@ export function getRegionForStage(stageId) {
 export function getUnlockedRegions(unlockedStageIds = []) {
   return REGIONS.filter((region) => region.stageIds.some((stageId) => unlockedStageIds.includes(stageId)));
 }
+
+// たどり着いたのに到着の演出をまだ見せていない海域。再読み込みしても演出が消えないよう保存から引き直す。
+export function getUnrevealedRegion(unlockedStageIds = [], revealedRegionIds = []) {
+  return getUnlockedRegions(unlockedStageIds).find((region) => !revealedRegionIds.includes(region.id)) ?? null;
+}

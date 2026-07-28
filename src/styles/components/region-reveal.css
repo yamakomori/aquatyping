@@ -1,0 +1,54 @@
+/* はじめての海域に着いたときだけ出る紹介。海の絵を全面に敷き、名前と一言を中央に重ねて引いていく。 */
+.region-reveal {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: #04101e;
+  background-image:
+    linear-gradient(180deg, #04101ecc 0%, #04101e4d 42%, #04101ee6 100%),
+    var(--region-art);
+  background-position: center, center bottom;
+  background-size: cover, cover;
+  image-rendering: pixelated;
+  animation: region-reveal-curtain 3.6s ease forwards;
+}
+
+.region-reveal-copy {
+  max-width: 22em;
+  text-align: center;
+  text-shadow: 0 2px 12px #02090fd9;
+  animation: region-reveal-copy 3.6s ease forwards;
+}
+
+.region-reveal-copy .eyebrow {
+  color: var(--region-number-ink, var(--ui-accent));
+}
+
+.region-reveal-copy h2 {
+  margin: 6px 0 12px;
+  color: #fff;
+  font-size: clamp(2rem, 9vw, 3.4rem);
+  line-height: 1.2;
+}
+
+.region-reveal-copy p:not(.eyebrow) {
+  margin: 0;
+  color: #e4f4f2;
+  font-size: clamp(.95rem, 3.4vw, 1.15rem);
+  line-height: 1.7;
+}
+
+/* 名前の下に光の帯を一本。海の絵が暗い海域でも、文字の居場所がわかる。 */
+.region-reveal-copy h2::after {
+  content: "";
+  display: block;
+  width: 68px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 2px;
+  background: var(--region-number-ink, var(--ui-accent));
+  opacity: .8;
+}

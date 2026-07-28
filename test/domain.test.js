@@ -78,7 +78,7 @@ test("レッスンをやめると、進行度ではなく今プレイしてい�
   assert.equal(state.selectedMapRegionId, "tidepool");
 });
 
-test("次の海域が解放されても、クリア画面から戻る先は遊んでいた海域", () => {
+test("新しい海域が解放されたときだけ、その海域を開いて紹介を出す", () => {
   const save = {
     ...createSave(),
     hasSeenIntro: true,
@@ -88,9 +88,54 @@ test("次の海域が解放されても、クリア画面から戻る先は遊�
   };
   let state = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "S08" });
   state = completeTypingPlay(state);
-  assert.equal(state.save.currentStageId, "SH01");
+  assert.equal(state.result.unlockedRegionId, "shallows");
+  assert.equal(state.regionReveal, "shallows");
   state = gameReducer(state, { type: "SHOW_MAP" });
-  assert.equal(state.selectedMapRegionId, "tidepool");
+  assert.equal(state.selectedMapRegionId, "shallows");
+  state = gameReducer(state, { type: "DISMISS_REGION_REVEAL" });
+  assert.equal(state.regionReveal, null);
+  assert.deepEqual(state.save.revealedRegionIds, ["tidepool", "shallows"]);
+});
+
+test("紹介を見る前に再読み込みしても、その海域の紹介は残る", () => {
+  const save = {
+    ...createSave(),
+    hasSeenIntro: true,
+    currentStageId: "SH01",
+    unlockedStageIds: ["S08", "SH01"],
+  };
+  assert.equal(createGameState(save).regionReveal, "shallows");
+  const seen = { ...save, revealedRegionIds: ["tidepool", "shallows"] };
+  assert.equal(createGameState(seen).regionReveal, null);
+});
+
+test("紹介の記録がない古い保存は、たどり着き済みの海域を紹介済みとして読み込む", () => {
+  const storage = {
+    getItem: () => JSON.stringify({
+      ...createSave(),
+      revealedRegionIds: undefined,
+      currentStageId: "CO01",
+      unlockedStageIds: ["S08", "SH01", "CO01"],
+    }),
+  };
+  const loaded = loadSave(storage);
+  assert.deepEqual(loaded.revealedRegionIds, ["tidepool", "shallows", "coral-forest"]);
+  assert.equal(createGameState(loaded).regionReveal, null);
+});
+
+test("同じ海域の中でステージが解放されても紹介は出ない", () => {
+  const save = {
+    ...createSave(),
+    hasSeenIntro: true,
+    currentStageId: "S00",
+    unlockedStageIds: ["S00"],
+    stagePlayCounts: { S00: 1 },
+  };
+  let state = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "S00" });
+  state = completeTypingPlay(state);
+  assert.equal(state.result.unlockedStageId, "S01");
+  assert.equal(state.result.unlockedRegionId, null);
+  assert.equal(state.regionReveal, null);
 });
 
 test("typing session records a miss without losing progress", () => {

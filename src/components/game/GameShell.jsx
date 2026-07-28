@@ -38,6 +38,10 @@ const BUBBLE_SPECS = [
 ];
 const TANK_BUBBLE_SPECS = [0, 1, 4, 7, 8, 11, 12, 13, 16].map((index) => BUBBLE_SPECS[index]);
 
+// 新海域の紹介にかける時間。CSS の region-reveal アニメーションと合わせること。
+const REGION_REVEAL_MS = 3600;
+const REGION_REVEAL_STILL_MS = 2600;
+
 // Vertical swimming bands as % of tank height (slightly overlapping for a natural blend).
 // 4層がはっきり分かれるよう、水槽の高さをおおむね四分割して割り当てる。
 const DEPTH_BANDS = {
@@ -157,7 +161,37 @@ export default function GameShell() {
     {state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
     {content}
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
+    {/* はじめての海域に着いた瞬間だけ、海の絵に名前を重ねて見せてから引く。 */}
+    {state.screen === "map" && state.regionReveal === state.selectedMapRegionId && <RegionRevealOverlay
+      region={getRegion(state.regionReveal)}
+      reducedMotion={state.save.settings.reducedMotion}
+      onDone={() => dispatch({ type: "DISMISS_REGION_REVEAL" })}
+    />}
     {state.releaseCandidateId && <ReleaseConfirmDialog state={state} dispatch={dispatch} />}
+  </div>;
+}
+
+function RegionRevealOverlay({ region, reducedMotion, onDone }) {
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => doneRef.current(), reducedMotion ? REGION_REVEAL_STILL_MS : REGION_REVEAL_MS);
+    return () => window.clearTimeout(timer);
+  }, [region.id, reducedMotion]);
+
+  // 触れたら先へ進める。読み終えた子を待たせない。
+  return <div
+    className={`region-reveal region-${region.id}`}
+    role="status"
+    aria-live="polite"
+    onPointerDown={() => doneRef.current()}
+  >
+    <div className="region-reveal-copy">
+      <p className="eyebrow"><UiText>あたらしい海《うみ》にたどりついた</UiText></p>
+      <h2><UiText>{region.name}</UiText></h2>
+      <p><UiText>{region.description}</UiText></p>
+    </div>
   </div>;
 }
 

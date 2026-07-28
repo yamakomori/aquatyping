@@ -1,4 +1,5 @@
 import { STARTER_EQUIPPED, STARTER_ITEMS } from "./economy.js";
+import { REGIONS, getUnlockedRegions } from "./regions.js";
 
 const SAVE_KEY = "type-rogue-mvp-save-v1";
 const CURRICULUM_VERSION = 2;
@@ -70,6 +71,8 @@ export function createSave() {
     releasedFishCounts: {},
     rareDrySpells: {},
     hasSeenIntro: false,
+    // 到着の演出を見せ終えた海域。最初の海域は冒険の出発点なので、はじめから見せた扱いにする。
+    revealedRegionIds: [REGIONS[0].id],
     skills: {},
     conceptSkills: {},
     coins: 0,
@@ -93,6 +96,8 @@ export function loadSave(storage = localStorage) {
       ...defaults,
       ...migrated,
       discoveredFishSpeciesIds: migrated.discoveredFishSpeciesIds ?? [...new Set((migrated.caughtFish ?? []).map((fish) => fish.speciesId))],
+      // 記録のない古い保存では、たどり着き済みの海域を演出済みとみなす。今さら初対面の演出は出さない。
+      revealedRegionIds: migrated.revealedRegionIds ?? getUnlockedRegions(migrated.unlockedStageIds ?? []).map((region) => region.id),
       releasedFishCounts: { ...defaults.releasedFishCounts, ...migrated.releasedFishCounts },
       rareDrySpells: { ...defaults.rareDrySpells, ...migrated.rareDrySpells },
       conceptSkills: { ...defaults.conceptSkills, ...migrated.conceptSkills },

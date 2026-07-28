@@ -112,6 +112,8 @@ export function generateDebugSave({ regionId = null } = {}) {
     ),
     caughtFish: species.map(createDebugCatch),
     discoveredFishSpeciesIds: species.map((item) => item.id),
+    // 選んだ海域だけ到着演出を残す。デバッグ保存を読み込めばその海域の登場から確認できる。
+    revealedRegionIds: REGIONS.filter((region) => region.id !== selectedRegion?.id).map((region) => region.id),
     hasSeenIntro: true,
     coins: DEBUG_COINS,
     xp: DEBUG_XP,

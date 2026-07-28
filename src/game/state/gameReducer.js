@@ -4,13 +4,15 @@ import { equip, getItem, purchase, rewardForPlay, rewardForProblem } from "../..
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, stageAccuracy, summarizePlay, updateConceptSkills, updateSkills } from "../../domain/learning.js";
 import { createSave } from "../../domain/save.js";
 import { fishForCatch, getFishSpecies, isRegionCleared, releaseFish } from "../../domain/fish.js";
-import { getRegionForStage } from "../../domain/regions.js";
+import { getRegionForStage, getUnrevealedRegion } from "../../domain/regions.js";
 import { completedAttempt, startAttempt, submitKey } from "../../domain/session.js";
 
 export function createGameState(save) {
   const isNewAdventure = save.completedProblemIds.length === 0 && save.caughtFish.length === 0;
   const currentRegionId = getRegionForStage(save.currentStageId).id;
-  return { screen: !save.hasSeenIntro && isNewAdventure ? "intro" : "map", save, session: null, result: null, selectedMapRegionId: currentRegionId, selectedTankId: currentRegionId, releaseCandidateId: null, message: "" };
+  // 演出待ちは保存から引き直す。解放直後に再読み込みしても、はじめての海域は必ず紹介できる。
+  const regionReveal = getUnrevealedRegion(save.unlockedStageIds, save.revealedRegionIds)?.id ?? null;
+  return { screen: !save.hasSeenIntro && isNewAdventure ? "intro" : "map", save, session: null, result: null, selectedMapRegionId: currentRegionId, selectedTankId: currentRegionId, releaseCandidateId: null, regionReveal, message: "" };
 }
 
 function startStage(state, stageId, allowLocked = false) {
@@ -136,12 +138,18 @@ function finishPlay(state) {
   const nextStageId = nextStage && save.unlockedStageIds.includes(nextStage.id)
     ? nextStage.id
     : null;
+  // 解放されたステージが次の海域の入り口なら、その海域は「はじめて」。戻り先も演出もこれで決まる。
+  const unlockedRegionId = unlockedStageId && getRegionForStage(unlockedStageId).id !== regionId
+    ? getRegionForStage(unlockedStageId).id
+    : null;
   return {
     ...state,
     save,
     screen: "result",
     session: null,
+    regionReveal: unlockedRegionId ?? state.regionReveal ?? null,
     result: {
+      unlockedRegionId,
       stage: state.session.stage,
       earned: {
         coins: state.session.earned.coins + bonus.coins,
@@ -213,7 +221,11 @@ export function gameReducer(state, action) {
         result: null,
         releaseCandidateId: null,
         selectedMapRegionId: action.regionId
+          // 新しい海域が解放された直後だけは、その海域を開いて演出につなぐ。
+          ?? state.result?.unlockedRegionId
           ?? playedRegionId
+          // 水槽など寄り道してから海図へ来ても、まだ見せていない海域があればそこを開く。
+          ?? state.regionReveal
           ?? state.selectedMapRegionId
           ?? getRegionForStage(state.save.currentStageId).id,
         message: "",
@@ -221,6 +233,16 @@ export function gameReducer(state, action) {
     }
     case "SELECT_MAP_REGION":
       return { ...state, selectedMapRegionId: action.regionId };
+    case "DISMISS_REGION_REVEAL":
+      if (!state.regionReveal) return state;
+      return {
+        ...state,
+        regionReveal: null,
+        save: {
+          ...state.save,
+          revealedRegionIds: [...new Set([...state.save.revealedRegionIds, state.regionReveal])],
+        },
+      };
     case "SHOW_WARDROBE":
       return { ...state, screen: "wardrobe", session: null, message: "" };
     case "SHOW_AQUARIUM":
