@@ -1120,7 +1120,11 @@ export function fishSpeciesForRegion(regionId) {
   return FISH_SPECIES.filter((fish) => fish.regionId === regionId);
 }
 
-export const TITLE_SHOWCASE_LIMIT = 5;
+export const TITLE_SHOWCASE_LIMIT = 6;
+// 群れる種は水槽と同じく複数匹で泳がせる。1匹だけのキビナゴは群れの魚に見えない。
+export const TITLE_SCHOOL_SIZE = 5;
+// 発見した種が少ないうちも海が寂しくならないよう、ここまでは匹数を足す。
+export const TITLE_MIN_FISH = 8;
 
 // タイトル画面に泳がせる生き物。図鑑に載った種だけを候補にするので、まだ会っていない
 // 生き物をタイトルで先に見せてしまうことがない（レアも「発見済みなら出る」で成立する）。
@@ -1145,6 +1149,21 @@ export function showcaseFishSpecies({
   if (pool.length <= limit) return pool;
   const start = ((rotation % pool.length) + pool.length) % pool.length;
   return Array.from({ length: limit }, (_, index) => pool[(start + index) % pool.length]);
+}
+
+// タイトルに泳がせる個体。種の選び方は showcaseFishSpecies に任せ、ここでは匹数だけ決める。
+// 水槽と同じ形（{ id, speciesId }）で返すので、水槽の遊泳ロジックにそのまま渡せる。
+export function showcaseFishIndividuals(options = {}) {
+  const species = showcaseFishSpecies(options);
+  if (species.length === 0) return [];
+  const counts = species.map((fish) => (fish.school ? TITLE_SCHOOL_SIZE : 1));
+  const total = () => counts.reduce((sum, count) => sum + count, 0);
+  // 群れを足しても足りなければ、いる種を順に1匹ずつ増やして下限まで届かせる。
+  for (let index = 0; total() < TITLE_MIN_FISH; index += 1) counts[index % counts.length] += 1;
+  return species.flatMap((fish, index) => Array.from(
+    { length: counts[index] },
+    (_, member) => ({ id: `showcase-${fish.id}-${member}`, speciesId: fish.id }),
+  ));
 }
 
 // レア出現の調整値。難易度が高いステージほど基礎確率が上がり、

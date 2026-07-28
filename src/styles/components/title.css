@@ -19,8 +19,9 @@
   animation: screen-rise-in .34s cubic-bezier(.2, .8, .2, 1) both;
 }
 
-/* 図鑑に載った生き物が、カードの裏をゆっくり横切る帯。
-   説明の3点は暗い面を持っているので、裏を通る魚は自然に沈んで文字を邪魔しない。 */
+/* 図鑑に載った生き物が泳ぐ層。画面まるごとが水槽の枠になるので、
+   遊泳ループが読む clientWidth / clientHeight は画面の大きさそのものになる。
+   カードの裏を通るが、説明の3点は暗い面を持っているので文字は埋もれない。 */
 .title-fish-field {
   position: absolute;
   z-index: 0;
@@ -29,34 +30,16 @@
   pointer-events: none;
 }
 
-/* 進む向きと逆側の画面外から入り、反対の外へ抜けて、また入り直す。 */
-.title-fish-field .fish-visual.title-fish {
-  left: calc(50% - (var(--lane-direction, 1) * 70vw));
-  opacity: var(--lane-opacity, .8);
-  /* .roaming ではないので --fish-scale は効かない。遠近はレーンごとにここで与える。 */
-  transform: scale(var(--lane-scale, 1));
-  animation: title-fish-cross var(--lane-duration, 50s) linear var(--lane-delay, 0s) infinite;
+/* 水槽より広い枠に泳ぐので、そのままでは小さく見える。少しだけ大きくする。 */
+.title-fish-field .fish-visual.has-sprite {
+  width: 76px;
+  height: 76px;
 }
 
-@keyframes title-fish-cross {
-  from {
-    transform: translateX(0) scale(var(--lane-scale, 1));
-  }
-
-  to {
-    transform: translateX(calc(var(--lane-direction, 1) * 140vw)) scale(var(--lane-scale, 1));
-  }
-}
-
-/* 動きを止めたときは、画面外に隠れず中に散らばって止まる。泡やウミガメと違って、
-   この魚は飾りではなく見せたいもの本体なので、消さずに止める。 */
-.reduce-motion .title-fish-field .fish-visual.title-fish {
-  left: var(--lane-rest, 30%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .title-fish-field .fish-visual.title-fish {
-    left: var(--lane-rest, 30%);
+@media (max-width: 560px) {
+  .title-fish-field .fish-visual.has-sprite {
+    width: 62px;
+    height: 62px;
   }
 }
 

@@ -4,7 +4,7 @@ import { purchase } from "../src/domain/economy.js";
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, summarizePlay, updateConceptSkills, updateSkills } from "../src/domain/learning.js";
 import { chooseProblems, getProblemsForStage } from "../src/domain/problems.js";
 import { createSave, loadSave } from "../src/domain/save.js";
-import { AQUARIUM_VISIBLE_FISH_LIMIT, FISH_SPECIES, fishCollectionStats, fishCountsBySpecies, fishDiscovery, fishForCatch, getFishSpecies, isRegionCleared, RARE_PITY_THRESHOLD, rareChanceForStage, rareFishForRegion, releaseFish, rollRareCatch, selectAquariumFish, showcaseFishSpecies } from "../src/domain/fish.js";
+import { AQUARIUM_VISIBLE_FISH_LIMIT, FISH_SPECIES, fishCollectionStats, fishCountsBySpecies, fishDiscovery, fishForCatch, getFishSpecies, isRegionCleared, RARE_PITY_THRESHOLD, rareChanceForStage, rareFishForRegion, releaseFish, rollRareCatch, selectAquariumFish, showcaseFishIndividuals, showcaseFishSpecies, TITLE_MIN_FISH, TITLE_SCHOOL_SIZE } from "../src/domain/fish.js";
 import { getRegion } from "../src/domain/regions.js";
 import { completedAttempt, startAttempt, submitKey } from "../src/domain/session.js";
 import { createGameState, gameReducer } from "../src/game/state/gameReducer.js";
@@ -356,6 +356,27 @@ test("タイトルの顔ぶれは、今いる海の生き物を先に並べて�
   });
   assert.equal(fewHere.length, 5);
   assert.ok(fewHere.every((fish) => discoveredFishSpeciesIds.includes(fish.id)));
+});
+
+test("タイトルでは、群れる生き物を複数匹で泳がせる", () => {
+  const speciesOf = (fish, speciesId) => fish.filter((item) => item.speciesId === speciesId);
+  // ソラスズメダイ（school）は群れ、キュウセン（単独）は1匹。
+  const fish = showcaseFishIndividuals({
+    discoveredFishSpeciesIds: ["left-damselfish", "shellfish", "coral-fish", "grass-seahorse"],
+    regionId: "tidepool",
+  });
+  assert.equal(speciesOf(fish, "left-damselfish").length, TITLE_SCHOOL_SIZE);
+  assert.equal(speciesOf(fish, "shellfish").length, 1);
+  // 個体のIDは重なってはいけない。水槽と同じく React のキーと遊泳の種になる。
+  assert.equal(new Set(fish.map((item) => item.id)).size, fish.length);
+
+  // 種類が少ないうちも海が寂しくならないよう、匹数を足して下限まで届かせる。
+  const beginner = showcaseFishIndividuals({ discoveredFishSpeciesIds: [], regionId: "tidepool" });
+  assert.ok(beginner.length >= TITLE_MIN_FISH);
+  assert.deepEqual(
+    [...new Set(beginner.map((item) => item.speciesId))].sort(),
+    ["tide-goby", "tide-shrimp"],
+  );
 });
 
 test("タイトルは、到着の演出をまだ見せていない海域を先に見せない", () => {

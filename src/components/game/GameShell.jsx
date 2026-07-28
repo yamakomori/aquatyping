@@ -13,7 +13,7 @@ import {
   fishSpeciesForRegion,
   getFishSpecies,
   selectAquariumFish,
-  showcaseFishSpecies,
+  showcaseFishIndividuals,
 } from "../../domain/fish.js";
 import { REGIONS, getRegion, getRegionForStage, getUnlockedRegions } from "../../domain/regions.js";
 import { loadSave, persistSave } from "../../domain/save.js";
@@ -314,57 +314,37 @@ const TITLE_POINTS = [
   },
 ];
 
-// タイトルを泳ぐ生き物のレーン。高さと速さと大きさをばらして、同じ列に重ならないようにする。
-// direction が -1 のレーンは左へ泳ぐ。delay は負の値で、開いた瞬間から途中の位置に散っている。
-// rest は動きを止めたときの静止位置（画面外に隠れないための逃がし先）。
-// カードの上下（文字のない水）には大きく濃い魚を、カードの裏を通るレーンは
-// 小さく薄くする。読みやすさを削らずに、生き物をいちばん目立たせられる。
-const TITLE_FISH_LANES = [
-  { top: "12%", direction: 1, duration: 46, delay: -7, scale: 1.2, opacity: .9, rest: "14%" },
-  { top: "31%", direction: -1, duration: 59, delay: -31, scale: .8, opacity: .5, rest: "63%" },
-  { top: "57%", direction: 1, duration: 52, delay: -15, scale: .85, opacity: .55, rest: "27%" },
-  { top: "74%", direction: -1, duration: 41, delay: -34, scale: .95, opacity: .6, rest: "78%" },
-  { top: "88%", direction: 1, duration: 64, delay: -21, scale: 1.3, opacity: .95, rest: "45%" },
-];
-
-// 匹数が少ないときは上から詰めず、レーンを等間隔に取る。はじめての人の2匹でも、
-// 上と下に1匹ずつ離れて泳ぎ、海の広さが出る。
-function titleFishLane(index, count) {
-  if (count >= TITLE_FISH_LANES.length) return TITLE_FISH_LANES[index];
-  const step = (TITLE_FISH_LANES.length - 1) / Math.max(1, count - 1);
-  return TITLE_FISH_LANES[Math.round(index * step)];
-}
-
-// 図鑑に載った生き物だけが、タイトルの海をゆっくり横切る。
-// 水槽のJS遊泳ループは使わず、CSS だけで流す（タイトルは軽く保ちたい）。
+// 図鑑に載った生き物だけが、タイトルの海を泳ぐ。画面まるごとを水槽の枠として、
+// 水槽と同じ遊泳ループに任せる。生き物データの泳ぎ方（群れる・漂う・砂で定位する）と
+// 泳ぐ層がそのまま効くので、クラゲが横切ったりヤドカリが宙を泳いだりしない。
 function TitleFishField({ save, regionId }) {
-  // 顔ぶれは開いているあいだ固定で、次に起動すると変わる。水槽の並べ替えと同じ手口。
-  const rotationRef = useRef(null);
-  if (rotationRef.current === null) rotationRef.current = (Math.random() * 0x7fffffff) | 0;
-  const species = showcaseFishSpecies({
+  // 顔ぶれと並びは開いているあいだ固定で、次に起動すると変わる。水槽の並べ替えと同じ手口。
+  const saltRef = useRef(null);
+  if (saltRef.current === null) saltRef.current = (Math.random() * 0x7fffffff) | 0;
+  const salt = saltRef.current;
+  const fish = showcaseFishIndividuals({
     discoveredFishSpeciesIds: save.discoveredFishSpeciesIds,
     regionId,
-    limit: TITLE_FISH_LANES.length,
-    rotation: rotationRef.current,
+    rotation: salt,
   });
-  if (species.length === 0) return null;
-  return <div className="title-fish-field" aria-hidden="true">{species.map((fish, index) => {
-    const lane = titleFishLane(index, species.length);
-    return <FishVisual
-      key={fish.id}
-      caughtFish={{ speciesId: fish.id }}
-      className={`title-fish ${lane.direction < 0 ? "is-flipped" : ""}`}
-      position={{ top: lane.top }}
-      style={{
-        "--lane-duration": `${lane.duration}s`,
-        "--lane-delay": `${lane.delay}s`,
-        "--lane-scale": lane.scale,
-        "--lane-opacity": lane.opacity,
-        "--lane-rest": lane.rest,
-        "--lane-direction": lane.direction,
-      }}
-    />;
-  })}</div>;
+  const containerRef = useRef(null);
+  const nodesRef = useRef([]);
+  // 虫めがねはタイトルにない。遊泳ループは複製先を任意として扱うので、空のまま渡す。
+  const magnifierNodesRef = useRef([]);
+  const metaRef = useRef([]);
+  metaRef.current = roamingMeta(fish, salt);
+  useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, roamingSignature(fish, salt));
+  if (fish.length === 0) return null;
+  return <div ref={containerRef} className="title-fish-field" aria-hidden="true">
+    {fish.map((individual, index) => <FishVisual
+      key={individual.id}
+      caughtFish={individual}
+      index={index}
+      roaming
+      position={metaRef.current[index].base}
+      nodeRef={(element) => { nodesRef.current[index] = element; }}
+    />)}
+  </div>;
 }
 
 function TitleScreen({ state, dispatch }) {
@@ -493,8 +473,7 @@ function MapScreen({ state, dispatch, isDev }) {
   </section>;
 }
 
-// style は position のあとに重ねる。呼び出し側が置き場所とは別に、動きや大きさの変数を足せる。
-function FishVisual({ caughtFish, className = "", index = 0, muted = false, position: requestedPosition, roaming = false, nodeRef, style }) {
+function FishVisual({ caughtFish, className = "", index = 0, muted = false, position: requestedPosition, roaming = false, nodeRef }) {
   const species = getFishSpecies(caughtFish?.speciesId);
   const position = requestedPosition ?? { left: `${9 + ((index * 19) % 76)}%`, top: `${20 + ((index * 23) % 54)}%` };
   const spriteDuration = species.sprite ? species.sprite.frames * species.sprite.frameMs : 0;
@@ -504,7 +483,7 @@ function FishVisual({ caughtFish, className = "", index = 0, muted = false, posi
     // Offset each individual's frame cycle so they don't all blow bubbles in unison.
     "--sprite-delay": `-${stableFishNumber(caughtFish) % spriteDuration}ms`,
   } : {};
-  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position, ...style }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
+  return <span ref={nodeRef} className={`fish-visual ${species.sprite ? "has-sprite" : ""} ${species.shape} ${caughtFish?.size ?? "medium"} ${caughtFish?.variant ?? "common"} movement-${species.movement ?? "cruise"} ${roaming ? "roaming" : ""} ${className} ${muted ? "muted" : ""}`} style={{ "--fish": species.color, "--accent": species.accent, "--fish-scale": species.scale ?? 1, ...spriteStyle, ...position }} aria-label={muted ? "近づいている魚影" : species.name}><span className="fish-art">{species.sprite ? <span className="fish-sprite" aria-hidden="true" /> : <><span className="fish-tail" /><span className="fish-body" /><span className="fish-eye" /></>}</span></span>;
 }
 
 // Touch summons the magnifier only after holding still, so a swipe over the tank still scrolls.
@@ -755,21 +734,10 @@ function useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, 
   }, [signature]);
 }
 
-function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 0 }) {
-  const limit = compact ? AQUARIUM_COMPACT_VISIBLE_FISH_LIMIT : AQUARIUM_VISIBLE_FISH_LIMIT;
-  const visibleFish = selectAquariumFish(fish, limit);
-  const ariaLabel = visibleFish.length < fish.length
-    ? `水槽。${fish.length} 匹のうち ${visibleFish.length} 匹を表示`
-    : `水槽。つかまえた魚 ${fish.length} 匹`;
-  const containerRef = useRef(null);
-  const nodesRef = useRef([]);
-  const magnifierNodesRef = useRef([]);
-  const magnifierRef = useRef(null);
-  const magnifierContentRef = useRef(null);
-  const pressedPointerRef = useRef(null);
-  const holdRef = useRef({ timer: null, active: false, x: 0, y: 0 });
-  const metaRef = useRef([]);
-  metaRef.current = visibleFish.map((caughtFish, index) => {
+// 遊泳ループへ渡す1匹ぶんの設定。水槽もタイトルも同じ作り方をするので、
+// 生き物データの movement / depth / school / scale はどちらでも同じように効く。
+function roamingMeta(fishList, seedSalt) {
+  return fishList.map((caughtFish, index) => {
     const species = getFishSpecies(caughtFish.speciesId);
     // Mix the per-open salt into each fish's seed so positions and paths vary between visits.
     const seed = (stableFishNumber(caughtFish) ^ Math.imul(seedSalt, 0x9e3779b1)) >>> 0;
@@ -786,7 +754,29 @@ function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 
       base: aquariumPosition(index, seed, seedSalt),
     };
   });
-  useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, `${seedSalt}:${visibleFish.map((f) => f.id).join(",")}`);
+}
+
+// 顔ぶれか並べ直しが変わったときだけ遊泳ループを組み直すための鍵。
+function roamingSignature(fishList, seedSalt) {
+  return `${seedSalt}:${fishList.map((fish) => fish.id).join(",")}`;
+}
+
+function AquariumPreview({ fish = [], emptyMessage, compact = false, seedSalt = 0 }) {
+  const limit = compact ? AQUARIUM_COMPACT_VISIBLE_FISH_LIMIT : AQUARIUM_VISIBLE_FISH_LIMIT;
+  const visibleFish = selectAquariumFish(fish, limit);
+  const ariaLabel = visibleFish.length < fish.length
+    ? `水槽。${fish.length} 匹のうち ${visibleFish.length} 匹を表示`
+    : `水槽。つかまえた魚 ${fish.length} 匹`;
+  const containerRef = useRef(null);
+  const nodesRef = useRef([]);
+  const magnifierNodesRef = useRef([]);
+  const magnifierRef = useRef(null);
+  const magnifierContentRef = useRef(null);
+  const pressedPointerRef = useRef(null);
+  const holdRef = useRef({ timer: null, active: false, x: 0, y: 0 });
+  const metaRef = useRef([]);
+  metaRef.current = roamingMeta(visibleFish, seedSalt);
+  useAquariumRoaming(containerRef, nodesRef, magnifierNodesRef, metaRef, roamingSignature(visibleFish, seedSalt));
 
   // Scrolling is only blocked once the lens is up, and only through a non-passive listener:
   // touch-action stays untouched so swipe and pinch keep working on the tank.
