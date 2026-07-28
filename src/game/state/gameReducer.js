@@ -201,16 +201,24 @@ export function gameReducer(state, action) {
         },
       };
     }
-    case "SHOW_MAP":
+    case "SHOW_MAP": {
+      // 戻り先は「いま遊んでいた海域」を優先する。currentStageId は次のステージが解放されると
+      // 先の海域へ進んでしまうため、やめる/クリア後の戻り先としては別の海域に飛んでしまう。
+      const playedStageId = state.session?.stage.id ?? state.result?.stage.id;
+      const playedRegionId = playedStageId ? getRegionForStage(playedStageId).id : null;
       return {
         ...state,
         screen: "map",
         session: null,
         result: null,
         releaseCandidateId: null,
-        selectedMapRegionId: action.regionId ?? getRegionForStage(state.save.currentStageId).id,
+        selectedMapRegionId: action.regionId
+          ?? playedRegionId
+          ?? state.selectedMapRegionId
+          ?? getRegionForStage(state.save.currentStageId).id,
         message: "",
       };
+    }
     case "SELECT_MAP_REGION":
       return { ...state, selectedMapRegionId: action.regionId };
     case "SHOW_WARDROBE":

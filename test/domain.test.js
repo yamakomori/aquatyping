@@ -64,6 +64,35 @@ test("水槽から出かけると選択中の海域を表示する", () => {
   assert.equal(next.selectedMapRegionId, "coral-forest");
 });
 
+test("レッスンをやめると、進行度ではなく今プレイしていた海域へ戻る", () => {
+  const save = {
+    ...createSave(),
+    hasSeenIntro: true,
+    currentStageId: "SH01",
+    unlockedStageIds: ["S00", "S08", "SH01"],
+  };
+  let state = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "S00" });
+  assert.equal(state.screen, "typing");
+  state = gameReducer(state, { type: "SHOW_MAP" });
+  assert.equal(state.screen, "map");
+  assert.equal(state.selectedMapRegionId, "tidepool");
+});
+
+test("次の海域が解放されても、クリア画面から戻る先は遊んでいた海域", () => {
+  const save = {
+    ...createSave(),
+    hasSeenIntro: true,
+    currentStageId: "S08",
+    unlockedStageIds: ["S08"],
+    stagePlayCounts: { S08: 1 },
+  };
+  let state = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "S08" });
+  state = completeTypingPlay(state);
+  assert.equal(state.save.currentStageId, "SH01");
+  state = gameReducer(state, { type: "SHOW_MAP" });
+  assert.equal(state.selectedMapRegionId, "tidepool");
+});
+
 test("typing session records a miss without losing progress", () => {
   const problem = { id: "test", stageId: "S00", input: "fj", inputMode: "direct", targetKeys: ["f", "j"] };
   const started = startAttempt(problem, 0);
