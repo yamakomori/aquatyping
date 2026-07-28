@@ -94,9 +94,22 @@ export default function GameShell() {
     playTypingSound(state.session.lastKeyOk);
   }, [state.screen, state.session?.inputSeq, state.save.settings.sound]);
 
+  // はじめての海域は、海図で開いたときと、その海域のレッスンに入ったときに紹介する。
+  const revealingRegionId = state.regionReveal && (
+    (state.screen === "map" && state.selectedMapRegionId === state.regionReveal)
+    || (state.screen === "typing" && state.session?.stage.regionId === state.regionReveal)
+  ) ? state.regionReveal : null;
+  const dismissRegionReveal = () => dispatch({ type: "DISMISS_REGION_REVEAL", now: Date.now() });
+
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
+      // 紹介の最中はどのキーも「読み終えた」の合図にする。打ちはじめが問題に取られない。
+      if (revealingRegionId) {
+        event.preventDefault();
+        dismissRegionReveal();
+        return;
+      }
       // キーの取り出しは物理キー優先の共通処理へ寄せる。端末や入力ソースで key が揺れても同じ結果になる。
       const typedKey = typedKeyFrom(event);
       if (state.screen === "result") {
@@ -137,6 +150,7 @@ export default function GameShell() {
     state.selectedMapRegionId,
     state.selectedTankId,
     state.save.settings.sound,
+    revealingRegionId,
   ]);
 
   const navigation = (type) => dispatch({ type });
@@ -162,10 +176,10 @@ export default function GameShell() {
     {content}
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
     {/* はじめての海域に着いた瞬間だけ、海の絵に名前を重ねて見せてから引く。 */}
-    {state.screen === "map" && state.regionReveal === state.selectedMapRegionId && <RegionRevealOverlay
-      region={getRegion(state.regionReveal)}
+    {revealingRegionId && <RegionRevealOverlay
+      region={getRegion(revealingRegionId)}
       reducedMotion={state.save.settings.reducedMotion}
-      onDone={() => dispatch({ type: "DISMISS_REGION_REVEAL" })}
+      onDone={dismissRegionReveal}
     />}
     {state.releaseCandidateId && <ReleaseConfirmDialog state={state} dispatch={dispatch} />}
   </div>;

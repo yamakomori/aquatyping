@@ -12,7 +12,7 @@ export function createGameState(save) {
   const currentRegionId = getRegionForStage(save.currentStageId).id;
   // 演出待ちは保存から引き直す。解放直後に再読み込みしても、はじめての海域は必ず紹介できる。
   const regionReveal = getUnrevealedRegion(save.unlockedStageIds, save.revealedRegionIds)?.id ?? null;
-  return { screen: !save.hasSeenIntro && isNewAdventure ? "intro" : "map", save, session: null, result: null, selectedMapRegionId: currentRegionId, selectedTankId: currentRegionId, releaseCandidateId: null, regionReveal, message: "" };
+  return { screen: !save.hasSeenIntro && isNewAdventure ? "intro" : "map", save, session: null, result: null, selectedMapRegionId: regionReveal ?? currentRegionId, selectedTankId: currentRegionId, releaseCandidateId: null, regionReveal, message: "" };
 }
 
 function startStage(state, stageId, allowLocked = false) {
@@ -233,16 +233,22 @@ export function gameReducer(state, action) {
     }
     case "SELECT_MAP_REGION":
       return { ...state, selectedMapRegionId: action.regionId };
-    case "DISMISS_REGION_REVEAL":
+    case "DISMISS_REGION_REVEAL": {
       if (!state.regionReveal) return state;
+      // 紹介の裏でレッスンが始まっていたら、いま数え直す。読んでいた時間は打鍵の速さではない。
+      const now = action.now ?? Date.now();
       return {
         ...state,
         regionReveal: null,
+        session: state.session
+          ? { ...state.session, attempt: { ...state.session.attempt, startedAt: now } }
+          : state.session,
         save: {
           ...state.save,
           revealedRegionIds: [...new Set([...state.save.revealedRegionIds, state.regionReveal])],
         },
       };
+    }
     case "SHOW_WARDROBE":
       return { ...state, screen: "wardrobe", session: null, message: "" };
     case "SHOW_AQUARIUM":

@@ -97,6 +97,28 @@ test("新しい海域が解放されたときだけ、その海域を開いて�
   assert.deepEqual(state.save.revealedRegionIds, ["tidepool", "shallows"]);
 });
 
+test("新海域のレッスンへ直行しても紹介は残り、読み終えてから時間を計り直す", () => {
+  const save = {
+    ...createSave(),
+    hasSeenIntro: true,
+    currentStageId: "S08",
+    unlockedStageIds: ["S08"],
+    stagePlayCounts: { S08: 1 },
+  };
+  let state = gameReducer(createGameState(save), { type: "START_STAGE", stageId: "S08" });
+  state = completeTypingPlay(state);
+  assert.equal(state.result.nextStageId, "SH01");
+
+  state = gameReducer(state, { type: "START_STAGE", stageId: state.result.nextStageId });
+  assert.equal(state.screen, "typing");
+  assert.equal(state.regionReveal, "shallows");
+
+  const startedAt = state.session.attempt.startedAt;
+  state = gameReducer(state, { type: "DISMISS_REGION_REVEAL", now: startedAt + 5000 });
+  assert.equal(state.regionReveal, null);
+  assert.equal(state.session.attempt.startedAt, startedAt + 5000);
+});
+
 test("紹介を見る前に再読み込みしても、その海域の紹介は残る", () => {
   const save = {
     ...createSave(),

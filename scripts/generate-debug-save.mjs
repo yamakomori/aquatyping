@@ -12,15 +12,17 @@ const DEBUG_XP = 99_999;
 
 function usage() {
   return [
-    "使い方: npm run debug:save -- [--region <regionId>] [--format console|json]",
+    "使い方: npm run debug:save -- [--region <regionId>[,<regionId>...]] [--format console|json]",
     "",
     `海域ID: ${REGIONS.map((region) => region.id).join(", ")}`,
+    "--region は繰り返しやカンマ区切りで複数指定でき、いちばん先の海域まで解放します。",
+    "指定した海域は到着の演出が未再生の状態になります。",
     "既定の形式は console です。",
   ].join("\n");
 }
 
 export function parseArgs(argv) {
-  const options = { format: "console", regionId: null, help: false };
+  const options = { format: "console", regionIds: [], help: false };
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
@@ -35,7 +37,11 @@ export function parseArgs(argv) {
       if (!value || value.startsWith("--")) {
         throw new Error("--region には海域IDを指定してください。");
       }
-      options.regionId = value;
+      const ids = value.split(",").map((id) => id.trim()).filter(Boolean);
+      if (ids.length === 0) {
+        throw new Error("--region には海域IDを指定してください。");
+      }
+      options.regionIds = [...new Set([...options.regionIds, ...ids])];
       continue;
     }
 
@@ -54,8 +60,10 @@ export function parseArgs(argv) {
     throw new Error(`不明な引数です: ${argument}`);
   }
 
-  if (options.regionId && !REGIONS.some((region) => region.id === options.regionId)) {
-    throw new Error(`存在しない海域IDです: ${options.regionId}`);
+  for (const regionId of options.regionIds) {
+    if (!REGIONS.some((region) => region.id === regionId)) {
+      throw new Error(`存在しない海域IDです: ${regionId}`);
+    }
   }
 
   return options;
@@ -69,10 +77,11 @@ function getProgressStages(regionId) {
   return STAGES.filter((stage) => unlockedRegionIds.has(stage.regionId));
 }
 
-function getActiveSpecies(regionId) {
+// 魚は解放済みの海域ぶんすべて入れる。手前の海域の水槽が空のままだと、遊んだ跡と食い違う。
+function getActiveSpecies(unlockedRegionIds) {
   return FISH_SPECIES.filter((species) => (
     species.active !== false
-    && (!regionId || species.regionId === regionId)
+    && unlockedRegionIds.has(species.regionId)
   ));
 }
 
@@ -89,18 +98,21 @@ function createDebugCatch(species) {
   };
 }
 
-export function generateDebugSave({ regionId = null } = {}) {
-  if (regionId && !REGIONS.some((region) => region.id === regionId)) {
-    throw new Error(`存在しない海域IDです: ${regionId}`);
+export function generateDebugSave({ regionIds = [] } = {}) {
+  for (const regionId of regionIds) {
+    if (!REGIONS.some((region) => region.id === regionId)) {
+      throw new Error(`存在しない海域IDです: ${regionId}`);
+    }
   }
 
-  const progressStages = getProgressStages(regionId);
-  const species = getActiveSpecies(regionId);
-  const selectedRegion = regionId
-    ? REGIONS.find((region) => region.id === regionId)
-    : null;
-  const currentStageId = selectedRegion
-    ? selectedRegion.stageIds.at(-1)
+  // 複数指定のときは、いちばん先の海域までを解放する。手前の指定は演出の確認用。
+  const selectedRegions = REGIONS.filter((region) => regionIds.includes(region.id));
+  const farthestRegion = selectedRegions.at(-1) ?? null;
+  const progressStages = getProgressStages(farthestRegion?.id ?? null);
+  const unlockedRegionIds = new Set(progressStages.map((stage) => stage.regionId));
+  const species = getActiveSpecies(unlockedRegionIds);
+  const currentStageId = farthestRegion
+    ? farthestRegion.stageIds.at(-1)
     : STAGES.at(-1).id;
 
   return {
@@ -113,7 +125,7 @@ export function generateDebugSave({ regionId = null } = {}) {
     caughtFish: species.map(createDebugCatch),
     discoveredFishSpeciesIds: species.map((item) => item.id),
     // 選んだ海域だけ到着演出を残す。デバッグ保存を読み込めばその海域の登場から確認できる。
-    revealedRegionIds: REGIONS.filter((region) => region.id !== selectedRegion?.id).map((region) => region.id),
+    revealedRegionIds: REGIONS.filter((region) => !regionIds.includes(region.id)).map((region) => region.id),
     hasSeenIntro: true,
     coins: DEBUG_COINS,
     xp: DEBUG_XP,
@@ -148,7 +160,7 @@ export function run(argv = process.argv.slice(2)) {
     return;
   }
 
-  const save = generateDebugSave({ regionId: options.regionId });
+  const save = generateDebugSave({ regionIds: options.regionIds });
   process.stdout.write(`${formatDebugSave(save, options.format)}\n`);
 }
 
