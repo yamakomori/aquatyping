@@ -6,24 +6,39 @@
   display: flex;
   min-height: 100vh;
   min-height: 100svh;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px 24px 56px;
+  padding: clamp(44px, 7vh, 88px) 24px clamp(64px, 9vh, 108px);
 }
 
 .title-card {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: 620px;
+  max-width: 860px;
   min-width: 0;
+  margin-inline: auto;
   text-align: center;
+  isolation: isolate;
   animation: screen-rise-in .34s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.title-card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 23% -10% -9%;
+  background: radial-gradient(ellipse at 50% 26%, rgb(0 20 35 / 64%), rgb(0 20 35 / 32%) 48%, transparent 76%);
+  content: "";
+  filter: blur(14px);
+  pointer-events: none;
 }
 
 /* 図鑑に載った生き物が泳ぐ層。画面まるごとが水槽の枠になるので、
    遊泳ループが読む clientWidth / clientHeight は画面の大きさそのものになる。
-   カードの裏を通るが、説明の3点は暗い面を持っているので文字は埋もれない。 */
+   中央の暗いグローと文字影で、泳ぐ生き物が裏を通ってもコピーを読めるようにする。 */
 .title-fish-field {
   position: absolute;
   z-index: 0;
@@ -46,8 +61,8 @@
 }
 
 .title-logo {
-  width: 112%;
-  max-width: min(700px, calc(100vw - 36px));
+  width: min(790px, 100%);
+  max-width: calc(100vw - 36px);
   margin: 0 auto;
   line-height: 0;
 }
@@ -61,84 +76,256 @@
 }
 
 .title-tagline {
-  margin: 18px auto 0;
-  max-width: 22em;
-  color: #e2f2f0;
-  font-size: clamp(.95rem, 3.6vw, 1.12rem);
-  line-height: 1.8;
+  display: grid;
+  width: min(680px, 100%);
+  margin: 20px auto 0;
+  grid-template-columns: minmax(24px, 1fr) auto minmax(24px, 1fr);
+  align-items: center;
+  gap: 18px;
+  color: #f2ffff;
+  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  font-weight: 700;
+  line-height: 1.75;
+  letter-spacing: .025em;
   text-shadow: 0 2px 10px #02090fd9;
 }
 
-.title-start {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 26px;
-  min-width: 216px;
+.title-tagline::before,
+.title-tagline::after {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(142 240 244 / 72%));
+  content: "";
+  box-shadow: 0 0 10px rgb(66 221 231 / 28%);
+}
+
+.title-tagline::after {
+  background: linear-gradient(90deg, rgb(142 240 244 / 72%), transparent);
+}
+
+.title-tagline-copy {
+  max-width: 36em;
+}
+
+.title-screen .title-start {
+  position: relative;
+  display: grid;
+  width: min(292px, calc(100vw - 52px));
+  min-height: 66px;
+  margin-top: 22px;
+  padding: 12px 24px 13px;
+  place-items: center;
+  border: 3px solid #d9ffff !important;
+  border-radius: 17px;
+  background: linear-gradient(180deg, #2ddbd5 0%, #12a8b7 52%, #07869b 100%) !important;
+  box-shadow:
+    0 7px 0 #04546c,
+    0 10px 0 #022e49,
+    0 17px 30px rgb(0 7 18 / 48%),
+    inset 0 2px 0 rgb(255 255 255 / 48%) !important;
+  color: #fff !important;
   justify-content: center;
-  font-size: 1.08rem;
+  font-size: 1.22rem;
+  letter-spacing: .05em;
+  text-shadow: 0 2px 0 rgb(0 57 71 / 64%);
+  transition:
+    transform var(--ui-motion),
+    filter var(--ui-motion),
+    box-shadow var(--ui-motion);
+}
+
+.title-screen .title-start:hover {
+  background: linear-gradient(180deg, #40e7df 0%, #18b9c5 52%, #0795aa 100%) !important;
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+.title-screen .title-start:active:not(:disabled) {
+  transform: translateY(6px);
+  box-shadow:
+    0 1px 0 #04546c,
+    0 3px 0 #022e49,
+    0 8px 18px rgb(0 7 18 / 42%),
+    inset 0 2px 0 rgb(255 255 255 / 35%) !important;
+}
+
+.title-start-label {
+  padding-inline: 38px;
+}
+
+.title-start-key {
+  position: absolute;
+  right: 14px;
+  display: grid;
+  min-width: 48px;
+  height: 28px;
+  padding: 0 6px;
+  place-items: center;
+  border: 1px solid rgb(225 255 255 / 74%);
+  border-radius: 6px;
+  background: rgb(0 54 73 / 36%);
+  box-shadow: inset 0 -2px 0 rgb(0 31 51 / 45%);
+  color: #eaffff;
+  font-family: "Roboto Mono", ui-monospace, monospace;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-shadow: none;
 }
 
 .title-points {
   display: grid;
-  gap: 10px;
-  margin: 32px 0 0;
-  padding: 0;
+  position: relative;
+  width: min(820px, 100%);
+  margin: 46px auto 0;
+  padding: 28px 0 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   list-style: none;
-  text-align: left;
+}
+
+.title-points::before {
+  position: absolute;
+  top: 0;
+  right: 8%;
+  left: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(185 247 246 / 46%) 20%, rgb(185 247 246 / 46%) 80%, transparent);
+  content: "";
 }
 
 .title-points li {
   display: flex;
-  align-items: flex-start;
-  gap: 13px;
-  padding: 14px 17px;
-  border-radius: var(--ui-radius-card);
-  /* 海の絵の上に置くので、面は色を持たず暗さだけで持ち上げる。海域が変わっても崩れない。 */
-  background: rgb(0 0 0 / 46%);
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.title-points li + li::before {
+  position: absolute;
+  top: 10px;
+  bottom: 4px;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(transparent, rgb(185 247 246 / 34%) 24%, rgb(185 247 246 / 34%) 76%, transparent);
+  content: "";
 }
 
 .title-point-icon {
   display: grid;
   flex: none;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--ui-radius-control);
-  background: var(--ui-tint);
-  color: var(--region-number-ink, var(--ui-accent));
+  width: 52px;
+  height: 52px;
+  border: 2px solid rgb(208 255 255 / 72%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #51e2e2 0 7%, #198b9e 48%, #063e59 100%);
+  box-shadow:
+    0 0 0 5px rgb(51 193 203 / 14%),
+    0 8px 18px rgb(0 10 20 / 34%),
+    inset 0 2px 3px rgb(255 255 255 / 32%);
+  color: #f2ffff;
+  filter: drop-shadow(0 2px 0 rgb(0 26 42 / 50%));
 }
 
 .title-point-copy {
   display: block;
+  width: 100%;
   min-width: 0;
 }
 
 .title-point-copy strong {
   display: block;
-  color: #f1fbf9;
-  font-size: .96rem;
-  line-height: 1.5;
+  color: #f5ffff;
+  font-size: .94rem;
+  line-height: 1.55;
+  text-shadow: 0 2px 8px rgb(0 8 17 / 92%);
 }
 
 .title-point-copy small {
   display: block;
-  margin-top: 3px;
-  color: #b9d0d3;
-  font-size: .82rem;
-  line-height: 1.7;
+  max-width: 19em;
+  margin: 5px auto 0;
+  color: #c5ddde;
+  font-size: .76rem;
+  line-height: 1.65;
+  text-shadow: 0 2px 7px rgb(0 8 17 / 92%);
 }
 
 @media (max-width: 560px) {
   .title-screen {
-    padding: 28px 18px 44px;
+    padding: 30px 16px 54px;
+  }
+
+  .title-card::before {
+    inset: 15% -12% -5%;
+  }
+
+  .title-logo {
+    width: 100%;
+    max-width: calc(100vw - 24px);
+  }
+
+  .title-tagline {
+    width: 100%;
+    margin-top: 14px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    font-size: .98rem;
+    line-height: 1.72;
+  }
+
+  .title-tagline::before,
+  .title-tagline::after {
+    display: none;
+  }
+
+  .title-tagline-copy {
+    max-width: 23em;
+    margin-inline: auto;
+  }
+
+  .title-screen .title-start {
+    min-height: 60px;
+    margin-top: 20px;
+    border-radius: 15px;
+    font-size: 1.12rem;
   }
 
   .title-points {
-    margin-top: 26px;
+    width: 100%;
+    margin-top: 38px;
+    padding-top: 24px;
   }
 
   .title-points li {
-    padding: 12px 14px;
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .title-point-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .title-point-copy strong {
+    font-size: clamp(.73rem, 3vw, .84rem);
+    line-height: 1.48;
+  }
+
+  .title-point-copy small {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .title-start-key {
+    display: none;
+  }
+
+  .title-start-label {
+    padding-inline: 0;
   }
 }

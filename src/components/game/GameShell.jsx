@@ -299,17 +299,17 @@ function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
 const TITLE_POINTS = [
   {
     icon: "keyboard",
-    heading: "はじめてのローマ｜字《じ》｜入力《にゅうりょく》",
+    heading: "ローマ｜字《じ》をひとつずつ",
     body: "キーの｜場所《ばしょ》と｜指《ゆび》づかいを、ひとつずつ。",
   },
   {
     icon: "aquarium",
-    heading: "｜打つ《うつ》ほど、｜生き物《いきもの》がふえる",
+    heading: "｜生き物《いきもの》をあつめよう",
     body: `${FISH_SPECIES.length}｜種類《しゅるい》の｜海《うみ》の｜生き物《いきもの》を、じぶんの｜水槽《すいそう》に。`,
   },
   {
     icon: "map",
-    heading: `${REGIONS.length}つの｜海《うみ》をめぐる`,
+    heading: `${REGIONS.length}つの｜海《うみ》をめぐろう`,
     body: "｜潮だまり《しおだまり》から｜深海《しんかい》まで、｜少し《すこし》ずつ｜長い《ながい》｜文《ぶん》へ。",
   },
 ];
@@ -364,9 +364,12 @@ function TitleScreen({ state, dispatch }) {
           draggable="false"
         />
       </h1>
-      <p className="title-tagline"><UiText>はじめての｜一文字《ひともじ》から、｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText></p>
+      <p className="title-tagline">
+        <span className="title-tagline-copy"><UiText>はじめての｜一文字《ひともじ》から、｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText></span>
+      </p>
       <button className="primary-button title-start" onClick={() => dispatch({ type: "START_ADVENTURE" })}>
-        はじめる<UiIcon name="play" />
+        <span className="title-start-label">はじめる</span>
+        <span className="title-start-key" aria-hidden="true">ENTER</span>
       </button>
       <ul className="title-points">{TITLE_POINTS.map((point) => <li key={point.icon}>
         <span className="title-point-icon" aria-hidden="true"><UiIcon name={point.icon} size={22} /></span>
