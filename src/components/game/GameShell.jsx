@@ -352,7 +352,18 @@ function TitleScreen({ state, dispatch }) {
   return <main className={`title-screen region-${region.id}`}>
     <TitleFishField save={state.save} regionId={region.id} />
     <div className="title-card">
-      <h1 className="title-logo"><span className="title-logo-aqua">アクア</span>タイピング</h1>
+      <h1 className="title-logo">
+        <img
+          className="title-logo-image"
+          src="/logos/aqua-typing.png"
+          alt="アクアタイピング"
+          width="1895"
+          height="590"
+          decoding="async"
+          fetchPriority="high"
+          draggable="false"
+        />
+      </h1>
       <p className="title-tagline"><UiText>はじめての｜一文字《ひともじ》から、｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText></p>
       <button className="primary-button title-start" onClick={() => dispatch({ type: "START_ADVENTURE" })}>
         はじめる<UiIcon name="play" />

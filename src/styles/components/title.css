@@ -14,7 +14,9 @@
 .title-card {
   position: relative;
   z-index: 1;
-  width: min(100%, 620px);
+  width: 100%;
+  max-width: 620px;
+  min-width: 0;
   text-align: center;
   animation: screen-rise-in .34s cubic-bezier(.2, .8, .2, 1) both;
 }
@@ -44,32 +46,18 @@
 }
 
 .title-logo {
-  margin: 0;
-  color: #fff;
-  font-size: clamp(2.3rem, 10vw, 4.2rem);
-  font-weight: 900;
-  letter-spacing: .03em;
-  line-height: 1.1;
-  /* 明るい潮だまりから暗い深海まで、どの海の上でも読めるよう影で厚みをつける。 */
-  text-shadow:
-    0 2px 0 #02161fb3,
-    0 12px 34px #010c14e6;
+  width: 112%;
+  max-width: min(700px, calc(100vw - 36px));
+  margin: 0 auto;
+  line-height: 0;
 }
 
-.title-logo-aqua {
-  color: var(--region-number-ink, var(--ui-accent));
-}
-
-/* ロゴの下に光の帯を一本。到着の演出と同じ合図で、ここが冒険の入口だとわかる。 */
-.title-logo::after {
-  content: "";
+.title-logo-image {
   display: block;
-  width: 76px;
-  height: 3px;
-  margin: 18px auto 0;
-  border-radius: 2px;
-  background: var(--region-number-ink, var(--ui-accent));
-  opacity: .8;
+  width: 100%;
+  height: auto;
+  /* 濃紺の太い外周は素材に含まれる。影は明るい海域で外周を背景から離すぶんだけ足す。 */
+  filter: drop-shadow(0 10px 18px rgb(1 10 17 / 55%));
 }
 
 .title-tagline {
