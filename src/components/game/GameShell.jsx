@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { STAGES, getStage } from "../../domain/curriculum.js";
 import { ITEMS, getItem } from "../../domain/economy.js";
 import { getFingerGuide } from "../../domain/fingers.js";
@@ -299,20 +299,37 @@ function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
 const TITLE_POINTS = [
   {
     icon: "keyboard",
-    heading: "ローマ｜字《じ》をひとつずつ",
-    body: "キーの｜場所《ばしょ》と｜指《ゆび》づかいを、ひとつずつ。",
+    headingParts: ["ローマ｜字《じ》を", "ひとつずつ"],
+    bodyLines: ["キーの｜場所《ばしょ》と｜指《ゆび》づかいを、", "ひとつずつ。"],
   },
   {
     icon: "aquarium",
-    heading: "｜生き物《いきもの》をあつめよう",
-    body: `${FISH_SPECIES.length}｜種類《しゅるい》の｜海《うみ》の｜生き物《いきもの》を、じぶんの｜水槽《すいそう》に。`,
+    headingParts: ["｜生き物《いきもの》を", "あつめよう"],
+    bodyLines: [`${FISH_SPECIES.length}｜種類《しゅるい》の｜海《うみ》の｜生き物《いきもの》を、`, "じぶんの｜水槽《すいそう》に。"],
   },
   {
     icon: "map",
-    heading: `${REGIONS.length}つの｜海《うみ》をめぐろう`,
-    body: "｜潮だまり《しおだまり》から｜深海《しんかい》まで、｜少し《すこし》ずつ｜長い《ながい》｜文《ぶん》へ。",
+    headingParts: [`${REGIONS.length}つの｜海《うみ》を`, "めぐろう"],
+    bodyLines: ["｜潮だまり《しおだまり》から｜深海《しんかい》まで、", "｜少し《すこし》ずつ｜長い《ながい》｜文《ぶん》へ。"],
   },
 ];
+
+function TitlePointPixelIcon({ name }) {
+  if (name === "keyboard") return <svg className="title-point-pixel" viewBox="0 0 16 16" shapeRendering="crispEdges">
+    <path className="pixel-icon-light" fillRule="evenodd" d="M1 3h14v10H1V3Zm2 2v6h10V5H3Z" />
+    <path className="pixel-icon-accent" d="M4 6h2v2H4V6Zm3 0h2v2H7V6Zm3 0h2v2h-2V6ZM4 9h8v1H4V9Z" />
+  </svg>;
+  if (name === "aquarium") return <svg className="title-point-pixel" viewBox="0 0 16 16" shapeRendering="crispEdges">
+    <path className="pixel-icon-light" fillRule="evenodd" d="M2 2h12v12H2V2Zm2 2v8h8V4H4Z" />
+    <path className="pixel-icon-water" d="M4 7h8v5H4V7Z" />
+    <path className="pixel-icon-light" d="M5 8h4v3H5V8Zm4 1h2v1H9V9ZM4 9h1v1H4V9Zm6-4h1v1h-1V5Z" />
+  </svg>;
+  return <svg className="title-point-pixel" viewBox="0 0 16 16" shapeRendering="crispEdges">
+    <path className="pixel-icon-light" d="M1 3 5 1v12l-4 2V3Zm10 0 4-2v12l-4 2V3Z" />
+    <path className="pixel-icon-water" d="m5 1 6 2v12l-6-2V1Z" />
+    <path className="pixel-icon-accent" d="M3 5h1v5H3V5Zm4-1h2v1H7V4Zm2 1h1v2H9V5Zm1 2h1v2h-1V7Zm3-2h1v5h-1V5Z" />
+  </svg>;
+}
 
 // 図鑑に載った生き物だけが、タイトルの海を泳ぐ。画面まるごとを水槽の枠として、
 // 水槽と同じ遊泳ループに任せる。生き物データの泳ぎ方（群れる・漂う・砂で定位する）と
@@ -365,17 +382,24 @@ function TitleScreen({ state, dispatch }) {
         />
       </h1>
       <p className="title-tagline">
-        <span className="title-tagline-copy"><UiText>はじめての｜一文字《ひともじ》から、｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText></span>
+        <span className="title-tagline-copy">
+          <UiText>タイピングで、</UiText>
+          <br className="title-tagline-break" />
+          <UiText>｜海《うみ》の｜生き物《いきもの》に｜会い《あい》にいこう。</UiText>
+        </span>
       </p>
       <button className="primary-button title-start" onClick={() => dispatch({ type: "START_ADVENTURE" })}>
         <span className="title-start-label">はじめる</span>
         <span className="title-start-key" aria-hidden="true">ENTER</span>
       </button>
       <ul className="title-points">{TITLE_POINTS.map((point) => <li key={point.icon}>
-        <span className="title-point-icon" aria-hidden="true"><UiIcon name={point.icon} size={22} /></span>
+        <span className="title-point-icon" aria-hidden="true"><TitlePointPixelIcon name={point.icon} /></span>
         <span className="title-point-copy">
-          <strong><UiText>{point.heading}</UiText></strong>
-          <small><UiText>{point.body}</UiText></small>
+          <strong>{point.headingParts.map((part, index) => <Fragment key={part}>
+            <span className="title-point-heading-part"><UiText>{part}</UiText></span>
+            {index < point.headingParts.length - 1 && <wbr />}
+          </Fragment>)}</strong>
+          <small>{point.bodyLines.map((line) => <span className="title-point-body-line" key={line}><UiText>{line}</UiText></span>)}</small>
         </span>
       </li>)}</ul>
     </div>

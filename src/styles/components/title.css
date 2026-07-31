@@ -6,9 +6,9 @@
   display: flex;
   min-height: 100vh;
   min-height: 100svh;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: clamp(44px, 7vh, 88px) 24px clamp(64px, 9vh, 108px);
+  padding: clamp(36px, 5vh, 64px) 24px;
 }
 
 .title-card {
@@ -18,7 +18,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 860px;
+  max-width: 980px;
   min-width: 0;
   margin-inline: auto;
   text-align: center;
@@ -76,34 +76,23 @@
 }
 
 .title-tagline {
-  display: grid;
+  display: block;
   width: min(680px, 100%);
   margin: 20px auto 0;
-  grid-template-columns: minmax(24px, 1fr) auto minmax(24px, 1fr);
-  align-items: center;
-  gap: 18px;
   color: #f2ffff;
-  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  font-size: clamp(1.08rem, 2.4vw, 1.3rem);
   font-weight: 700;
   line-height: 1.75;
   letter-spacing: .025em;
   text-shadow: 0 2px 10px #02090fd9;
 }
 
-.title-tagline::before,
-.title-tagline::after {
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgb(142 240 244 / 72%));
-  content: "";
-  box-shadow: 0 0 10px rgb(66 221 231 / 28%);
-}
-
-.title-tagline::after {
-  background: linear-gradient(90deg, rgb(142 240 244 / 72%), transparent);
-}
-
 .title-tagline-copy {
   max-width: 36em;
+}
+
+.title-tagline-break {
+  display: none;
 }
 
 .title-screen .title-start {
@@ -175,21 +164,11 @@
 .title-points {
   display: grid;
   position: relative;
-  width: min(820px, 100%);
+  width: min(940px, 100%);
   margin: 46px auto 0;
   padding: 28px 0 0;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   list-style: none;
-}
-
-.title-points::before {
-  position: absolute;
-  top: 0;
-  right: 8%;
-  left: 8%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(185 247 246 / 46%) 20%, rgb(185 247 246 / 46%) 80%, transparent);
-  content: "";
 }
 
 .title-points li {
@@ -208,26 +187,39 @@
   top: 10px;
   bottom: 4px;
   left: 0;
-  width: 1px;
-  background: linear-gradient(transparent, rgb(185 247 246 / 34%) 24%, rgb(185 247 246 / 34%) 76%, transparent);
+  width: 2px;
+  background: linear-gradient(90deg, #153e4b 0 1px, #86cdd0 1px 2px);
   content: "";
+  opacity: .78;
 }
 
 .title-point-icon {
   display: grid;
   flex: none;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 2px solid rgb(208 255 255 / 72%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 28%, #51e2e2 0 7%, #198b9e 48%, #063e59 100%);
-  box-shadow:
-    0 0 0 5px rgb(51 193 203 / 14%),
-    0 8px 18px rgb(0 10 20 / 34%),
-    inset 0 2px 3px rgb(255 255 255 / 32%);
-  color: #f2ffff;
-  filter: drop-shadow(0 2px 0 rgb(0 26 42 / 50%));
+  width: 48px;
+  height: 48px;
+  background: #0a6677;
+  box-shadow: inset 0 0 0 2px #58bdc3;
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, calc(100% - 6px) 3px, 100% 3px, 100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px), calc(100% - 3px) 100%, 6px 100%, 6px calc(100% - 3px), 0 calc(100% - 3px), 0 6px, 3px 6px, 3px 3px, 6px 3px);
+}
+
+.title-point-pixel {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+.pixel-icon-light {
+  fill: #efffff;
+}
+
+.pixel-icon-water {
+  fill: #24c4cf;
+}
+
+.pixel-icon-accent {
+  fill: #063f52;
 }
 
 .title-point-copy {
@@ -239,24 +231,33 @@
 .title-point-copy strong {
   display: block;
   color: #f5ffff;
-  font-size: .94rem;
+  font-size: clamp(1.08rem, 1.35vw, 1.28rem);
   line-height: 1.55;
   text-shadow: 0 2px 8px rgb(0 8 17 / 92%);
+}
+
+.title-point-heading-part {
+  white-space: nowrap;
 }
 
 .title-point-copy small {
   display: block;
   max-width: 19em;
   margin: 5px auto 0;
-  color: #c5ddde;
-  font-size: .76rem;
+  color: #d3e6e6;
+  font-size: clamp(.9rem, 1.05vw, 1rem);
+  font-weight: 500;
   line-height: 1.65;
   text-shadow: 0 2px 7px rgb(0 8 17 / 92%);
 }
 
+.title-point-body-line {
+  display: block;
+}
+
 @media (max-width: 560px) {
   .title-screen {
-    padding: 30px 16px 54px;
+    padding: 30px 16px;
   }
 
   .title-card::before {
@@ -271,20 +272,17 @@
   .title-tagline {
     width: 100%;
     margin-top: 14px;
-    grid-template-columns: 1fr;
-    gap: 0;
-    font-size: .98rem;
+    font-size: 1.08rem;
     line-height: 1.72;
-  }
-
-  .title-tagline::before,
-  .title-tagline::after {
-    display: none;
   }
 
   .title-tagline-copy {
     max-width: 23em;
     margin-inline: auto;
+  }
+
+  .title-tagline-break {
+    display: block;
   }
 
   .title-screen .title-start {
@@ -306,8 +304,13 @@
   }
 
   .title-point-icon {
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .title-point-pixel {
+    width: 28px;
+    height: 28px;
   }
 
   .title-point-copy strong {
