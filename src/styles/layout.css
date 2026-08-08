@@ -253,9 +253,39 @@
 
 /* Header: navigation is a single ghost-button family. */
 .topbar {
-  height: 82px;
-  padding-inline: 20px;
+  width: 100%;
+  max-width: none;
+  height: 88px;
+  padding-inline: clamp(16px, 3vw, 48px);
   border: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 16px;
+}
+
+.topbar-start {
+  min-width: 0;
+  justify-self: start;
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+}
+
+.topbar-nav .nav-button {
+  min-width: 88px;
+}
+
+.topbar-actions {
+  justify-self: end;
+}
+
+.nav-button[aria-current="page"] {
+  background: var(--ui-tint);
+  color: #fff;
 }
 
 .map-screen {
@@ -312,7 +342,30 @@
     }
 
     .topbar {
-      padding-inline: 8px;
+      min-height: 126px;
+      height: auto;
+      padding: 6px 8px 8px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "start actions"
+        "nav nav";
+      gap: 2px 8px;
+    }
+
+    .topbar-start {
+      grid-area: start;
+    }
+
+    .topbar-nav {
+      grid-area: nav;
+    }
+
+    .topbar-actions {
+      grid-area: actions;
+    }
+
+    .topbar-nav .nav-button {
+      min-width: 78px;
     }
 
     .map-hero {

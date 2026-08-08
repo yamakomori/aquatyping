@@ -172,6 +172,8 @@ function finishPlay(state) {
 
 export function gameReducer(state, action) {
   switch (action.type) {
+    case "SHOW_TITLE":
+      return { ...state, screen: "title", session: null, result: null, releaseCandidateId: null, message: "" };
     case "START_ADVENTURE": {
       if (state.screen !== "title") return state;
       // はじめての冒険だけ F と J の案内から始める。続きから遊ぶ人は海図へ戻す。

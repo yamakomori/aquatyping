@@ -196,7 +196,15 @@ export default function GameShell() {
     {backdropRegionId && <BubbleField variant="world" />}
     {/* タイトルとタイピング中はヘッダーを隠す。タイトルはまだ冒険前で行き先がなく、
         タイピング中は高さを問題に回せるうえ、練習中に誤って別画面へ飛ばない。 */}
-    {state.screen !== "title" && state.screen !== "intro" && state.screen !== "typing" && <Header save={state.save} onMap={() => navigation("SHOW_MAP")} onAquarium={() => navigation("SHOW_AQUARIUM")} onWardrobe={() => navigation("SHOW_WARDROBE")} onSettings={() => navigation("SHOW_SETTINGS")} />}
+    {state.screen !== "title" && state.screen !== "intro" && state.screen !== "typing" && <Header
+      save={state.save}
+      currentScreen={state.screen}
+      onTitle={() => navigation("SHOW_TITLE")}
+      onMap={() => navigation("SHOW_MAP")}
+      onAquarium={() => navigation("SHOW_AQUARIUM")}
+      onWardrobe={() => navigation("SHOW_WARDROBE")}
+      onSettings={() => navigation("SHOW_SETTINGS")}
+    />}
     {content}
     {state.screen === "result" && <RewardOverlay state={state} dispatch={dispatch} />}
     {/* はじめての海域に着いた瞬間だけ、海の絵に名前を重ねて見せてから引く。 */}
@@ -280,17 +288,22 @@ function BubbleField({ variant }) {
   })}</div>;
 }
 
-function Header({ save, onMap, onAquarium, onWardrobe, onSettings }) {
+function Header({ save, currentScreen, onTitle, onMap, onAquarium, onWardrobe, onSettings }) {
   return <header className="topbar">
-    <button className="brand" onClick={onMap}>
-      <UiIcon name="map" />
-      <span><UiText plain>海をえらぶ</UiText></span>
-    </button>
+    <div className="topbar-start">
+      <button className="brand" onClick={onTitle}>
+        <UiIcon name="chevronLeft" />
+        <span><UiText plain>タイトルに戻る</UiText></span>
+      </button>
+    </div>
+    <nav className="topbar-nav" aria-label="メインメニュー">
+      <button className="nav-button" aria-current={currentScreen === "map" ? "page" : undefined} onClick={onMap}><UiIcon name="map" /><span><UiText plain>海を選ぶ</UiText></span></button>
+      <button className="nav-button" aria-current={currentScreen === "aquarium" ? "page" : undefined} onClick={onAquarium}><UiIcon name="aquarium" /><span><UiText plain>水槽をみる</UiText></span></button>
+      <button className="nav-button" aria-current={currentScreen === "wardrobe" ? "page" : undefined} onClick={onWardrobe}><UiIcon name="wardrobe" /><span><UiText plain>みじたく</UiText></span></button>
+    </nav>
     <div className="topbar-actions">
       <span className="coin" aria-label={`コイン ${save.coins}`}><UiIcon name="coin" size={16} />{save.coins}</span>
-      <button className="nav-button" onClick={onAquarium}><UiIcon name="aquarium" /><span><UiText plain>水槽</UiText></span></button>
-      <button className="nav-button" onClick={onWardrobe}><UiIcon name="wardrobe" /><span>きせかえ</span></button>
-      <button className="nav-button" onClick={onSettings}><UiIcon name="settings" /><span><UiText plain>設定</UiText></span></button>
+      <button className="nav-button" aria-current={currentScreen === "settings" ? "page" : undefined} onClick={onSettings}><UiIcon name="settings" /><span><UiText plain>設定</UiText></span></button>
     </div>
   </header>;
 }

@@ -64,6 +64,22 @@ test("水槽から出かけると選択中の海域を表示する", () => {
   assert.equal(next.selectedMapRegionId, "coral-forest");
 });
 
+test("ヘッダーからタイトルへ戻ると進行中の画面状態を閉じる", () => {
+  const state = {
+    ...createGameState(createSave()),
+    screen: "settings",
+    result: { stage: { id: "S00" } },
+    releaseCandidateId: "fish-1",
+    message: "message",
+  };
+  const next = gameReducer(state, { type: "SHOW_TITLE" });
+  assert.equal(next.screen, "title");
+  assert.equal(next.session, null);
+  assert.equal(next.result, null);
+  assert.equal(next.releaseCandidateId, null);
+  assert.equal(next.message, "");
+});
+
 test("レッスンをやめると、進行度ではなく今プレイしていた海域へ戻る", () => {
   const save = {
     ...createSave(),

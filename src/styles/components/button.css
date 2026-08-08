@@ -97,7 +97,8 @@
 
 @media (max-width: 430px) {
     .coin {
-      display: none;
+      padding-inline: 6px;
+      font-size: .78rem;
     }
 
     .brand span {
