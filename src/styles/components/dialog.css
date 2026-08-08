@@ -15,13 +15,6 @@
   animation: card-in .3s cubic-bezier(.2, .9, .3, 1.1);
 }
 
-.reward-card>.avatar {
-  margin: 0 auto -12px;
-  transform: scale(.62);
-  transform-origin: top center;
-  height: 72px;
-}
-
 .reward-card h1 {
   font-size: clamp(1.55rem, 6vw, 2rem);
   line-height: 1.25;
@@ -117,10 +110,6 @@
 
 .route-button kbd {
   color: #d7f2ed;
-}
-
-.intro-card .avatar {
-  margin: 0 auto 2px;
 }
 
 .intro-card h1 {

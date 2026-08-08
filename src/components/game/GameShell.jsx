@@ -414,11 +414,7 @@ function TitleScreen({ state, dispatch }) {
 }
 
 function IntroScreen({ dispatch }) {
-  return <main className="intro-screen"><div className="intro-card"><Avatar /><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
-}
-
-function Avatar() {
-  return <div className="avatar" aria-label="あなたの相棒"><div className="avatar-head" /><div className="avatar-body" /><span className="avatar-eye left" /><span className="avatar-eye right" /></div>;
+  return <main className="intro-screen"><div className="intro-card"><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
 }
 
 function RegionNavigator({ regions, selectedId, onSelect, label }) {
@@ -1108,7 +1104,6 @@ function AquariumScreen({ state, dispatch }) {
   return <section className={`aquarium-screen region-${region.id}`}>
     <div className="screen-heading aquarium-heading">
       <div><p className="eyebrow"><UiText>あなたの水槽《すいそう》</UiText></p><h1><UiText>{region.tankName}</UiText></h1><p><UiText>{collection.total === 0 ? "海《うみ》へ出《で》ると、｜最初の魚《さいしょのさかな》に｜出会える《であえる》よ。" : `${tankFish.length} 匹《ひき》が、この水槽《すいそう》を｜泳いで《およいで》いるよ。`}</UiText></p></div>
-      <Avatar />
     </div>
     {unlockedRegions.length > 1 && <RegionNavigator regions={unlockedRegions} selectedId={region.id} onSelect={selectTank} label="水槽を選ぶ" />}
     <div className="aquarium-main">
