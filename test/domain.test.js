@@ -1,6 +1,5 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { purchase } from "../src/domain/economy.js";
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, summarizePlay, updateConceptSkills, updateSkills } from "../src/domain/learning.js";
 import { chooseProblems, getProblemsForStage } from "../src/domain/problems.js";
 import { createSave, loadSave } from "../src/domain/save.js";
@@ -40,16 +39,29 @@ test("mistakes raise only the relevant key review weight", () => {
   assert.equal(skills.d.reviewWeight, 2);
 });
 
-test("purchase equips an unowned affordable item", () => {
-  const save = {
-    coins: 15,
-    ownedItemIds: ["body-moss", "head-none", "outfit-cloth"],
-    equipped: { bodyColor: "body-moss", head: "head-none", outfit: "outfit-cloth" },
-  };
-  const outcome = purchase(save, "head-leaf");
-  assert.equal(outcome.ok, true);
-  assert.equal(outcome.save.coins, 3);
-  assert.equal(outcome.save.equipped.head, "head-leaf");
+test("着せ替えデータは新規・旧セーブから除外し、コインは保持する", () => {
+  assert.equal("ownedItemIds" in createSave(), false);
+  assert.equal("equipped" in createSave(), false);
+
+  const loaded = loadSave({
+    getItem: () => JSON.stringify({
+      ...createSave(),
+      coins: 42,
+      ownedItemIds: ["body-moss", "head-leaf"],
+      equipped: { bodyColor: "body-moss", head: "head-leaf", outfit: "outfit-cloth" },
+    }),
+  });
+  assert.equal(loaded.coins, 42);
+  assert.equal("ownedItemIds" in loaded, false);
+  assert.equal("equipped" in loaded, false);
+});
+
+test("コインは画面用の着せ替えを削除してもプレイ報酬として加算する", () => {
+  let state = gameReducer(createGameState(createSave()), { type: "START_STAGE", stageId: "S00" });
+  const problemCount = state.session.problems.length;
+  state = completeTypingPlay(state);
+  assert.equal(state.save.coins, (problemCount * 3) + 8);
+  assert.equal(state.result.earned.coins, state.save.coins);
 });
 
 test("水槽から出かけると選択中の海域を表示する", () => {

@@ -47,7 +47,6 @@
 .reduce-motion .map-screen,
 .reduce-motion .typing-screen,
 .reduce-motion .aquarium-screen,
-.reduce-motion .wardrobe-screen,
 .reduce-motion .settings-screen {
   animation: none;
 }

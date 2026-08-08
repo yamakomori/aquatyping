@@ -1,6 +1,6 @@
 import { getNextStage, getStage } from "../../domain/curriculum.js";
 import { chooseProblems, getPracticeKeysForStage } from "../../domain/problems.js";
-import { equip, getItem, purchase, rewardForPlay, rewardForProblem } from "../../domain/economy.js";
+import { rewardForPlay, rewardForProblem } from "../../domain/economy.js";
 import { awardStageMedals, reviewConceptsForStage, reviewKeysForStage, stageAccuracy, summarizePlay, updateConceptSkills, updateSkills } from "../../domain/learning.js";
 import { createSave } from "../../domain/save.js";
 import { fishForCatch, getFishSpecies, isRegionCleared, releaseFish } from "../../domain/fish.js";
@@ -259,8 +259,6 @@ export function gameReducer(state, action) {
         },
       };
     }
-    case "SHOW_WARDROBE":
-      return { ...state, screen: "wardrobe", session: null, message: "" };
     case "SHOW_AQUARIUM":
       return { ...state, screen: "aquarium", session: null, result: null, releaseCandidateId: null, selectedTankId: action.regionId ?? state.selectedTankId ?? getRegionForStage(state.save.currentStageId).id, message: "" };
     case "SELECT_TANK":
@@ -273,17 +271,6 @@ export function gameReducer(state, action) {
       return { ...state, save: { ...state.save, settings: { ...state.save.settings, sound: !state.save.settings.sound } } };
     case "TOGGLE_MOTION":
       return { ...state, save: { ...state.save, settings: { ...state.save.settings, reducedMotion: !state.save.settings.reducedMotion } } };
-    case "PURCHASE_OR_EQUIP": {
-      const item = getItem(action.itemId);
-      if (!item) return state;
-      if (state.save.ownedItemIds.includes(item.id)) {
-        return { ...state, save: equip(state.save, item.id), message: `${item.name}を つけたよ。` };
-      }
-      const outcome = purchase(state.save, item.id);
-      return outcome.ok
-        ? { ...state, save: outcome.save, message: `${item.name}を みつけたよ。` }
-        : { ...state, message: outcome.reason };
-    }
     case "REQUEST_RELEASE":
       return state.save.caughtFish.some((fish) => fish.id === action.fishId)
         ? { ...state, releaseCandidateId: action.fishId }

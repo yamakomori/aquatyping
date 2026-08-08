@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { STAGES, getStage } from "../../domain/curriculum.js";
-import { ITEMS, getItem } from "../../domain/economy.js";
 import { getFingerGuide } from "../../domain/fingers.js";
 import { typedKeyFrom } from "../../domain/keyboard.js";
 import {
@@ -174,10 +173,9 @@ export default function GameShell() {
 
   const navigation = (type) => dispatch({ type });
   const content = state.screen === "title" ? <TitleScreen state={state} dispatch={dispatch} />
-    : state.screen === "intro" ? <IntroScreen state={state} dispatch={dispatch} />
+    : state.screen === "intro" ? <IntroScreen dispatch={dispatch} />
     : state.screen === "typing" ? <TypingScreen state={state} dispatch={dispatch} />
     : state.screen === "aquarium" ? <AquariumScreen state={state} dispatch={dispatch} />
-      : state.screen === "wardrobe" ? <WardrobeScreen state={state} dispatch={dispatch} />
       : state.screen === "settings" ? <SettingsScreen state={state} dispatch={dispatch} />
         : <MapScreen state={state} dispatch={dispatch} isDev={import.meta.env.DEV} />;
   // タイトルは「まだ紹介していない海」を避けた最後の海を敷く。selectedMapRegionId は
@@ -197,12 +195,10 @@ export default function GameShell() {
     {/* タイトルとタイピング中はヘッダーを隠す。タイトルはまだ冒険前で行き先がなく、
         タイピング中は高さを問題に回せるうえ、練習中に誤って別画面へ飛ばない。 */}
     {state.screen !== "title" && state.screen !== "intro" && state.screen !== "typing" && <Header
-      save={state.save}
       currentScreen={state.screen}
       onTitle={() => navigation("SHOW_TITLE")}
       onMap={() => navigation("SHOW_MAP")}
       onAquarium={() => navigation("SHOW_AQUARIUM")}
-      onWardrobe={() => navigation("SHOW_WARDROBE")}
       onSettings={() => navigation("SHOW_SETTINGS")}
     />}
     {content}
@@ -288,7 +284,7 @@ function BubbleField({ variant }) {
   })}</div>;
 }
 
-function Header({ save, currentScreen, onTitle, onMap, onAquarium, onWardrobe, onSettings }) {
+function Header({ currentScreen, onTitle, onMap, onAquarium, onSettings }) {
   return <header className="topbar">
     <div className="topbar-start">
       <button className="brand" onClick={onTitle}>
@@ -299,10 +295,8 @@ function Header({ save, currentScreen, onTitle, onMap, onAquarium, onWardrobe, o
     <nav className="topbar-nav" aria-label="メインメニュー">
       <button className="nav-button" aria-current={currentScreen === "map" ? "page" : undefined} onClick={onMap}><UiIcon name="map" /><span><UiText plain>海を選ぶ</UiText></span></button>
       <button className="nav-button" aria-current={currentScreen === "aquarium" ? "page" : undefined} onClick={onAquarium}><UiIcon name="aquarium" /><span><UiText plain>水槽をみる</UiText></span></button>
-      <button className="nav-button" aria-current={currentScreen === "wardrobe" ? "page" : undefined} onClick={onWardrobe}><UiIcon name="wardrobe" /><span><UiText plain>みじたく</UiText></span></button>
     </nav>
     <div className="topbar-actions">
-      <span className="coin" aria-label={`コイン ${save.coins}`}><UiIcon name="coin" size={16} />{save.coins}</span>
       <button className="nav-button" aria-current={currentScreen === "settings" ? "page" : undefined} onClick={onSettings}><UiIcon name="settings" /><span><UiText plain>設定</UiText></span></button>
     </div>
   </header>;
@@ -419,16 +413,12 @@ function TitleScreen({ state, dispatch }) {
   </main>;
 }
 
-function IntroScreen({ state, dispatch }) {
-  return <main className="intro-screen"><div className="intro-card"><Avatar save={state.save} /><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
+function IntroScreen({ dispatch }) {
+  return <main className="intro-screen"><div className="intro-card"><Avatar /><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
 }
 
-function Avatar({ save }) {
-  const body = getItem(save.equipped.bodyColor);
-  const head = getItem(save.equipped.head);
-  const outfit = getItem(save.equipped.outfit);
-  const headMark = head?.kind === "leaf" ? "◆" : head?.kind === "star" ? "★" : "";
-  return <div className="avatar" aria-label="あなたの相棒"><div className="avatar-headmark">{headMark}</div><div className="avatar-head" style={{ background: body?.color ?? "#88a97a" }} /><div className="avatar-body" style={{ background: outfit?.color ?? "#ece3cc" }} /><span className="avatar-eye left" /><span className="avatar-eye right" /></div>;
+function Avatar() {
+  return <div className="avatar" aria-label="あなたの相棒"><div className="avatar-head" /><div className="avatar-body" /><span className="avatar-eye left" /><span className="avatar-eye right" /></div>;
 }
 
 function RegionNavigator({ regions, selectedId, onSelect, label }) {
@@ -1101,27 +1091,6 @@ function Hand({ side, active }) {
   return <div className="hand-group"><span className="hand-label"><UiText plain>{name}</UiText></span><div className={`hand ${side}`} aria-label={`${name}の指`}><span className="palm" />{["pinky", "ring", "middle", "index", "thumb"].map((finger) => <span key={finger} className={`finger ${finger} ${active.finger === finger && (active.side === side || active.side === "both") ? "active" : ""}`} />)}</div></div>;
 }
 
-function WardrobeScreen({ state, dispatch }) {
-  return <section className="wardrobe-screen">
-    <div className="screen-heading">
-      <div><p className="eyebrow"><UiText>相棒《あいぼう》のもちもの</UiText></p><h1><UiText>今日《きょう》は、なにを身《み》につける？</UiText></h1><p><UiText>{state.message || "海《うみ》で｜見つけた《みつけた》コインで、身《み》じたくできるよ。"}</UiText></p></div>
-      <Avatar save={state.save} />
-    </div>
-    <div className="item-grid">{ITEMS.map((item) => {
-      const owned = state.save.ownedItemIds.includes(item.id);
-      const equipped = state.save.equipped[item.slot] === item.id;
-      const visual = item.kind === "leaf" ? "◆" : item.kind === "star" ? "★" : "●";
-      return <article key={item.id} className={`item-card ${equipped ? "equipped" : ""}`}>
-        <div className="item-preview" style={item.color ? { "--item-color": item.color } : undefined}>{visual}</div>
-        <h2><UiText>{item.name}</UiText></h2>
-        <p><UiText>{item.slot === "bodyColor" ? "からだの色《いろ》" : item.slot === "head" ? "あたま" : "ふく"}</UiText></p>
-        <button className="secondary-button" disabled={equipped} onClick={() => dispatch({ type: "PURCHASE_OR_EQUIP", itemId: item.id })}><UiText plain>{equipped ? "つけている" : owned ? "つける" : `${item.price} コインで みつける`}</UiText></button>
-      </article>;
-    })}</div>
-    <button className="text-button back-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><UiIcon name="chevronLeft" size={18} /><span><UiText plain>レッスンをえらぶ</UiText></span></button>
-  </section>;
-}
-
 function AquariumScreen({ state, dispatch }) {
   const collection = fishCollectionStats(state.save.caughtFish);
   const unlockedRegions = getUnlockedRegions(state.save.unlockedStageIds);
@@ -1139,7 +1108,7 @@ function AquariumScreen({ state, dispatch }) {
   return <section className={`aquarium-screen region-${region.id}`}>
     <div className="screen-heading aquarium-heading">
       <div><p className="eyebrow"><UiText>あなたの水槽《すいそう》</UiText></p><h1><UiText>{region.tankName}</UiText></h1><p><UiText>{collection.total === 0 ? "海《うみ》へ出《で》ると、｜最初の魚《さいしょのさかな》に｜出会える《であえる》よ。" : `${tankFish.length} 匹《ひき》が、この水槽《すいそう》を｜泳いで《およいで》いるよ。`}</UiText></p></div>
-      <Avatar save={state.save} />
+      <Avatar />
     </div>
     {unlockedRegions.length > 1 && <RegionNavigator regions={unlockedRegions} selectedId={region.id} onSelect={selectTank} label="水槽を選ぶ" />}
     <div className="aquarium-main">
@@ -1167,7 +1136,6 @@ function SettingsScreen({ state, dispatch }) {
       <button className="setting-row" onClick={() => dispatch({ type: "TOGGLE_MOTION" })}><span><UiText plain>動きをひかえめにする</UiText></span><strong>{state.save.settings.reducedMotion ? "オン" : "オフ"}</strong></button>
     </div>
     <button className="danger-button" onClick={() => window.confirm("冒険のきろくを最初からにしますか？") && dispatch({ type: "RESET" })}><UiText plain>冒険のきろくを最初からにする</UiText></button>
-    <button className="text-button back-button" onClick={() => dispatch({ type: "SHOW_MAP" })}><UiIcon name="chevronLeft" size={18} /><span><UiText plain>レッスンをえらぶ</UiText></span></button>
   </section>;
 }
 

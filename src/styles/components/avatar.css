@@ -7,17 +7,6 @@
   border-radius: 50%;
 }
 
-.avatar-headmark {
-  position: absolute;
-  z-index: 4;
-  top: -5px;
-  width: 100%;
-  text-align: center;
-  color: #d1a341;
-  font-size: 28px;
-  transform: rotate(-12deg);
-}
-
 @media (max-width: 560px) {
     .avatar {
       transform: scale(.8);
@@ -49,6 +38,7 @@
   left: 24px;
   width: 50px;
   height: 51px;
+  background: #88a97a;
 }
 
 .avatar-body {
@@ -59,6 +49,7 @@
   left: 18px;
   width: 62px;
   height: 54px;
+  background: #ece3cc;
 }
 
 .avatar-eye {

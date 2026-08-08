@@ -1,9 +1,15 @@
-import { STARTER_EQUIPPED, STARTER_ITEMS } from "./economy.js";
 import { REGIONS, getUnlockedRegions } from "./regions.js";
 
 const SAVE_KEY = "type-rogue-mvp-save-v1";
 const CURRICULUM_VERSION = 2;
 const SHALLOW_STAGE_IDS = Array.from({ length: 11 }, (_, index) => `SH${String(index + 1).padStart(2, "0")}`);
+
+function withoutWardrobeData(save) {
+  const sanitized = { ...save };
+  delete sanitized.ownedItemIds;
+  delete sanitized.equipped;
+  return sanitized;
+}
 
 function hasStageExperience(save, stageId) {
   const problemPrefix = `${stageId.toLowerCase()}-`;
@@ -79,8 +85,6 @@ export function createSave() {
     conceptSkills: {},
     coins: 0,
     xp: 0,
-    ownedItemIds: STARTER_ITEMS,
-    equipped: STARTER_EQUIPPED,
     settingsVersion: 1,
     settings: { keyboardGuide: true, sound: true, reducedMotion: false },
   };
@@ -92,7 +96,7 @@ export function loadSave(storage = localStorage) {
     if (!raw) return createSave();
     const saved = JSON.parse(raw);
     if (saved.schemaVersion !== 1) return createSave();
-    const migrated = migrateCurriculum(saved);
+    const migrated = withoutWardrobeData(migrateCurriculum(saved));
     const defaults = createSave();
     const merged = {
       ...defaults,
@@ -119,7 +123,7 @@ export function loadSave(storage = localStorage) {
 }
 
 export function persistSave(save, storage = localStorage) {
-  storage.setItem(SAVE_KEY, JSON.stringify(save));
+  storage.setItem(SAVE_KEY, JSON.stringify(withoutWardrobeData(save)));
 }
 
 export function resetSave(storage = localStorage) {

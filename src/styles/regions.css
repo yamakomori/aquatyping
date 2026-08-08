@@ -52,12 +52,6 @@
   color: #f4fff9;
 }
 
-.region-backdrop-tidepool .coin {
-  border-color: #7cb5a2;
-  background: #23626bd9;
-  color: #fff0ac;
-}
-
 .region-tidepool .map-hero .eyebrow,
 .region-tidepool .typing-stage-name {
   color: #bce8c2;
@@ -168,12 +162,6 @@
 .region-backdrop-shallows .brand,
 .region-backdrop-shallows .text-button {
   color: #effffb;
-}
-
-.region-backdrop-shallows .coin {
-  border-color: #5ca6a5;
-  background: #0c5261d9;
-  color: #fff0ac;
 }
 
 .region-shallows .screen-heading {

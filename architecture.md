@@ -8,7 +8,7 @@
 
 ```text
 UI
-  ├─ タイピング画面 / 海図 / 水槽 / 釣果 / 装備
+  ├─ タイピング画面 / 海図 / 水槽 / 釣果 / 設定
   ↓ Action
 Application
   ├─ SessionService / ProgressService / RewardService
@@ -31,14 +31,13 @@ src/
     curriculum/      # stage definitions, mastery rules
     generator/       # selector, validator, fallback problems
     learning/        # key skill aggregation
-    economy/         # coins, avatar catalog, ownership
+    economy/         # coins, xp, reward rules
     fish/            # species catalog, catch variants, collection statistics
     world/           # seas, nodes, unlocks
   application/
     startSession.ts
     submitKey.ts
     finishProblem.ts
-    equipItem.ts
   ui/
     screens/
     components/
@@ -66,7 +65,6 @@ type SaveData = {
   caughtFish: Array<{ id: string; speciesId: string; stageId: string; regionId: string; variant: string; size: string }>;
   discoveredFishSpeciesIds: string[];
   releasedFishCounts: Record<string, number>;
-  inventory: AvatarState;
   settings: {
     keyboardLayout: "jis" | "us" | "unknown";
     sound: boolean;
@@ -112,9 +110,8 @@ type SaveData = {
 
 - 全 `kana` をローマ字マッチャーが処理できる。
 - 問題の使用キーが対象ステージの上限内にある。
-- 問題・アイテム・ノード ID が一意で、参照が切れていない。
+- 問題・ノード ID が一意で、参照が切れていない。
 - フォールバック問題が各ステージに存在する。
-- アイテムのスロット、アセット、価格が正しい。
 
 ## テスト優先順位
 
@@ -127,7 +124,7 @@ type SaveData = {
 
 - S00〜S03、はじまりの庭、問題セット20〜30件。
 - ローマ字マッチャーの移植と、キー別の最小分析。
-- 水槽、海域ごとの魚、コイン、6〜12個の見た目アイテム、1体の相棒。
+- 水槽、海域ごとの魚、内部報酬として保存するコインと経験値、固定表示の相棒。
 - ローカルセーブ、音・動き・配列の基本設定。
 
 アカウント、同期、保護者ダッシュボード、自由入力保存、ガチャ、通知、ランキングは初期範囲から外す。
