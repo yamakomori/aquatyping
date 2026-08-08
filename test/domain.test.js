@@ -52,6 +52,36 @@ test("purchase equips an unowned affordable item", () => {
   assert.equal(outcome.save.equipped.head, "head-leaf");
 });
 
+test("もちものスロットのアイテムを買うと、そのスロットに装備される", () => {
+  const save = {
+    coins: 20,
+    ownedItemIds: ["body-moss", "head-none", "outfit-cloth", "hand-none"],
+    equipped: { bodyColor: "body-moss", head: "head-none", outfit: "outfit-cloth", hand: "hand-none" },
+  };
+  const outcome = purchase(save, "hand-net");
+  assert.equal(outcome.ok, true);
+  assert.equal(outcome.save.coins, 8);
+  assert.equal(outcome.save.equipped.hand, "hand-net");
+  assert.ok(outcome.save.ownedItemIds.includes("hand-net"));
+  // 他スロットの装備は動かさない。
+  assert.equal(outcome.save.equipped.head, "head-none");
+});
+
+test("もちものスロットがない古い保存は、hand-none を補って読み込む", () => {
+  const storage = {
+    getItem: () => JSON.stringify({
+      ...createSave(),
+      equipped: { bodyColor: "body-sky", head: "head-leaf", outfit: "outfit-cloth" },
+    }),
+  };
+  const loaded = loadSave(storage);
+  assert.equal(loaded.equipped.hand, "hand-none");
+  // 既に選んでいた装備はそのまま引き継ぐ。
+  assert.equal(loaded.equipped.bodyColor, "body-sky");
+  assert.equal(loaded.equipped.head, "head-leaf");
+  assert.equal(loaded.equipped.outfit, "outfit-cloth");
+});
+
 test("水槽から出かけると選択中の海域を表示する", () => {
   const state = {
     ...createGameState(createSave()),

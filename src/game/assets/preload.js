@@ -1,5 +1,9 @@
+import { ITEMS } from "../../domain/economy.js";
 import { fishSpeciesForRegion } from "../../domain/fish.js";
 import { getUnlockedRegions } from "../../domain/regions.js";
+
+// きせかえアセット（相棒のからだ・ふく・あたま・もちもの）。どれも数KBの小さな透過PNG。
+const AVATAR_IMAGES = ITEMS.map((item) => item.asset).filter(Boolean);
 
 // 海域の背景画は海域IDと同じ名前で public/backgrounds に置いてある。
 function regionBackdrop(regionId) {
@@ -30,6 +34,7 @@ export function startupImageSources(unlockedStageIds, lastPlayedRegionId) {
     regionBackdrop(lastPlayedRegionId),
     ...spriteSources(lastPlayedRegionId),
     ...SHARED_IMAGES,
+    ...AVATAR_IMAGES,
     ...otherRegionIds.map(regionBackdrop),
     ...otherRegionIds.flatMap(spriteSources),
   ].filter(Boolean);

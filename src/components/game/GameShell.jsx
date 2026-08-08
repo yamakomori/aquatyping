@@ -423,12 +423,24 @@ function IntroScreen({ state, dispatch }) {
   return <main className="intro-screen"><div className="intro-card"><Avatar save={state.save} /><p className="eyebrow"><UiText>ことばの｜小さな《ちいさな》海《うみ》へようこそ</UiText></p><h1>F と J のぽっちを<br />さわってみよう</h1><p><UiText>3つの｜短い《みじかい》問題《もんだい》を打《う》つと、</UiText><br /><UiText>｜最初の魚《さいしょのさかな》に会《あ》えるよ。</UiText></p><button className="primary-button intro-start" onClick={() => dispatch({ type: "BEGIN_INTRO" })}>はじめる</button><button className="text-button intro-skip" onClick={() => dispatch({ type: "SKIP_INTRO" })}><UiText plain>レッスンをえらぶ</UiText></button></div></main>;
 }
 
+// 重ね順: からだ → ふく → あたま → もちもの。アセットのないスロット（〜none）は描かない。
+const AVATAR_LAYER_SLOTS = ["bodyColor", "outfit", "head", "hand"];
+
+// きせかえ画面のスロット名（4スロット）。
+const SLOT_LABELS = {
+  bodyColor: "からだの色《いろ》",
+  outfit: "ふく",
+  head: "あたま",
+  hand: "もちもの",
+};
+
 function Avatar({ save }) {
-  const body = getItem(save.equipped.bodyColor);
-  const head = getItem(save.equipped.head);
-  const outfit = getItem(save.equipped.outfit);
-  const headMark = head?.kind === "leaf" ? "◆" : head?.kind === "star" ? "★" : "";
-  return <div className="avatar" aria-label="あなたの相棒"><div className="avatar-headmark">{headMark}</div><div className="avatar-head" style={{ background: body?.color ?? "#88a97a" }} /><div className="avatar-body" style={{ background: outfit?.color ?? "#ece3cc" }} /><span className="avatar-eye left" /><span className="avatar-eye right" /></div>;
+  const layers = AVATAR_LAYER_SLOTS
+    .map((slot) => getItem(save.equipped[slot]))
+    .filter((item) => item?.asset);
+  return <div className="avatar" aria-label="あなたの相棒">
+    {layers.map((item) => <img key={item.slot} className="avatar-layer" src={item.asset} alt="" draggable="false" />)}
+  </div>;
 }
 
 function RegionNavigator({ regions, selectedId, onSelect, label }) {
@@ -1110,11 +1122,13 @@ function WardrobeScreen({ state, dispatch }) {
     <div className="item-grid">{ITEMS.map((item) => {
       const owned = state.save.ownedItemIds.includes(item.id);
       const equipped = state.save.equipped[item.slot] === item.id;
-      const visual = item.kind === "leaf" ? "◆" : item.kind === "star" ? "★" : "●";
+      // からだの色は色スウォッチ、それ以外はアセットのサムネイル、アセットのない「〜none」はプレースホルダ。
+      const showSwatch = item.slot === "bodyColor" && item.color;
+      const showThumb = !showSwatch && item.asset;
       return <article key={item.id} className={`item-card ${equipped ? "equipped" : ""}`}>
-        <div className="item-preview" style={item.color ? { "--item-color": item.color } : undefined}>{visual}</div>
+        <div className="item-preview" data-thumb={showThumb ? "" : undefined} style={showSwatch ? { "--item-color": item.color } : undefined}>{showThumb ? <img className="item-thumb" src={item.asset} alt="" draggable="false" /> : showSwatch ? null : "●"}</div>
         <h2><UiText>{item.name}</UiText></h2>
-        <p><UiText>{item.slot === "bodyColor" ? "からだの色《いろ》" : item.slot === "head" ? "あたま" : "ふく"}</UiText></p>
+        <p><UiText>{SLOT_LABELS[item.slot] ?? "ふく"}</UiText></p>
         <button className="secondary-button" disabled={equipped} onClick={() => dispatch({ type: "PURCHASE_OR_EQUIP", itemId: item.id })}><UiText plain>{equipped ? "つけている" : owned ? "つける" : `${item.price} コインで みつける`}</UiText></button>
       </article>;
     })}</div>

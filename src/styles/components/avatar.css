@@ -1,74 +1,44 @@
-.avatar-eye {
-  position: absolute;
-  z-index: 3;
-  width: 5px;
-  height: 7px;
-  background: #31454a;
-  border-radius: 50%;
+/* 相棒アバター: 同サイズ（256px）の透過PNGを絶対配置で重ねるドット絵スタック。
+   重ね順は DOM の並び（からだ → ふく → あたま → もちもの）で決まる。 */
+.avatar {
+  width: 96px;
+  height: 96px;
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.avatar-headmark {
+/* 浮遊はレイヤー側に掛ける。コンテナ側の transform（モバイルの縮小）と食い合わないため。
+   全レイヤーが同一タイムラインで動くので、まとまって上下する。 */
+.avatar-layer {
   position: absolute;
-  z-index: 4;
-  top: -5px;
+  inset: 0;
   width: 100%;
-  text-align: center;
-  color: #d1a341;
-  font-size: 28px;
-  transform: rotate(-12deg);
+  height: 100%;
+  image-rendering: pixelated;
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+  animation: avatar-float 3s ease-in-out infinite;
+}
+
+/* ゆっくり上下に浮かせる。水中の相棒らしい所作。 */
+@keyframes avatar-float {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* OS 側で動きを控える設定なら止める（.reduce-motion による停止と二重で担保）。 */
+@media (prefers-reduced-motion: reduce) {
+  .avatar-layer {
+    animation: none;
+  }
 }
 
 @media (max-width: 560px) {
-    .avatar {
-      transform: scale(.8);
-      transform-origin: right center;
-      margin-right: -10px;
-    }
-}
-
-/* Brand character: silhouette and color do the work; an extra outline is unnecessary. */
-.avatar {
-  width: 96px;
-  height: 118px;
-  position: relative;
-  flex: 0 0 auto;
-  filter: none;
-}
-
-.avatar-head,
-.avatar-body {
-  border: 0;
-  box-shadow: none;
-}
-
-.avatar-head {
-  position: absolute;
-  z-index: 2;
-  border-radius: 48% 48% 44% 44%;
-  top: 21px;
-  left: 24px;
-  width: 50px;
-  height: 51px;
-}
-
-.avatar-body {
-  position: absolute;
-  z-index: 1;
-  border-radius: 42% 42% 18px 18px;
-  bottom: 7px;
-  left: 18px;
-  width: 62px;
-  height: 54px;
-}
-
-.avatar-eye {
-  top: 43px;
-}
-
-.avatar-eye.left {
-  left: 40px;
-}
-
-.avatar-eye.right {
-  left: 55px;
+  .avatar {
+    transform: scale(.8);
+    transform-origin: right center;
+    margin-right: -10px;
+  }
 }

@@ -97,6 +97,9 @@ export function loadSave(storage = localStorage) {
     const merged = {
       ...defaults,
       ...migrated,
+      // もちものスロットが増える前の保存には equipped.hand がない。既定（hand-none）で補い、
+      // 既に選んでいた他スロットの装備はそのまま引き継ぐ。
+      equipped: { ...defaults.equipped, ...migrated.equipped },
       discoveredFishSpeciesIds: migrated.discoveredFishSpeciesIds ?? [...new Set((migrated.caughtFish ?? []).map((fish) => fish.speciesId))],
       // 記録のない古い保存では、たどり着き済みの海域を演出済みとみなす。今さら初対面の演出は出さない。
       revealedRegionIds: migrated.revealedRegionIds ?? getUnlockedRegions(migrated.unlockedStageIds ?? []).map((region) => region.id),
